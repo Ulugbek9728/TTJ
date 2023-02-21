@@ -1,0 +1,168 @@
+{
+  "test":"TTJ UZ",
+  "header": {
+    "center": {
+      "titleT": "Islom Karimov nomidagi",
+      "titleB": "Toshkent Davlat Texnika Universiteti",
+      "titleMT": "Islom Karimov nomidagi ",
+      "titleMB": "Toshkent Davlat Texnika Universiteti",
+      "header-center-nav": {
+        "item-0": "Moliyaviy Faoliyat",
+        "item-1": "Ilmiy Faoliyat",
+        "item-2": "Elektron Kutubxona",
+        "item-3": "Tayyorlov kursi"
+
+      }
+    },
+    "header__bottom__nav": {
+      "item-1": "Universitet",
+      "item-2": "Tuzilma",
+      "item-3": "Faoliyat",
+      "item-4": "Talabalar",
+
+      "item-6": "Abituriyent",
+      "item-7": "Korrupsiyasiz soha",
+      "item-8": "Yangiliklar"
+    },
+    "header__bottom__nav__item__menu": {
+      "menu-1": {
+        "item-1": "Rektor Tabrigi",
+        "item-2": "Rekvizitlar",
+        "item-3": "Universitet nizomi",
+        "item-4": "Rektor virtual qabulxonasi",
+        "item-5": "Me’yoriy xujjatlar",
+        "item-6": "Universitet tarixi"
+      },
+      "menu-2": {
+        "item-1": "Rektorat",
+        "item-2": "Markazlar",
+        "item-3": "Bo’limlar",
+        "item-4": "Fakultetlar",
+        "item-5": "Kafedralar",
+        "item-6": "Filiallar",
+        "item-7": "TDTU tuzilmasi"
+      },
+      "menu-3": {
+        "item-1": "Fan va innovatsiya",
+        "item-2": "Moliyaviy faoliyat",
+        "item-3": "Yoshlar bilan ishlash",
+        "item-4": "Madaniy-Ma’rifiy",
+        "item-5": "Xalqaro aloqalar"
+      },
+      "menu-4": {
+        "item-1": "Bakalavriat",
+        "item-2": "Magistratura",
+        "item-3": "Kechki ta’lim",
+        "item-4": "Sirtqi ta’lim",
+        "item-5": "Bitiruvchilar klubi"
+      },
+
+      "menu-6": {
+        "item-1": "Bakalavriat",
+        "item-2": "Magistratura",
+        "item-3": "Sirtqi va kechki ta’lim shakillari",
+        "item-4": "Qo’shma ta’lim dasturlari",
+        "item-5": "Xorijiy Fuqarolar"
+      },
+      "menu-7": {
+        "item-1": "TDTU davlat xaridlariga oid tuzilgan shartnomalar",
+        "item-2": "Xodimlarning akademik profili",
+        "item-3": "Ish haqini hisoblash va mukofotlarni taqsimlash qoidalari",
+        "item-4": "Ta'lim yo'nalishlari va mutaxassisliklarning malaka talablari",
+        "item-5": "Muassasa byudjeti",
+        "item-6": "Professor-o'qituvchilarga qo'yilgan talablar",
+        "item-7": "Fan dasturlari",
+        "item-8": "Korrupsiyaga oid holatlar bo'yicha talablar va o'qituvchilarning to'g'ridan to'g'ri muassasai rahbariyatga anonim hamda jamoviy murojaat qilish imkoniyatini",
+        "item-9": "Namunaviy oraliq va yakuniy nazorat savollarini semestr boshlangandan so'ng bir oy ichida web-saytga joylashtirish"
+      },
+      "menu-8": {
+        "item-1": "Yangiliklar",
+        "item-2": "Tadbirlar",
+        "item-3": "E’lonlar",
+        "item-4": "Sport"
+      }
+    },
+    "header__sub__menu": {
+      "menu-1": {
+        "item-1": "Axborot resurs markazi",
+        "item-2": "Raqamli ta’lim texnologiayalari markazi",
+        "item-3": "Kadrlar malakasini oshirish va qayta tayyorlash o’quv markazi",
+        "item-4": "O’zbek-Yapon yoshlar innovatsiya markazi",
+        "item-5": "Sanoat energiya auditi \namaliy-o’quv markazi"
+      },
+      "menu-2": {
+        "item-1": "Magistratura tizimi",
+        "item-2": "Sirtqi bo’limi",
+        "item-3": "Reja-moliya bo‘limi",
+        "item-4": "O’quv uslubiy boshqarma",
+        "item-5": "O‘qitishning texnik vositalar bo‘limi",
+        "item-6": "Ilmiy bo’limi",
+        "item-7": "Yoshlar bilan ishlash, maʼnaviyat va maʼrifat boʻlimi",
+        "item-8": "TAHRIRIYAT NASHRIYOT BO‘LIMI",
+        "item-9": "TA’LIMNING KREDIT-MODUL TIZIMINI BOSHQARISH BO‘LIMI",
+        "item-10": "Ta'lim sifatini nazorat qilish bo‘limi",
+        "item-11": "Korrupsiyaga qarshi kurashish va “Komplayens nazorat”\ntizimini boshqarish bo‘limi",
+        "item-12": "Kadrlar bo‘limi"
+
+      },
+      "menu-3": {
+        "item-1": "Islom Karimov nomidagi Toshkent davlat texnika universiteti Olmaliq filiali",
+        "item-2": "Islom Karimov nomidagi Toshkent davlat texnika universiteti qoqon filiali"
+      },
+      "menu-4": {
+        "item-1": "Fan",
+        "item-2": "Innovatsiya",
+        "item-3": "Doktorantura"
+      },
+      "menu-5": {
+        "item-1": "Xalqaro hamkorlik bo’limi",
+        "item-2": "Creative spark",
+        "item-3": "Erasmus",
+        "item-4": "Mechauz",
+        "item-5": "Space.com",
+        "item-6": "Ka107"
+      }
+    },
+    "search": "Qidirish"
+  },
+  "pages": {
+    "university": {
+      "rector-virtual-reception-title": "Rektor virtual qabulxonasi",
+      "rector-congratulation-title": "Rektor tabrigi",
+      "requisites-title": "Rekvizitlar",
+      "charter-title": "Universitet nizomi",
+      "regulatory-title": "Me'yoriy hujjatlar",
+      "history-title": "Universitet tarixi",
+      "virtual-reception": {
+        "verification": "Tekshirish amalga oshmadi",
+        "labels": {
+          "item-1": "Familiya Ism",
+          "item-2": "Telefon raqami",
+          "item-3": "Mavzu",
+          "item-4": "Matn",
+          "item-5": "Faylni yuklash",
+          "item-6": "Verifikatsiya"
+        },
+        "inputs": {
+          "item-1": "Kodni kiriting",
+          "item-2": "Tasdiqlash"
+        }
+      }
+    }
+  },
+  "home": {
+    "Kafedralar": "Kafedralar",
+    "Fakultetlar": "Fakultetlar",
+    "Professor": "Professor O’qituvchilar",
+    "Doktarantlar": "Doktarantlar",
+    "Talabalar": "Talabalar",
+    "Interaktiv": "Interaktiv Xizmatlar"
+  },
+  "footer": {
+    "Havolalar": "Foydali Havolalar",
+    "Tashrif": "Tashrif buyurish",
+    "Qabul": "Qabul",
+    "Contact": "Aloqa",
+    "Ijtimoiy": "Ijtimoiy Tarmoqlarda biz"
+  }
+}
