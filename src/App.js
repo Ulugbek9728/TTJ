@@ -1,21 +1,19 @@
 import React from 'react';
-import {useTranslation} from "react-i18next";
+import HOME from './pages/Home'
+import {Routes, Route} from "react-router-dom";
 
 
 
 function App() {
 
-  const { t, i18n} = useTranslation();
-  const changeLanguage = (language)=>{
-    i18n.changeLanguage(language)
-  };
+
 
   return (
     <div className="App">
-      <button className="btn btn-success" onClick={()=> changeLanguage("ru")}>RU</button>
-      <button className="btn btn-success" onClick={()=> changeLanguage("uz")}>UZ</button>
 
-      <span>{t("test")}</span>
+      <Routes>
+        <Route path={"/"} element={ <HOME/>}/>
+      </Routes>
 
     </div>
   );
