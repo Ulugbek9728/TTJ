@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { getLocale } from "../utils/locales/getLocale";
 import { useTranslation } from "react-i18next";
-
-
 import "../asset/navbar.scss"
+import {Link} from "react-router-dom";
+
 
 function Navbar(props) {
     const {t, i18n } = useTranslation();
@@ -20,25 +20,38 @@ function Navbar(props) {
         setLeng(localStorage.getItem("i18nextLng"));
         if (leng==="ru"){
             document.getElementById("RU").classList.add('active');
-            document.getElementById("UZ").classList.remove('active')
+            document.getElementById("UZ").classList.remove('active');
+            document.getElementById("EN").classList.remove('active')
+
         }
         if (leng==="uz") {
             document.getElementById("UZ").classList.add('active');
-            document.getElementById("RU").classList.remove('active')
+            document.getElementById("RU").classList.remove('active');
+            document.getElementById("EN").classList.remove('active')
+
+        }
+        if (leng==="en") {
+            document.getElementById("EN").classList.add('active');
+            document.getElementById("RU").classList.remove('active');
+            document.getElementById("UZ").classList.remove('active')
+
         }
     });
     return (
 <div className="container navbar">
     <div className="row">
         <div className="col-6 left">
+            <Link to="/">
             <img src="logo.png" alt=""/>
+            </Link>
             <p className="title">
                 {t("header.Title")}
             </p>
+
         </div>
         <div className="col-6 rihgt">
             <div className="profilBox">
-                <a className="profil" href="#">{t("header.profilButton")}</a>
+                <Link className="profil" to="/login">{t("header.profilButton")}</Link>
                 <div className="leng">
                     <ul className="nav nav-pills">
                         <li className="nav-item">
@@ -51,6 +64,12 @@ function Navbar(props) {
                                 RU
                             </button>
                         </li>
+                        <li className="nav-item">
+                            <button id={"EN"} className='nav-link EN' onClick={() =>
+                                changeLanguage("en")}>
+                                EN
+                            </button>
+                        </li>
                     </ul>
 
 
@@ -59,10 +78,8 @@ function Navbar(props) {
 
           <div className="src">
               <input type="text" className="form-control"/>
-              <button type="submit" className="btn">Submit</button>
+              <button type="submit" className="btn">{t("header.qidiruv")}</button>
           </div>
-
-
         </div>
     </div>
 

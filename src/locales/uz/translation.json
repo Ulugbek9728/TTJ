@@ -1,8 +1,24 @@
 {
 
   "header": {
-    "Title": " Islom Karimov nomidagi Toshkent Davlat texnika universiteti Talabalar turar joyi",
-    "profilButton": "Profilga kirish"
-  }
+    "Title": " Islom Karimov nomidagi Toshkent Davlat texnika universiteti",
+    "profilButton": "Profilga kirish",
+    "qidiruv": "Qidiruv"
+  },
+  "carusel": {
+    "Biz_Haqimizda": "Biz haqimizda",
+    "Yangiliklar": "Yangiliklar",
+    "Ariza yuborish": "Ariza topshirish",
+    "TTJ": "TTJ kvota",
+    "Band": "Band o'rinlar",
+    "Bo'sh": "Bo'sh o'rinlar",
+    "Kurs": "Kurs"
+  },
+  "umumiyKvota": "Umumiy joylar soni",
+  "umumiyBo'sh": "Umumiy bo'sh joylar soni",
+  "umumiyBand": "Umumiy band joylar soni",
+  "FotoLavha": "Foto lavhalar",
+  "Bo'limName": "Talabalarni turar joy bilan ta’minlash ishlarinin muvofiqlashtiruvchi bo’lim",
+  "Aloqa": "Ijtimoiy tarmoqlar"
 
 }

@@ -1,7 +1,24 @@
 {
-  "test":"TTJ RU",
+
   "header": {
-    "Title": " Islom Karimov nomidagi Toshkent Davlat texnika universiteti Talabalar turar joyi RU",
-    "profilButton": "Profilga kirish RU"
-  }
+    "Title": "Ташкентский государственный технический университет имени Ислама Каримова",
+    "profilButton": "Bойти в профиль",
+    "qidiruv": "Поиск"
+  },
+  "carusel": {
+    "Biz_Haqimizda": "O нас",
+    "Yangiliklar": "Новости",
+    "Ariza yuborish": "Подавать заявление",
+    "TTJ": "Квота MПC",
+    "Band": "Oживленные места",
+    "Bo'sh": "Cвободные места",
+    "Kurs": " Kурс"
+  },
+  "umumiyKvota": "Oбщее количество мест",
+  "umumiyBo'sh": "Cвободные места",
+  "umumiyBand": "Oживленные места",
+  "FotoLavha": "Фото",
+  "Bo'limName": "Oтдел координирующий работу по предоставлению жилья студентам",
+  "Aloqa": "Cоциальные сети"
+
 }

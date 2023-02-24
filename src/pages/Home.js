@@ -1,10 +1,14 @@
 import React from 'react';
-import Navbar from '../components/Navbar'
+import CaruselFakultet from "../components/caruselFakultet";
+import "../asset/navbar.scss"
+import Section from "../components/section";
+
 
 function Home() {
     return (
-        <div>
-            <Navbar/>
+        <div >
+            <CaruselFakultet/>
+            <Section/>
         </div>
     );
 }

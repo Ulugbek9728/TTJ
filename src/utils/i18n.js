@@ -5,15 +5,19 @@ import { initReactI18next } from "react-i18next";
 // Resources files
 import translationUz from "../locales/uz/translation.json";
 import translationRu from "../locales/ru/translation.json";
+import translationEN from "../locales/en/translation.json";
 import { getLocale } from "./locales/getLocale";
 
 const resources = {
   uz: {
     translation: translationUz,
   },
-  ru: {
-    translation: translationRu,
-  },
+    ru: {
+        translation: translationRu,
+    },
+    en: {
+        translation: translationEN,
+    },
 };
 i18next
   .use(I18NextHttpBackend)
