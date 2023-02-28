@@ -33,7 +33,7 @@ function CaruselFakultet(props) {
                             <img src="./1.png" alt=""/>
                             <div className="content">
                                 <div className="title">
-                                    Geologiya-qidiruv va kon-metallurgiya fakulteti
+                                    72-B TTJ 588-o'ringa ega
                                 </div>
                                 <div className="d-flex">
                                     <div className="orinlar">
@@ -57,7 +57,7 @@ function CaruselFakultet(props) {
                             <img src="./1.png" alt=""/>
                             <div className="content">
                                 <div className="title">
-                                    Geologiya-qidiruv va kon-metallurgiya fakulteti
+                                    72-A TTJ 588-o'ringa ega
                                 </div>
                                 <div className="d-flex">
                                     <div className="orinlar">
@@ -81,7 +81,7 @@ function CaruselFakultet(props) {
                             <img src="./1.png" alt=""/>
                             <div className="content">
                                 <div className="title">
-                                    Geologiya-qidiruv va kon-metallurgiya fakulteti
+                                    72-C TTJ 588-o'ringa ega
                                 </div>
                                 <div className="d-flex">
                                     <div className="orinlar">
@@ -102,14 +102,13 @@ function CaruselFakultet(props) {
                             </div>
                         </SwiperSlide>
                     </Swiper>
-
                 </div>
                 <div className="col-6 right">
                     <div className="menu">
                         <div className="bizHaqimizda">
-                            <Link to='/AboutUs'>
+                            <a href='#' target={"_blank"}>
                                 {t("carusel.Biz_Haqimizda")}
-                            </Link>
+                            </a>
                         </div>
                         <div className="yangiliklar">
                             <Link to='/News'>
