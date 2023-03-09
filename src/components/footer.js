@@ -4,6 +4,7 @@ import TEL from "../img/tel.svg"
 import FBOOK from "../img/fb.svg"
 import TW from "../img/tw.svg"
 import PHONE from "../img/phone-call.png"
+import Bolim from "../img/logoBo'lim.png"
 
 function Footer(props) {
     const {t} = useTranslation();
@@ -12,7 +13,8 @@ function Footer(props) {
         <div className="footerBox">
             <div className="left">
                 <div className="titleB">
-                    {t("Bo'limName")}.
+                    <img src={Bolim} alt=""/>
+                    <span>{t("Bo'limName")}.</span>
                 </div>
                 <div className="d-flex w-100">
                     <div className="aloqa">

@@ -9,11 +9,11 @@ function Navbar(props) {
     const {t, i18n } = useTranslation();
     const [leng, setLeng] = useState('');
 
+
     const lang = getLocale();
 
     const changeLanguage = (language)=>{
         i18n.changeLanguage(language);
-        
     };
 
     useEffect(()=>{
@@ -42,7 +42,7 @@ function Navbar(props) {
     <div className="row">
         <div className="col-6 left">
             <Link to="/">
-            <img src="logo.png" alt=""/>
+            <img src="./logo.png" alt=""/>
             </Link>
             <p className="title">
                 {t("header.Title")}
@@ -51,7 +51,9 @@ function Navbar(props) {
         </div>
         <div className="col-6 rihgt">
             <div className="profilBox">
-                <Link className="profil" to="/login">{t("header.profilButton")}</Link>
+                <Link className="profil" to="/login">
+                    {t("header.profilButton")}
+                </Link>
                 <div className="leng">
                     <ul className="nav nav-pills">
                         <li className="nav-item">

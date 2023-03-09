@@ -243,12 +243,21 @@ $mainColor: #418C61;
   .left{
     width: 50%;
     .titleB{
-      text-transform: uppercase;
       width: 100%;
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 25px;
-      color: #FFFFFF;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      img{
+        width: 22%;
+        height: auto;
+      }
+      span{
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 25px;
+        color: #FFFFFF;
+        width: 75%;
+      }
     }
     .aloqa{
       width: 50%;
