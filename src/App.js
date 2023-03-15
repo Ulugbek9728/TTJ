@@ -10,8 +10,9 @@ import Login from "./pages/login";
 import { changeBgCircle,changeTrue } from './redux/authUser';
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from "./loader";
-
-
+import AdminPage from "./pages/adminPage";
+import DekanPage from "./pages/DekanPage";
+import TyutorPage from "./pages/TyutorPage";
 
 
 function App() {
@@ -25,17 +26,18 @@ function App() {
 
   return (
     <div className="App">
+
         {auth.bgCircle ?
             <>
-                <Navbar/>
-
                 <Routes>
                     <Route path={"/News"} element={ <Yangiliklar/>}/>
                     <Route path={"/login"} element={ <Login/>}/>
                     <Route path={"/Submit"} element={ <Ariza/>}/>
+                    <Route path={"/Adminyoli"} element={ <AdminPage/>}/>
+                    <Route path={"/Dekanyoli"} element={ <DekanPage/>}/>
+                    <Route path={"/Tyutoryoli"} element={ <TyutorPage/>}/>
                     <Route path={"/"} element={ <HOME/>}/>
                 </Routes>
-                <Footer/>
             </>
           :
             <Loader/>
