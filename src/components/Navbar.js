@@ -57,7 +57,8 @@ function Navbar(props) {
                 <div className="leng">
                     <ul className="nav nav-pills">
                         <li className="nav-item">
-                            <button id={"UZ"} className='nav-link UZ' onClick={() => changeLanguage("uz")}>
+                            <button id={"UZ"} className='nav-link UZ'
+                                    onClick={() => changeLanguage("uz")}>
                                 UZ
                             </button>
                         </li>

@@ -12,6 +12,8 @@ import Footer from "../components/footer";
 
 function Login(props) {
     const {t } = useTranslation();
+
+    const [passwordBoolin, setPasswordBoolin] = useState(true);
     const [login1, setLogin] = useState({
         login:'',
         password:''
@@ -45,50 +47,69 @@ function Login(props) {
             }
             console.log(response)
         }).catch((error) => {
-                console.log(error);
-                console.log(login1)
+                axios.post(`${ApiName}auth/login`,login1).then((response)=>{
+                    localStorage.setItem("token", response.data.data.token);
+
+                    navigate("/Submit")
+                }).catch((error)=>{
+                    console.log(error);
+                })
             })
     }
     return (
         <>
             <Navbar/>
 
-            <div className="loginPage">
-                <div className="login-page">
-                    <div className="left-side">
-                        <div className="title">
-                            Welcome Back!
-                        </div>
-                        <div className="commit">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Asperiores, perspiciatis.
-                        </div>
-                    </div>
-
-                    <div className="right-side">
-                        <div className="container">
-                            <div className="create">
-                                {t("header.profilButton")}
+            <div className="container loginPage">
+                <div className="row">
+                    <div className="login-page">
+                        <div className="left-side">
+                            <div className="title">
+                                Welcome Back!
                             </div>
-                            <div className="text">
-                                "Hemis" Talaba ID parolingizni kiriting
+                            <div className="commit">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing
+                                elit. Asperiores, perspiciatis.
                             </div>
-                            <div className="all-input">
-                                <input type="text" placeholder="Talaba ID" name="ism"
-                                       onChange={(e) => setLogin({...login1,login:e.target.value})}/>
-                                <img src={user} alt="user-icon"/>
-                            </div>
-                            <div className="all-input">
-                                <input type="password" placeholder="parol" name="parol"
-                                       onChange={(e) => setLogin({...login1,password:e.target.value})}/>
-                                <img src={pasword} alt="user-icon"/>
-                            </div>
-                            <button className="signUp" onClick={Login}>Kirish</button>
                         </div>
 
+                        <div className="right-side">
+                            <div className="container">
+                                <div className="create">
+                                    {t("header.profilButton")}
+                                </div>
+                                <div className="text">
+                                    "Hemis" Talaba ID parolingizni kiriting
+                                </div>
+                                <div className="all-input">
+                                    <input type="text" placeholder="Talaba ID" name="ism"
+                                           onChange={(e) => setLogin({...login1,
+                                               login:e.target.value})}/>
+                                    <img src={user} alt="user-icon" className='user-icon'/>
+                                </div>
+                                <div className="all-input">
+                                    <input type={passwordBoolin ? "password" : "text"}
+                                           placeholder="parol" name="Parol"
+                                           onChange={(e) => setLogin({...login1,password:e.target.value})}/>
+                                    <img src={pasword} alt="user-icon" className='user-icon'/>
+                                    {passwordBoolin ?
+                                        <img onClick={() => setPasswordBoolin(!passwordBoolin)}
+                                             src="/img/show(1).png" alt=""
+                                             className="show"/>
+                                        :
+                                        <img onClick={() => setPasswordBoolin(!passwordBoolin)}
+                                             src="/img/show.png" alt=""
+                                             className="show"/>
+                                    }
+                                </div>
+                                <button className="signUp" onClick={Login}>Kirish</button>
+                            </div>
 
+
+                        </div>
                     </div>
                 </div>
+
             </div>
             <Footer/>
 

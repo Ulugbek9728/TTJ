@@ -14,6 +14,7 @@ $mainColor: #418C61;
     margin: 50px auto;
     display: flex;
     overflow: hidden;
+    padding: 0;
     box-shadow: 5px 5px 20px #7FAC92;
 
     .left-side{
@@ -81,13 +82,22 @@ $mainColor: #418C61;
               border-bottom: 2px solid $mainColor;
             }
           }
-          img{
+          .user-icon{
             width: 20px;
             height: 20px;
             position: absolute;
             top: 8px;
             left: 15px;
           }
+          .show{
+            position: absolute;
+            top: 10px;
+            cursor: pointer;
+            right: 22px;
+            width: 22px;
+            z-index: 100;
+          }
+
         }
         .signUp{
           width: 200px;

@@ -10,9 +10,11 @@ function Yangiliklar(props) {
         <>
             <Navbar/>
 
-            <div className='yangiligPage'>
-                <div className="title">
-                    {t("carusel.Yangiliklar")}
+            <div className='container yangiligPage'>
+                <div className="row">
+                    <div className="title">
+                        {t("carusel.Yangiliklar")}
+                    </div>
                 </div>
             </div>
             <Footer/>

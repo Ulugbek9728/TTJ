@@ -1,3 +1,3 @@
-const ApiName1 = 'http://192.168.0.177:8080';
+const ApiName1 = 'https://api-ttj.tdtu.uz';
 
 export {ApiName1}

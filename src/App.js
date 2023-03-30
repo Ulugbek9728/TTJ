@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
 import HOME from './pages/Home'
 import {Routes, Route} from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/footer";
 import "./asset/navbar.scss"
 import Yangiliklar from "./pages/Yangiliklar";
 import Ariza from "./pages/ariza";
@@ -23,7 +21,6 @@ function App() {
             changeTrue()
         },2000)
     });
-
   return (
     <div className="App">
 
@@ -33,9 +30,11 @@ function App() {
                     <Route path={"/News"} element={ <Yangiliklar/>}/>
                     <Route path={"/login"} element={ <Login/>}/>
                     <Route path={"/Submit"} element={ <Ariza/>}/>
-                    <Route path={"/Adminyoli"} element={ <AdminPage/>}/>
-                    <Route path={"/Dekanyoli"} element={ <DekanPage/>}/>
-                    <Route path={"/Tyutoryoli"} element={ <TyutorPage/>}/>
+
+                    <Route path={"/Adminyoli/*"} element={ <AdminPage/>}/>
+                    <Route path={"/Dekanyoli/*"} element={ <DekanPage/>}/>
+                    <Route path={"/Tyutoryoli/*"} element={ <TyutorPage/>}/>
+
                     <Route path={"/"} element={ <HOME/>}/>
                 </Routes>
             </>

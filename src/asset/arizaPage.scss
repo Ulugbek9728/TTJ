@@ -1,3 +1,6 @@
+$mainColor: #418C61;
+
+
 .ArizaPage{
   width: 1280px;
   min-height: 80vh;
@@ -5,9 +8,91 @@
   padding: 39px 89px 39px 89px;
   background-color: #FFFFFF;
   .title{
-    font-weight: 500;
-    font-size: 22px;
-    line-height: 27px;
-    color: #000000;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 24px;
+    color: $mainColor;
+  }
+  .login-page{
+    width: 100%;
+    height: 615px;
+    margin: 50px auto;
+    display: flex;
+    overflow: hidden;
+    padding: 0;
+    box-shadow: 5px 5px 20px #7FAC92;
+
+    .left-side{
+      width: 50%;
+      background-color: $mainColor;
+      padding: 20px;
+      box-sizing: border-box;
+      p{
+        color: white;
+        span{
+          background-color: #FFFFFF;
+          color: black;
+          padding: 5px;
+          border-radius: 3px;
+          width: 100%;
+          display: flex;
+        }
+      }
+      .imgBox{
+        display: flex;
+        align-items: center;
+        img{
+          width: 25%;
+          border-radius: 10%;
+          margin-right: 5%;
+        }
+        .fullName{
+          height: auto;
+          display: flex;
+          width: 70%;
+        }
+      }
+
+
+    }
+    .right-side{
+      width: 50%;
+      background-color: white;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+        border-right: 50%;
+        overflow: hidden;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: #ffffff;
+        display: block !important;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: $mainColor;
+        border-radius: 5px;
+      }
+      .container{
+        width: 80%;
+        height: 400px;
+        margin: 100px auto;
+        text-align: center;
+        .signUp{
+          width: 200px;
+          height: 50px;
+          background-color: $mainColor;
+          color: white;
+          border: none;
+          cursor: pointer;
+          border-radius: 5px;
+          margin: 20px 0;
+          font-size: 18px;
+          font-weight: 500;
+        }
+      }
+    }
+
   }
 }
