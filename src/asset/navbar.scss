@@ -1,3 +1,4 @@
+$mainColor: #418C61;
 * {
   margin: 0;
   padding: 0;
@@ -11,8 +12,21 @@
     height: 100%;
     margin: 0;
   }
+  &::-webkit-scrollbar {
+    width: 10px;
+    border-right: 50%;
+    overflow: hidden;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #ffffff;
+    display: block !important;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $mainColor;
+    border-radius: 5px;
+  }
 }
-$mainColor: #418C61;
+
 .App{
   background: linear-gradient(180deg, #479769 0%, #7FAC92 100%);
 }

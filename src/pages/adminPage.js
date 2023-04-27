@@ -1,6 +1,7 @@
 import React, {useEffect,useState} from 'react';
 import {
     UserAddOutlined,
+    PicLeftOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, theme, Modal, Input} from 'antd';
 import {Link} from "react-router-dom";
@@ -8,6 +9,7 @@ import {Route, Routes, useNavigate} from "react-router";
 import Rector from "../components/Rector";
 import Dekan from "../components/Dekan";
 import "../asset/Admin.scss"
+import News from "../components/news";
 
 
 
@@ -48,9 +50,10 @@ function AdminPage(props) {
 
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}
                       onClick={(into)=>{
-                          console.log(into.key)
+
                           if (into.key === "1"){ navigate("/Adminyoli/");}
                           if (into.key === "2"){ navigate("/Adminyoli/AddDekan");}
+                          if (into.key === "3"){ navigate("/Adminyoli/AddNews");}
                       }}
                       items={[
                           {
@@ -62,6 +65,11 @@ function AdminPage(props) {
                               label:"Zam Dekanlar",
                               key:"2",
                               icon:<UserAddOutlined/>
+                          },
+                          {
+                              label:"Yangiliklar",
+                              key:"3",
+                              icon:<PicLeftOutlined />
                           }
                           ]} />
             </Sider>
@@ -105,6 +113,7 @@ function AdminPage(props) {
                 <Content style={{margin: '24px 16px 0', overflow: 'initial',}}>
                     <Routes>
                         <Route path={"/AddDekan"} element={<Dekan/>}/>
+                        <Route path={"/AddNews"} element={<News/>}/>
                         <Route path={"/"} element={<Rector/>}/>
                     </Routes>
                 </Content>

@@ -11,6 +11,7 @@ import Loader from "./loader";
 import AdminPage from "./pages/adminPage";
 import DekanPage from "./pages/DekanPage";
 import TyutorPage from "./pages/TyutorPage";
+import Natija from "./pages/natija";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                     <Route path={"/News"} element={ <Yangiliklar/>}/>
                     <Route path={"/login"} element={ <Login/>}/>
                     <Route path={"/Submit"} element={ <Ariza/>}/>
+                    <Route path={"/Result"} element={ <Natija/>}/>
 
                     <Route path={"/Adminyoli/*"} element={ <AdminPage/>}/>
                     <Route path={"/Dekanyoli/*"} element={ <DekanPage/>}/>

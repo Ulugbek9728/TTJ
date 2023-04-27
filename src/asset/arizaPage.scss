@@ -50,6 +50,7 @@ $mainColor: #418C61;
           height: auto;
           display: flex;
           width: 70%;
+          font-size: 16px;
         }
       }
 
@@ -57,42 +58,41 @@ $mainColor: #418C61;
     }
     .right-side{
       width: 50%;
+      height: 100%;
       background-color: white;
-
-      &::-webkit-scrollbar {
-        width: 8px;
-        border-right: 50%;
-        overflow: hidden;
+      padding: 20px;
+      overflow: hidden;
+      h5{
+        font-size: 20px;
+        font-weight: 600;
+        color: $mainColor;
+        text-align: center;
       }
 
-      &::-webkit-scrollbar-track {
-        background-color: #ffffff;
-        display: block !important;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: $mainColor;
-        border-radius: 5px;
-      }
       .container{
         width: 80%;
-        height: 400px;
-        margin: 100px auto;
+        height: 450px;
+        margin: 25px auto;
+        padding: 10px;
         text-align: center;
-        .signUp{
-          width: 200px;
-          height: 50px;
-          background-color: $mainColor;
-          color: white;
-          border: none;
-          cursor: pointer;
-          border-radius: 5px;
-          margin: 20px 0;
-          font-size: 18px;
-          font-weight: 500;
-        }
+        overflow: auto;
+
+
+      }
+      .signUp{
+
+        width: 200px;
+        height: 50px;
+        background-color: $mainColor;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: 500;
       }
     }
 
   }
 }
+

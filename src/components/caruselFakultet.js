@@ -123,7 +123,7 @@ function CaruselFakultet(props) {
                             </Link>
                         </div>
                         <div className="bizHaqimizda">
-                            <Link to="#">
+                            <Link to="/Result">
                             {t("carusel.TTJ")}
                             </Link>
                         </div>
