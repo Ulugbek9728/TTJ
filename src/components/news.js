@@ -13,10 +13,10 @@ function News(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [edit, setedit] = useState(false);
     const [sucsessText, setSucsessText] = useState('');
-    const [test, setTest] = useState('');
+    const [NewsId, setNewsId] = useState('');
 
     const [creatNews, setCreatNews] = useState({});
-    const [News, setNews] = useState({});
+    const [NewsGroup, setNews] = useState([]);
 
     const [message, setMessage] = useState([]);
     const [message2, setMessage2] = useState('');
@@ -34,58 +34,108 @@ function News(props) {
     };
     const handleOk = () => {
         const allData = new FormData();
-
-
         allData.append(`file`,file.fileBox)
+        if (edit === true){
 
-        axios.post(`${ApiName1}/attach/upload`, allData)
-            .then((response) => {
-                creatNews.attachId=response.data[0].id
-                console.log(creatNews)
-                axios.post(`${ApiName1}/private/admin/news/create`, creatNews, {
-                    headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-                })
+            if (file.fileBox===undefined){
+                console.log("true")
+                axios.post(`${ApiName1}/private/admin/news/update/${creatNews.id}`, creatNews,{
+                    headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
                     .then((response) => {
                         console.log(response)
+                        if (response.status === 200){
+                            setIsModalVisible(false);
+                            setFile(null)
+                            setCreatNews('');
+                            setNews('');
+                            setSucsessText("Yangilik muvofaqiyatli o'zgartirildi")
+                        }
                     }).catch((error) => {
                     console.log(error)
                 })
-
-            }).catch((error) => {
+            }
+            else {
+                console.log("folse")
+                axios.post(`${ApiName1}/attach/upload`, allData)
+                    .then((response) => {
+                        creatNews.attachId=response.data[0].id;
+                        axios.post(`${ApiName1}/private/admin/news/update/${creatNews.id}`,
+                            creatNews,{
+                            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+                            .then((response) => {
+                                if (response.status === 200){
+                                    setIsModalVisible(false);
+                                    file.fileBox=null
+                                    setCreatNews('');
+                                    setNews('');
+                                    setSucsessText("Yangilik muvofaqiyatli o'zgartirildi")
+                                }
+                            }).catch((error) => {
+                            console.log(error)
+                        })
+                    }).catch((error) => {
+                    console.log(error)
+                })
+            }
+        }
+        else {
+            axios.post(`${ApiName1}/attach/upload`, allData)
+                .then((response) => {
+                    creatNews.attachId=response.data[0].id;
+                    axios.post(`${ApiName1}/private/admin/news/create`, creatNews, {
+                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+                        .then((response) => {
+                            if (response.status === 201){
+                                setIsModalVisible(false);
+                                file.fileBox=null
+                                setCreatNews('');
+                                setNews('');
+                                setSucsessText("Yangilik muvofaqiyatli qo'shildi")
+                                console.log(file)
+                            }
+                            console.log(response)
+                        }).catch((error) => {
+                        console.log(error)
+                    })
+                }).catch((error) => {
                 console.log(error)
-        })
-        console.log(allData)
-
+            })
+        }
     }
     const handleCancel = () => {
-        setIsModalVisible(false);
-        setCreatNews('');
-        setedit(false);
+        setIsModalVisible(false);setCreatNews('');setedit(false);
     };
 
     useEffect(() => {
-        notify();
-        GetNews();
-        setMessage('');
-        setMessage2('');
-        setSucsessText('')
+        notify();GetNews();
+        setMessage('');setMessage2('');setSucsessText('')
     },[message, sucsessText, message2]);
 
     function GetNews() {
         axios.post(`${ApiName1}/public/news`, '').then((response) => {
-            console.log(response.data[0].attachId);
-
-            axios.get(`${ApiName1}/attach/open/${response.data[0].attachId}`).then((response)=>{
-                // console.log(response.data)
-                setTest(response.data)
-                }).catch((error)=>{
-                console.log(error)
-            })
-
+            setNews(response.data)
 
         }).catch((error) => {
            console.log(error)
         })
+    }
+    function Delet() {
+        axios.delete(`${ApiName1}/private/admin/news/delete/${NewsId}`, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        }).then((response) => {
+            console.log(response)
+            if (response.status === 200){
+                setSucsessText("Ma'lumotlar o'chirildi");
+                setNews('')
+            }
+        }).catch((error) => {
+            console.log(error.response)
+            if (error.response.status === 502){
+                setMessage2('Server bilan ulanishda xatolik')
+            }
+        });
     }
 
     function notify() {
@@ -134,44 +184,63 @@ function News(props) {
                 <thead>
                 <tr>
                     <th>№</th>
-                    <th>Familya</th>
-                    <th>Ism</th>
-                    <th>Sharif</th>
+                    <th>Title</th>
+                    <th>Text</th>
+                    <th>Img</th>
                     <th>Fakultet</th>
-                    <th>Login</th>
-                    <th>Parol</th>
                 </tr>
                 </thead>
                 <tbody>
-                {/*{Dekan && Dekan.map((item, index)=>{*/}
-                {/*    return <tr key={index}>*/}
-                {/*        <td>{index+1}</td>*/}
-                {/*        <td>{item.surname}</td>*/}
-                {/*        <td>{item.name}</td>*/}
-                {/*        <td>{item.patronymic}</td>*/}
-                {/*        <td>{item.faculty}</td>*/}
-                {/*        <td>{item.login}</td>*/}
-                {/*        <td>{item.password}</td>*/}
-                {/*        <td>*/}
-                {/*            <button onClick={()=>{*/}
-                {/*                showModal();*/}
-                {/*                setCreatDecan(item);*/}
-                {/*                setedit(true)*/}
-                {/*            }} className="btn btn-warning mx-1">*/}
-                {/*                <img className='iconEdit' src="/img/editing.png" alt=""/>*/}
-                {/*            </button>*/}
-                {/*            <button onClick={()=>{setDekanId(item.id)}} className="btn btn-danger mx-1"*/}
-                {/*                    data-bs-toggle="modal" data-bs-target="#myModal">*/}
-                {/*                <img className='iconEdit' src="/img/delete.png" alt=""/>*/}
-                {/*            </button>*/}
-                {/*        </td>*/}
-                {/*    </tr>*/}
-                {/*})}*/}
+                {NewsGroup && NewsGroup.map((item, index)=>{
+                    return <tr key={index}>
+                        <td>{index+1}</td>
+                        <td>{item.titleUz}</td>
+                        <td>{item.nameUz}</td>
+                        <td>
+                            <img src={`${ApiName1}${item.imageUrl}`} style={{width:"100px", height:"100px"}} alt=""/>
+                        </td>
+                        <td>
+                            <button onClick={()=>{showModal();setCreatNews(item);setedit(true)}}
+                                    className="btn btn-warning mx-1">
+                                <img className='iconEdit' src="/img/editing.png" alt=""
+                                     style={{width:"25px", height:"25px"}}/>
+                            </button>
+                            <button className="btn btn-danger mx-1"
+                                    onClick={()=>{setNewsId(item.id)}}
+                                    data-bs-toggle="modal" data-bs-target="#myModal">
+                                <img className='iconEdit' src="/img/delete.png" alt=""
+                                     style={{width:"25px", height:"25px"}}/>
+                            </button>
+                        </td>
+                    </tr>
+                })}
 
 
                 </tbody>
             </table>
-            <img src={test} style={{width:"100px", height:"100px"}} alt=""/>
+            <div className="modal" id="myModal">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h4 className="modal-title">Tasdiqlash oynasi </h4>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div className="modal-body">
+                            <b>Yangilik</b> ni o'chirmoqchimisiz
+                        </div>
+
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-danger" data-bs-dismiss="modal"
+                                    onClick={Delet}>
+                                <img style={{width:"20px", height:"20px"}} src="/img/delete.png" alt=""/>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     );
 }

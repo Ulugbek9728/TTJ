@@ -107,7 +107,6 @@ function Dekan(props) {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         }).then((response) => {
-            console.log(response)
             if (response.status === 200){
                 setSucsessText("Ma'lumotlar o'chirildi");
                 setDekan('')

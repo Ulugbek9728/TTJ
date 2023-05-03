@@ -9,12 +9,15 @@ import {ApiName} from "../APIname";
 import {PlusOutlined} from '@ant-design/icons';
 import {Button, Form, Input, Space} from 'antd';
 import {ApiName1} from "../APIname1";
+import {useNavigate} from "react-router";
+import {toast, ToastContainer} from "react-toastify";
 
 const onFinish = (values: any) => {
     console.log('Received values of form:', values);
 };
 
 function Ariza(props) {
+    const navigate = useNavigate();
     const {t} = useTranslation();
     const [Student, setStudent] = useState({
         name: "",
@@ -34,6 +37,9 @@ function Ariza(props) {
         fileName: '',
         fileBox: null
     }]);
+    const [message, setMessage] = useState([]);
+    const [message2, setMessage2] = useState('');
+    const [sucsessText, setSucsessText] = useState('');
 
     const addLanguage = () => {
         setFile([...file, {
@@ -51,15 +57,25 @@ function Ariza(props) {
 
     };
 
-
     useEffect(() => {
         getStudent()
-    }, []);
+        notify();
+        setMessage('');
+        setMessage2('');
+        setSucsessText('')
+    },[message, sucsessText, message2]);
+
+    function notify() {
+        if (message != ''){message && message.map((item) => (toast.error(item)))}
+        if (sucsessText != ''){toast.success(sucsessText)}
+        if (message2 != ''){toast.error(message2)}
+    }
 
     function getStudent() {
         axios.get(`${ApiName}account/me`, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
+            console.log(response);
 
             setStudent({
                 ...Student,
@@ -68,6 +84,7 @@ function Ariza(props) {
                 image: response.data.data.image,
                 specialty: response.data.data.specialty.name,
                 group: response.data.data.group.name,
+                phone: response.data.data.phone,
                 faculty: response.data.data.faculty.name,
                 course: response.data.data.level.name,
                 country: response.data.data.country.name,
@@ -75,6 +92,7 @@ function Ariza(props) {
                 district: response.data.data.district.name,
             })
         }).catch((error) => {
+            navigate("/login");
             console.log(error);
         })
 
@@ -92,9 +110,14 @@ function Ariza(props) {
 
                 axios.post(`${ApiName1}/public/student/join/data`, Student)
                     .then((response) => {
-                        console.log(response)
+                        if (response.status === 201){
+                            setSucsessText("Ma'lumotlar muvafaqiyatli yuborildi")
+                        }
                     }).catch((error) => {
                     console.log(error)
+                    if (error.response.status === 500){
+                        setMessage2("Ma'lumotlar 1 marotaba yuboriladi")
+                    }
                 })
 
             }).catch((error) => {
@@ -105,6 +128,7 @@ function Ariza(props) {
 
     return (
         <>
+            <ToastContainer/>
             <Navbar/>
 
             <div className='container ArizaPage'>

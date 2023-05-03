@@ -1,7 +1,8 @@
 import React, {useEffect,useState} from 'react';
 import {
     UserAddOutlined,
-    PicLeftOutlined
+    PicLeftOutlined,
+    TeamOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, theme, Modal, Input} from 'antd';
 import {Link} from "react-router-dom";
@@ -10,6 +11,7 @@ import Rector from "../components/Rector";
 import Dekan from "../components/Dekan";
 import "../asset/Admin.scss"
 import News from "../components/news";
+import Student from "../components/Students";
 
 
 
@@ -54,6 +56,7 @@ function AdminPage(props) {
                           if (into.key === "1"){ navigate("/Adminyoli/");}
                           if (into.key === "2"){ navigate("/Adminyoli/AddDekan");}
                           if (into.key === "3"){ navigate("/Adminyoli/AddNews");}
+                          if (into.key === "4"){ navigate("/Adminyoli/StudentList");}
                       }}
                       items={[
                           {
@@ -70,6 +73,11 @@ function AdminPage(props) {
                               label:"Yangiliklar",
                               key:"3",
                               icon:<PicLeftOutlined />
+                          },
+                          {
+                              label:"Studentlar",
+                              key:"4",
+                              icon:<TeamOutlined />
                           }
                           ]} />
             </Sider>
@@ -114,6 +122,7 @@ function AdminPage(props) {
                     <Routes>
                         <Route path={"/AddDekan"} element={<Dekan/>}/>
                         <Route path={"/AddNews"} element={<News/>}/>
+                        <Route path={"/StudentList"} element={<Student/>}/>
                         <Route path={"/"} element={<Rector/>}/>
                     </Routes>
                 </Content>
