@@ -22,15 +22,16 @@ function Ariza(props) {
     const [Student, setStudent] = useState({
         name: "",
         login: "",
-        image: "",
+        imageUrl: "",
         specialty: "",
         group: "",
+        gender:"",
         faculty: "",
         course: "",
         country: "",
         city: "",
         district: "",
-        phone: "+998998715321",
+        phone: "",
         attachList: []
     });
     const [file, setFile] = useState([{
@@ -75,16 +76,15 @@ function Ariza(props) {
         axios.get(`${ApiName}account/me`, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
-            console.log(response);
-
             setStudent({
                 ...Student,
                 name: response.data.data.full_name,
                 login: response.data.data.student_id_number,
-                image: response.data.data.image,
+                imageUrl: response.data.data.image,
                 specialty: response.data.data.specialty.name,
                 group: response.data.data.group.name,
                 phone: response.data.data.phone,
+                gender: response.data.data.gender.name,
                 faculty: response.data.data.faculty.name,
                 course: response.data.data.level.name,
                 country: response.data.data.country.name,
@@ -110,7 +110,10 @@ function Ariza(props) {
 
                 axios.post(`${ApiName1}/public/student/join/data`, Student)
                     .then((response) => {
+
+
                         if (response.status === 201){
+                            console.log(response)
                             setSucsessText("Ma'lumotlar muvafaqiyatli yuborildi")
                         }
                     }).catch((error) => {
@@ -135,12 +138,11 @@ function Ariza(props) {
                 <div className="row">
                     <div className="title">
                         {t("carusel.Ariza yuborish")}
-
                     </div>
                     <div className="login-page">
                         <div className="left-side">
                             <div className="imgBox">
-                                <img src={Student.image} alt=""/>
+                                <img src={Student.imageUrl} alt=""/>
                                 <p className="fullName">{Student.name}</p>
                             </div>
 
@@ -153,6 +155,8 @@ function Ariza(props) {
                             <p>MANZIL:
                                 <span>{Student.country} {Student.city} {Student.district}</span>
                             </p>
+                            <p>TEL: <span>{Student.phone}</span></p>
+
                         </div>
 
                         <div className="right-side overflow-auto">

@@ -15,7 +15,7 @@ $mainColor: #418C61;
   }
   .login-page{
     width: 100%;
-    height: 615px;
+    height: 650px;
     margin: 50px auto;
     display: flex;
     overflow: hidden;
@@ -29,6 +29,7 @@ $mainColor: #418C61;
       box-sizing: border-box;
       p{
         color: white;
+        margin-bottom: 5px;
         span{
           background-color: #FFFFFF;
           color: black;
