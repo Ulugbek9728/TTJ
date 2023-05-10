@@ -2,7 +2,8 @@ import React, {useEffect,useState} from 'react';
 import {
     UserAddOutlined,
     PicLeftOutlined,
-    TeamOutlined
+    TeamOutlined,
+    PauseCircleOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, theme, Modal, Input} from 'antd';
 import {Link} from "react-router-dom";
@@ -12,6 +13,7 @@ import Dekan from "../components/Dekan";
 import "../asset/Admin.scss"
 import News from "../components/news";
 import Student from "../components/Students";
+import Media from "./media";
 
 
 
@@ -55,8 +57,9 @@ function AdminPage(props) {
 
                           if (into.key === "1"){ navigate("/Adminyoli/");}
                           if (into.key === "2"){ navigate("/Adminyoli/AddDekan");}
-                          if (into.key === "3"){ navigate("/Adminyoli/AddNews");}
-                          if (into.key === "4"){ navigate("/Adminyoli/StudentList");}
+                          if (into.key === "3"){ navigate("/Adminyoli/StudentList");}
+                          if (into.key === "4"){ navigate("/Adminyoli/AddNews");}
+                          if (into.key === "5"){ navigate("/Adminyoli/Media");}
                       }}
                       items={[
                           {
@@ -69,16 +72,22 @@ function AdminPage(props) {
                               key:"2",
                               icon:<UserAddOutlined/>
                           },
+
+                          {
+                              label:"Studentlar",
+                              key:"3",
+                              icon:<TeamOutlined />
+                          },
                           {
                               label:"Yangiliklar",
-                              key:"3",
+                              key:"4",
                               icon:<PicLeftOutlined />
                           },
                           {
-                              label:"Studentlar",
-                              key:"4",
-                              icon:<TeamOutlined />
-                          }
+                              label:"Media",
+                              key:"5",
+                              icon: <PauseCircleOutlined />
+                          },
                           ]} />
             </Sider>
             <Layout className="site-layout" style={{marginLeft: 200,}}>
@@ -123,6 +132,7 @@ function AdminPage(props) {
                         <Route path={"/AddDekan"} element={<Dekan/>}/>
                         <Route path={"/AddNews"} element={<News/>}/>
                         <Route path={"/StudentList"} element={<Student/>}/>
+                        <Route path={"/Media"} element={<Media/>}/>
                         <Route path={"/"} element={<Rector/>}/>
                     </Routes>
                 </Content>

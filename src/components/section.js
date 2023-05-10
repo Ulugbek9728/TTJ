@@ -10,13 +10,11 @@ import {ApiName1} from "../APIname1";
 
 function Section(props) {
     const {t } = useTranslation();
-    const [sucsessText, setSucsessText] = useState('');
     const [Media, setMedia] = useState([]);
 
     useEffect(() => {
         GetNews();
-        setSucsessText('')
-    },[ sucsessText ]);
+    },[]);
 
     function GetNews() {
         axios.get(`${ApiName1}/clips/public`, '').then((response) => {

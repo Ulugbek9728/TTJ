@@ -1,3 +1,4 @@
+$mainColor: #418C61;
 .yuklash{
   display: flex;
   justify-content: right;
@@ -38,4 +39,33 @@
     height: 50px;
     border: none;
   }
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.pagination button {
+  width: 40px;
+  height: 40px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  color: #f54c04;
+  border-color: black;
+}
+
+.pagination button.active {
+  font-weight: 900;
+  border-color: #101010;
+  background: $mainColor;
+  color: white;
 }

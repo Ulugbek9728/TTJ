@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Modal,Input, Select,} from 'antd';
 import axios from "axios";
-import {toast, ToastContainer} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";import CustomPagination from "./Pagination"
 
 import {ApiName1} from "../APIname1";
 import "../asset/Admin.scss"
@@ -14,12 +14,12 @@ function News(props) {
     const [edit, setedit] = useState(false);
     const [sucsessText, setSucsessText] = useState('');
     const [NewsId, setNewsId] = useState('');
+    const [page, setPage] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
+    const [isLast, setIsLast] = useState(true);
 
     const [creatNews, setCreatNews] = useState({});
     const [NewsGroup, setNews] = useState([]);
-
-    const [message, setMessage] = useState([]);
-    const [message2, setMessage2] = useState('');
 
     const [file, setFile] = useState([{
         fileBox: null
@@ -37,8 +37,7 @@ function News(props) {
         allData.append(`file`,file.fileBox)
         if (edit === true){
 
-            if (file.fileBox===undefined){
-                console.log("true")
+            if (file.fileBox===undefined || null){
                 axios.post(`${ApiName1}/private/admin/news/update/${creatNews.id}`, creatNews,{
                     headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
                     .then((response) => {
@@ -47,7 +46,8 @@ function News(props) {
                             setIsModalVisible(false);
                             setFile(null)
                             setCreatNews('');
-                            setNews('');
+                            setPage(0)
+                            setNews([]);
                             setSucsessText("Yangilik muvofaqiyatli o'zgartirildi")
                         }
                     }).catch((error) => {
@@ -107,16 +107,19 @@ function News(props) {
     };
 
     useEffect(() => {
-        notify();GetNews();
-        setMessage('');setMessage2('');setSucsessText('')
-    },[message, sucsessText, message2]);
+        notify();
+        GetNews();
+       setSucsessText('')
+    },[ sucsessText,page]);
 
     function GetNews() {
-        axios.post(`${ApiName1}/public/news`, '').then((response) => {
-            setNews(response.data)
-
-        }).catch((error) => {
-           console.log(error)
+        axios.post(`${ApiName1}/public/news`, '',{params:{page:page,size:12}})
+            .then((response) => {
+                setNews(response.data.content)
+                setIsLast(response.data.last);
+                setTotalPage(response.data.totalElements)
+            }).catch((error) => {
+            console.log(error)
         })
     }
     function Delet() {
@@ -125,23 +128,17 @@ function News(props) {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         }).then((response) => {
-            console.log(response)
             if (response.status === 200){
+                setNews([])
                 setSucsessText("Ma'lumotlar o'chirildi");
-                setNews('')
             }
         }).catch((error) => {
             console.log(error.response)
-            if (error.response.status === 502){
-                setMessage2('Server bilan ulanishda xatolik')
-            }
         });
     }
 
     function notify() {
-        if (message != ''){message && message.map((item) => (toast.error(item)))}
         if (sucsessText != ''){toast.success(sucsessText)}
-        if (message2 != ''){toast.error(message2)}
     }
 
     return (
@@ -172,8 +169,8 @@ function News(props) {
                     <TextArea rows="5" value={creatNews.nameUz} name="text"
                               onChange={(e)=>{setCreatNews({...creatNews, nameUz: e.target.value,})}}/>
                     <label htmlFor='Text'>Text ru</label>
-                    <TextArea rows="5" value={creatNews.nameRU} name="text"
-                              onChange={(e)=>{setCreatNews({...creatNews, nameRU: e.target.value,})}}/>
+                    <TextArea rows="5" value={creatNews.nameRu} name="text"
+                              onChange={(e)=>{setCreatNews({...creatNews, nameRu: e.target.value,})}}/>
                     <label htmlFor='Text'>Text en</label>
                     <TextArea rows="5" value={creatNews.nameEn} name="text"
                               onChange={(e)=>{setCreatNews({...creatNews, nameEn: e.target.value,})}}/>
@@ -214,10 +211,16 @@ function News(props) {
                         </td>
                     </tr>
                 })}
-
-
                 </tbody>
             </table>
+
+            <CustomPagination
+                currentPage={page}
+                setCurrentPage={setPage}
+                postsPerPage={12}
+                totalElement={totalPage}
+            />
+
             <div className="modal" id="myModal">
                 <div className="modal-dialog">
                     <div className="modal-content">
