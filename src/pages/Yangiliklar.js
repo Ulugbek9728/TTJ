@@ -1,11 +1,29 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import "../asset/Yangilik.scss"
 import {useTranslation} from "react-i18next";
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
+import axios from "axios";
+import {ApiName1} from "../APIname1";
+import {SwiperSlide} from "swiper/react";
 
 function Yangiliklar(props) {
     const {t} = useTranslation();
+    const [NewsGroup, setNews] = useState([]);
+
+    useEffect(() => {
+       GetNews();
+    },[]);
+
+    function GetNews() {
+        axios.post(`${ApiName1}/public/news`, '').then((response) => {
+            setNews(response.data.content);
+            console.log(response.data.content)
+
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
     return (
         <>
             <Navbar/>
@@ -17,163 +35,34 @@ function Yangiliklar(props) {
                     </div>
                     <div className="container">
                         <div className="row">
-                            <div className="d-flex">
-                                <div className="col-6 p-0">
-                                    <div className="row">
-                                        <div className="col-12 big">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
-                                                </div>
-                                                <div className="text">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                    elit. Dignissimos laboriosam magni provident saepe voluptatibus?
-                                                    Architecto consequuntur deserunt labore magnam, soluta suscipit unde. Ad
-                                                    aspernatur at autem dolores ea eius esse est eum exercitationem hic
-                                                    labore magnam minus officiis quae, quidem quis quod reiciendis, sint
-                                                    suscipit, tempora temporibus tenetur ullam voluptates.
+                            {NewsGroup && NewsGroup.map((item, index)=>{
+                                return<div className="col-6 p-0">
+                                        <div className="row">
+                                            <div className="col-12 big">
+                                                <img src={`${ApiName1}${item.imageUrl}`} alt=""/>
+                                                <div className="box">
+                                                    <div className="date">{item.created_date}</div>
+                                                    <div className="title">{item.titleUz}</div>
+                                                    <div className="text">{item.nameUz}</div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="col-6 small">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
+                                            <div className="col-6 small">
+                                                <img src={`${ApiName1}${item.imageUrl}`} alt=""/>
+                                                <div className="box">
+                                                    <div className="date">{item.created_date}</div>
+                                                    <div className="title">{item.titleUz}</div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="col-6 small">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
+                                            <div className="col-6 small">
+                                                <img src={`${ApiName1}${item.imageUrl}`} alt=""/>
+                                                <div className="box">
+                                                    <div className="date">{item.created_date}</div>
+                                                    <div className="title">{item.titleUz}</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="col-6 p-0">
-                                    <div className="row">
-                                        <div className="col-12 big">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
-                                                </div>
-                                                <div className="text">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                    elit. Dignissimos laboriosam magni provident saepe voluptatibus?
-                                                    Architecto consequuntur deserunt labore magnam, soluta suscipit unde. Ad
-                                                    aspernatur at autem dolores ea eius esse est eum exercitationem hic
-                                                    labore magnam minus officiis quae, quidem quis quod reiciendis, sint
-                                                    suscipit, tempora temporibus tenetur ullam voluptates.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-6 small">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-6 small">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="d-flex">
-                                <div className="col-6 p-0">
-                                    <div className="row">
-                                        <div className="col-12 big">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
-                                                </div>
-                                                <div className="text">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                    elit. Dignissimos laboriosam magni provident saepe voluptatibus?
-                                                    Architecto consequuntur deserunt labore magnam, soluta suscipit unde. Ad
-                                                    aspernatur at autem dolores ea eius esse est eum exercitationem hic
-                                                    labore magnam minus officiis quae, quidem quis quod reiciendis, sint
-                                                    suscipit, tempora temporibus tenetur ullam voluptates.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-6 small">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-6 small">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-6 p-0">
-                                    <div className="row">
-                                        <div className="col-12 big">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
-                                                </div>
-                                                <div className="text">Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                    elit. Dignissimos laboriosam magni provident saepe voluptatibus?
-                                                    Architecto consequuntur deserunt labore magnam, soluta suscipit unde. Ad
-                                                    aspernatur at autem dolores ea eius esse est eum exercitationem hic
-                                                    labore magnam minus officiis quae, quidem quis quod reiciendis, sint
-                                                    suscipit, tempora temporibus tenetur ullam voluptates.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-6 small">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-6 small">
-                                            <img src="./1.png" alt=""/>
-                                            <div className="box">
-                                                <div className="date">13:00/13.10.2022</div>
-                                                <div className="title">
-                                                    Platea leo urna viverra quisque feugiat volutpat.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            })}
                     </div>
 
                     </div>
