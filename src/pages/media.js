@@ -71,8 +71,7 @@ function Media(props) {
             params:{page:0,size:100}
         })
             .then((response) => {
-            console.log(response.data)
-            setMedia(response.data.content)
+            setMedia(response.data.content);
                 setSucsessText('')
 
         }).catch((error) => {
@@ -86,6 +85,7 @@ function Media(props) {
         }).then((response) => {
             console.log(response)
             if (response.status === 200) {
+                setMediaId('')
                 setSucsessText("Ma'lumotlar o'chirildi");
             }
         }).catch((error) => {
@@ -135,9 +135,7 @@ function Media(props) {
                         </td>
                         <td>
                             <button className="btn btn-danger mx-1"
-                                    onClick={() => {
-                                        setMediaId(item.id)
-                                    }}
+                                    onClick={() => {setMediaId(item.id)}}
                                     data-bs-toggle="modal" data-bs-target="#myModal">
                                 <img className='iconEdit' src="/img/delete.png" alt=""
                                      style={{width: "25px", height: "25px"}}/>

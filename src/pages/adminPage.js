@@ -3,7 +3,8 @@ import {
     UserAddOutlined,
     PicLeftOutlined,
     TeamOutlined,
-    PauseCircleOutlined
+    PauseCircleOutlined,
+    GoldOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, theme, Modal, Input} from 'antd';
 import {Link} from "react-router-dom";
@@ -14,6 +15,7 @@ import "../asset/Admin.scss"
 import News from "../components/news";
 import Student from "../components/Students";
 import Media from "./media";
+import Faculty from "../components/faculty";
 
 
 
@@ -60,6 +62,7 @@ function AdminPage(props) {
                           if (into.key === "3"){ navigate("/Adminyoli/StudentList");}
                           if (into.key === "4"){ navigate("/Adminyoli/AddNews");}
                           if (into.key === "5"){ navigate("/Adminyoli/Media");}
+                          if (into.key === "6"){ navigate("/Adminyoli/Faculty");}
                       }}
                       items={[
                           {
@@ -68,7 +71,12 @@ function AdminPage(props) {
                               icon:<UserAddOutlined/>
                               },
                           {
-                              label:"Zam Dekanlar",
+                              label:"Fakultet",
+                              key:"6",
+                              icon:<GoldOutlined />
+                          },
+                          {
+                              label:"Dekanlar",
                               key:"2",
                               icon:<UserAddOutlined/>
                           },
@@ -130,6 +138,7 @@ function AdminPage(props) {
                 <Content style={{margin: '24px 16px 0', overflow: 'initial',}}>
                     <Routes>
                         <Route path={"/AddDekan"} element={<Dekan/>}/>
+                        <Route path={"/Faculty"} element={<Faculty/>}/>
                         <Route path={"/AddNews"} element={<News/>}/>
                         <Route path={"/StudentList"} element={<Student/>}/>
                         <Route path={"/Media"} element={<Media/>}/>

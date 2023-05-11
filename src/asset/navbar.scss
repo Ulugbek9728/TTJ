@@ -241,10 +241,11 @@ $mainColor: #418C61;
     color: $mainColor;
   }
   .swiper2{
-    height: 100%;
+    height: 400px;
     img{
       width: 100%;
       height: 100%;
+      object-fit: cover;
     }
 
   }

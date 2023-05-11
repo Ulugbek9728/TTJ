@@ -3,6 +3,8 @@ import { getLocale } from "../utils/locales/getLocale";
 import { useTranslation } from "react-i18next";
 import "../asset/navbar.scss"
 import {Link} from "react-router-dom";
+import Logo from "../img/logo.png"
+
 
 
 function Navbar(props) {
@@ -42,7 +44,7 @@ function Navbar(props) {
     <div className="row">
         <div className="col-6 left">
             <Link to="/">
-            <img src="./logo.png" alt=""/>
+            <img src={Logo} alt=""/>
             </Link>
             <p className="title">
                 {t("header.Title")}

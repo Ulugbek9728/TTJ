@@ -15,6 +15,7 @@ function Dekan(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [edit, setedit] = useState(false);
     const [sucsessText, setSucsessText] = useState('');
+    const [Getfakultet, setGetFakultet] = useState([]);
 
     const [creatDecan, setCreatDecan] = useState({});
     const [Dekan, setDekan] = useState([]);
@@ -27,7 +28,8 @@ function Dekan(props) {
     };
     const handleOk = () => {
         edit ?
-            axios.post(`${ApiName1}/adm/dekan/update/${creatDecan.id}`, creatDecan,{
+            axios.post(`${ApiName1}/adm/dekan/update/${creatDecan.id}`,
+                creatDecan,{
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem("token")
                 }
@@ -37,7 +39,7 @@ function Dekan(props) {
                     setedit(false);
                     setCreatDecan('');
                     setDekan('');
-                    setSucsessText("Zam Dekan ma'lumotlari tahrirlandi")
+                    setSucsessText("Dekan ma'lumotlari tahrirlandi")
                 }
             }).catch((error) => {
                 console.log(error.response);
@@ -61,7 +63,7 @@ function Dekan(props) {
                     setIsModalVisible(false);
                     setCreatDecan('');
                     setDekan('');
-                    setSucsessText("Zam Dekan ma'lumotlari qo'shildi")
+                    setSucsessText("Dekan ma'lumotlari qo'shildi")
                 }
             }).catch((error) => {
                 if (error.response.status === 400){
@@ -82,7 +84,8 @@ function Dekan(props) {
     };
 
     useEffect(() => {
-        DekanInfo()
+        DekanInfo();
+        GetFakultet()
     },[sucsessText]);
 
     function DekanInfo() {
@@ -90,7 +93,7 @@ function Dekan(props) {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
             setDekan(response.data);
-
+            console.log(response.data);
         }).catch((error) => {
             if (error.response.status === 502){
                 setMessage2('Server bilan ulanishda xatolik')
@@ -98,6 +101,19 @@ function Dekan(props) {
             if (error.response.status === 401){
                 navigate("/")
             }
+        })
+    }
+    console.log(creatDecan)
+
+    function GetFakultet() {
+        axios.post(`${ApiName1}/adm/faculty/faculty_list`, '',{
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+        }).then((response) => {
+            setGetFakultet(response.data);
+            console.log(response.data);
+
+        }).catch((error) => {
+            console.log(error.response)
         })
     }
 
@@ -156,9 +172,16 @@ function Dekan(props) {
                            onChange={(e)=>{setCreatDecan({...creatDecan,
                                patronymic: e.target.value,})}}/>
                     <label htmlFor='Fakultet'>Fakultet</label>
-                    <Input id='Fakultet' value={creatDecan.faculty} allowClear
-                           onChange={(e)=>{setCreatDecan({...creatDecan,
-                               faculty: e.target.value,})}}/>
+                    <select name="cars" className='form-control' id="Fakultet"
+                            value={ creatDecan.facultyId}
+                            onChange={(e =>{setCreatDecan({...creatDecan,
+                                facultyId: e.target.value,})})} >
+                        <option value="fakultet">Fakultet</option>
+                        {Getfakultet && Getfakultet.map((item, index) => (
+                            <option value={item.id} key={index}>{item.name}</option>
+                        ))}
+                    </select>
+
                     <label htmlFor="Login">Login</label>
                     <Input id='Login' value={creatDecan.login} allowClear maxLength="9"
                            onChange={(e)=>{setCreatDecan({...creatDecan,
@@ -192,11 +215,13 @@ function Dekan(props) {
                         <td>{item.surname}</td>
                         <td>{item.name}</td>
                         <td>{item.patronymic}</td>
-                        <td>{item.faculty}</td>
+                        <td>{item.faculty.name}</td>
                         <td>{item.login}</td>
                         <td>{item.password}</td>
                         <td>
-                            <button onClick={()=>{showModal();setCreatDecan(item);setedit(true)}}
+                            <button onClick={()=>{showModal();setCreatDecan(item);
+                            setCreatDecan({...item,facultyId:item.faculty.id});
+                            setedit(true)}}
                                     className="btn btn-warning mx-1">
                                 <img style={{width:"20px", height:"20px"}}
                                      className='iconEdit' src="/img/editing.png" alt=""/>

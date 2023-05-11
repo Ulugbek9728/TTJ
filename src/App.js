@@ -12,6 +12,7 @@ import AdminPage from "./pages/adminPage";
 import DekanPage from "./pages/DekanPage";
 import TyutorPage from "./pages/TyutorPage";
 import Natija from "./pages/natija";
+import YangilikBatafsil from "./components/yangilik batafsil";
 
 
 function App() {
@@ -28,7 +29,8 @@ function App() {
         {auth.bgCircle ?
             <>
                 <Routes>
-                    <Route path={"/News"} element={ <Yangiliklar/>}/>
+                    <Route path={"/News/"} element={ <Yangiliklar/>}/>
+                    <Route path={"/News/:id"} element={ <YangilikBatafsil/>}/>
                     <Route path={"/login"} element={ <Login/>}/>
                     <Route path={"/Submit"} element={ <Ariza/>}/>
                     <Route path={"/Result"} element={ <Natija/>}/>
