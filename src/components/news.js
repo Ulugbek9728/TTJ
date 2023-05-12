@@ -55,7 +55,6 @@ function News(props) {
                 })
             }
             else {
-                console.log("folse")
                 axios.post(`${ApiName1}/attach/upload`, allData)
                     .then((response) => {
                         creatNews.attachId=response.data[0].id;
@@ -90,7 +89,7 @@ function News(props) {
                                 file.fileBox=null
                                 setCreatNews('');
                                 setNews('');
-                                setSucsessText("Yangilik muvofaqiyatli qo'shildi")
+                                setSucsessText("Yangilik muvofaqiyatli qo'shildi");
                                 console.log(file)
                             }
                             console.log(response)

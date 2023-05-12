@@ -89,21 +89,19 @@ function Student(props) {
     return (
         <div>
             <ToastContainer/>
-            <select id='fakultet' className='form-control my-2' style={{width: "30%"}}
+            <select className='form-control my-2' style={{width: "30%"}}
                     onChange={(e) => {
                         setFakultyName(e.target.value);
 
                     }}>
                 <option>Fakultet</option>
-                {Dekan.map((item, index) => (
-                    <option value={item.faculty} key={index}>{item.faculty}</option>
-                ))}
+                {Dekan && Dekan.map((item, index) => {
+                    return <option value={item.faculty.name}>{item.faculty.name}</option>
+                })}
             </select>
-            <select id='fakultet' className='form-control my-2' style={{width: "30%"}}
+            <select  className='form-control my-2' style={{width: "30%"}}
                     onChange={(e) => {
-                        setKurs(e.target.value);
-
-                    }}>
+                        setKurs(e.target.value);}}>
                 <option>Kurs</option>
                 <option value='1-kurs'>1-Kurs</option>
                 <option value='2-kurs'>2-Kurs</option>

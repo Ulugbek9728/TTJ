@@ -14,7 +14,7 @@ $mainColor: #418C61;
   }
   &::-webkit-scrollbar {
     width: 10px;
-    border-right: 50%;
+    border-radius: 50%;
     overflow: hidden;
   }
   &::-webkit-scrollbar-track {

@@ -16,6 +16,7 @@ import News from "../components/news";
 import Student from "../components/Students";
 import Media from "./media";
 import Faculty from "../components/faculty";
+import Ttj from "../components/TTJ";
 
 
 
@@ -63,6 +64,7 @@ function AdminPage(props) {
                           if (into.key === "4"){ navigate("/Adminyoli/AddNews");}
                           if (into.key === "5"){ navigate("/Adminyoli/Media");}
                           if (into.key === "6"){ navigate("/Adminyoli/Faculty");}
+                          if (into.key === "7"){ navigate("/Adminyoli/TTJ");}
                       }}
                       items={[
                           {
@@ -75,6 +77,12 @@ function AdminPage(props) {
                               key:"6",
                               icon:<GoldOutlined />
                           },
+                          {
+                              label:"TTJ",
+                              key:"7",
+                              icon:<GoldOutlined />
+                          },
+
                           {
                               label:"Dekanlar",
                               key:"2",
@@ -139,6 +147,7 @@ function AdminPage(props) {
                     <Routes>
                         <Route path={"/AddDekan"} element={<Dekan/>}/>
                         <Route path={"/Faculty"} element={<Faculty/>}/>
+                        <Route path={"/TTJ"} element={<Ttj/>}/>
                         <Route path={"/AddNews"} element={<News/>}/>
                         <Route path={"/StudentList"} element={<Student/>}/>
                         <Route path={"/Media"} element={<Media/>}/>
