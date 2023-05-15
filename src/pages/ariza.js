@@ -55,7 +55,6 @@ function Ariza(props) {
 
     const handleInputLanguage = (e, index) => {
         file[index].fileName = e.target.value
-
     };
 
     useEffect(() => {

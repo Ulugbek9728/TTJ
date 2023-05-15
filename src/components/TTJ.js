@@ -88,11 +88,11 @@ function Ttj(props)  {
     }
 
     useEffect(() => {
-        GetFakultet();
+        GetTTJInfo();
         notify()
     },[sucsessText]);
 
-    function GetFakultet() {
+    function GetTTJInfo() {
         axios.get(`${ApiName1}/private/admin/dormitory`, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
@@ -123,7 +123,6 @@ function Ttj(props)  {
             toast.success(sucsessText)
         }
     }
-console.log(TTJ)
     return (
         <div>
             <ToastContainer/>
@@ -135,7 +134,6 @@ console.log(TTJ)
             <label htmlFor='cvota'>TTJ umumiy kvotani kiriting</label>
             <input type="text" value={TTJ.count || ''} className='form-control w-25 mb-2'
                    onChange={(e)=>{setTTJ({...TTJ,count:e.target.value})}}/>
-
             <button className='btn btn-success' onClick={creatTTJ}>yaratish</button>
             <hr/>
 
@@ -146,7 +144,7 @@ console.log(TTJ)
                     <th>img</th>
                     <th>TTJ name</th>
                     <th>Fakultet kvotalari</th>
-                    <th>Qolgan joylar</th>
+                    <th>Kurslar kvotalari</th>
                     <th>Edit</th>
                     <th>Delet</th>
                 </tr>
@@ -161,14 +159,29 @@ console.log(TTJ)
                             <b>Umumiy joylar: </b>{item.actualCount} <br/>
                             <b>Qolgan joylar: </b>{item.leftCount}
                         </td>
-                        <td>{item.faculty.map((item, index)=>{
-                            return <p key={index}>
-                                <b>{item.name}</b> <br/>
-                                <b>Umumiy joylar: </b>{item.actualCount} <br/>
-                                <b>Qolgan joylar: </b>{item.leftCount}
-                            </p>
+                        <td colspan="2">{item.faculty.map((item, index)=>{
+                            return <div key={index}>
+                                <div className='d-flex  w-100'>
+                                    <div  className="w-50">
+                                        <b>{item.name}</b> <br/>
+                                        <b>Umumiy joylar: </b>{item.actualCount} <br/>
+                                        <b>Qolgan joylar: </b>{item.leftCount}
+                                    </div>
+                                    <div className="w-50 px-2" style={{borderLeft:"1px solid black"}}>
+                                        {item.courses.map((item, index)=>{
+                                            return <div>
+                                                <b>Kurs </b>{item.name} <br/>
+                                                Umumiy joylar: {item.actualCount} <br/>
+                                                Qolgan joylar: {item.leftCount}
+                                                <hr/>
+                                            </div>
+                                        })}
+                                    </div>
+                                </div>
+                                <hr/>
+                            </div>
+
                         })}</td>
-                        <td>{item.leftCount}</td>
                         <td>
                             <button className="btn btn-warning mx-1"
                                     onClick={()=>{setTTJId(item.id);
@@ -178,6 +191,7 @@ console.log(TTJ)
                                         id: item.id,
                                         photoId: item.photoId,
                                     });setedit(true)}}>
+
                                 <img style={{width:"20px", height:"20px"}}
                                      className='iconEdit' src="/img/editing.png" alt=""/>
                             </button>

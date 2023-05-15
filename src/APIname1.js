@@ -1,3 +1,3 @@
-const ApiName1 = 'http://10.10.9.182:8080';
+const ApiName1 = 'https://mukhtarovsarvar.jprq.live';
 
 export {ApiName1}

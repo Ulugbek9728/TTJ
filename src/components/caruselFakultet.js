@@ -106,7 +106,7 @@ function CaruselFakultet(props) {
                 <div className="col-6 right">
                     <div className="menu">
                         <div className="bizHaqimizda">
-                            <a href='#' target={"_blank"}>
+                            <a href='https://tdtu.uz/structure/sections/15' target={"_blank"}>
                                 {t("carusel.Biz_Haqimizda")}
                             </a>
                         </div>
