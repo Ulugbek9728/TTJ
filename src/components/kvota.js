@@ -11,7 +11,7 @@ const onFinish = (values: any) => {
 };
 
 function Kvota(props) {
-    const [edit, setedit] = useState(false);
+
     const [sucsessText, setSucsessText] = useState('');
     const [GetTTJ, setGetTTJ] = useState([]);
     const [Getfakultet, setGetFakultet] = useState([]);
@@ -128,9 +128,11 @@ function Kvota(props) {
                         ],
                         id: 0
                     }
-                ])
+                ]);
+                setSucsessText("Ma'lumotlar qo'shildi")
 
             }).catch((error) => {
+            setMessage2('')
             console.log(error.response);
             if (error.response.status === 400){
                 setMessage2(error.response.data)
@@ -139,9 +141,9 @@ function Kvota(props) {
     }
 
     function notify() {
-        if (message != ''){message && message.map((item) => (toast.error(item)))}
-        if (sucsessText != ''){toast.success(sucsessText)}
-        if (message2 != ''){toast.error(message2)}
+        if (message !== ''){message && message.map((item) => (toast.error(item)))}
+        if (sucsessText !== ''){toast.success(sucsessText)}
+        if (message2 !== ''){toast.error(message2)}
     }
     return (
         <div>
