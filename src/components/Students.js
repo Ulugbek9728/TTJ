@@ -12,17 +12,18 @@ function Student(props) {
     const navigate = useNavigate();
 
     const [sucsessText, setSucsessText] = useState('');
-
     const [Dekan, setDekan] = useState([]);
     const [Students, setStudent] = useState([]);
+    const [Studentunic, setStudentUnic] = useState({});
     const [FakultyName, setFakultyName] = useState('');
     const [Kurs, setKurs] = useState('');
+
     const [message, setMessage] = useState([]);
     const [message2, setMessage2] = useState('');
 
 
     useEffect(() => {
-        DekanInfo()
+        DekanInfo();
         if (FakultyName !== '') {
             if(Kurs !==''){
                 FakultyInfo()
@@ -41,6 +42,7 @@ function Student(props) {
             console.log(error.response)
         })
     }
+
     function seeStudent(e) {
         axios.post(`${ApiName1}/private/student/file/show/${e}`, '', {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
@@ -52,7 +54,7 @@ function Student(props) {
     }
 
     function DekanInfo() {
-        axios.post(`${ApiName1}/adm/dekan/dekan_list`, '', {
+        axios.post(`${ApiName1}/adm/faculty/faculty_list`, '', {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
             setDekan(response.data);
@@ -85,7 +87,7 @@ function Student(props) {
             toast.error(message2)
         }
     }
-
+console.log(Studentunic)
     return (
         <div>
             <ToastContainer/>
@@ -96,7 +98,7 @@ function Student(props) {
                     }}>
                 <option>Fakultet</option>
                 {Dekan && Dekan.map((item, index) => {
-                    return <option value={item.faculty.name}>{item.faculty.name}</option>
+                    return <option key={index} value={item.name}>{item.name}</option>
                 })}
             </select>
             <select  className='form-control my-2' style={{width: "30%"}}
@@ -130,7 +132,8 @@ function Student(props) {
                         <td>{item.phone}</td>
                         <td>
                             <button className="btn btn-outline-success mx-1"
-                            onClick={(e)=>{seeStudent(item.id)}}>
+                                    data-bs-toggle="modal" data-bs-target="#myModal"
+                            onClick={(e)=>{seeStudent(item.id); setStudentUnic(item)}}>
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/show.png" alt=""/>
                             </button>
@@ -144,7 +147,45 @@ function Student(props) {
                 })}
                 </tbody>
             </table>
+            <div className="modal" id="myModal">
+                <div className="modal-content mx-auto" style={{width:"70vw"}}>
 
+                    <div className="modal-header">
+                        <h4 className="modal-title">Talaba to'liq ma'lumoti</h4>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal"/>
+                    </div>
+
+                    <div className="modal-body d-flex">
+                        <div className="d-flex" style={{width:"65%"}}>
+                            <img src={Studentunic.imageUrl} width={150} height={180} alt=""/>
+                            <div className="mx-2">
+                                <p className='m-0'>F.I.SH</p>
+                                <b className="">{Studentunic.name}</b>
+                                <hr/>
+                                <p className='m-0'>Jinsi</p>
+                                <b className="">
+                                    {Studentunic.gender}
+                                </b>
+                                <hr/>
+                                <p className='m-0'>Yashash manzili</p>
+                                <b className="">
+                                    {Studentunic.country} / {Studentunic.city} / {Studentunic.district}
+                                </b>
+                                <hr/>
+                            </div>
+
+                        </div>
+                        <div className="d-flex" style={{width: "35%"}}>
+
+                        </div>
+                    </div>
+
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
         </div>
     );
 }

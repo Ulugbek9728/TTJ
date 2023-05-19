@@ -11,6 +11,8 @@ import {ApiName1} from "../APIname1";
 function Section(props) {
     const {t } = useTranslation();
     const [Media, setMedia] = useState([]);
+    const [Allkvota, setAllKvota] = useState({});
+
 
     useEffect(() => {
         GetNews();
@@ -18,11 +20,16 @@ function Section(props) {
 
     function GetNews() {
         axios.get(`${ApiName1}/clips/public`, '').then((response) => {
-            console.log(response.data)
-            setMedia(response.data)
-
+            setMedia(response.data);
         }).catch((error) => {
             console.log(error)
+        });
+
+        axios.get(`${ApiName1}/public/count`, '',).then((response) => {
+            setAllKvota(response.data);
+
+        }).catch((error) => {
+            console.log(error.response)
         })
     }
 
@@ -32,15 +39,19 @@ function Section(props) {
                 <div className="section">
                     <div className="box">
                         <div className="title">{t("umumiyKvota")}</div>
-                        <div className="text">4385</div>
+                        <div className="text">{Allkvota.all_count}</div>
                     </div>
                     <div className="box">
                         <div className="title">{t("umumiyBand")}</div>
-                        <div className="text">4385</div>
+                        <div className="text">{Allkvota.booked_count}</div>
                     </div>
                     <div className="box">
                         <div className="title">{t("umumiyBo'sh")}</div>
-                        <div className="text">4385</div>
+                        <div className="text">{Allkvota.free_count}</div>
+                    </div>
+                    <div className="box">
+                        <div className="title">{t("umumiyAriza")}</div>
+                        <div className="text">{Allkvota.applied_count}</div>
                     </div>
                 </div>
                 <video className="video" src={`${ApiName1}${Media.video_url}`} controls={true}/>
@@ -63,7 +74,7 @@ function Section(props) {
                         className="swiper2"
                     >
                    {Media.photos && Media.photos.map((item, index)=>{
-                    return<SwiperSlide >
+                    return<SwiperSlide key={index}>
                             <img src={`${ApiName1}${item}`} alt=""/>
 
                         </SwiperSlide>

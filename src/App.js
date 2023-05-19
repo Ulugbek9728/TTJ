@@ -16,13 +16,18 @@ import YangilikBatafsil from "./components/yangilik batafsil";
 
 
 function App() {
+
     const dispatch = useDispatch();
     const auth = useSelector(state => state.authUser);
     useEffect(() => {
+        dispatch(changeBgCircle());
+
         setTimeout(()=>{
-            changeTrue()
+            dispatch(changeTrue());
+
         },2000)
-    });
+    },[]);
+
   return (
     <div className="App">
 
@@ -45,8 +50,8 @@ function App() {
           :
             <Loader/>
         }
-        <button onClick={() => dispatch(changeBgCircle())}>Change</button>
-        <button onClick={() => dispatch(changeTrue())}>true</button>
+        {/*<button onClick={() => }>Change</button>*/}
+        {/*<button onClick={() => dispatch(changeTrue())}>true</button>*/}
 
     </div>
   );

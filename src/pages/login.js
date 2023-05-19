@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from "react-i18next";
 import user from "../img/user.png";
 import pasword from "../img/padlock.png";
@@ -9,11 +9,14 @@ import "../asset/login.scss"
 import {useNavigate} from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
+import {toast, ToastContainer} from "react-toastify";
 
 function Login(props) {
     const {t } = useTranslation();
 
     const [passwordBoolin, setPasswordBoolin] = useState(true);
+    const [message, setMessage] = useState([]);
+    const [message2, setMessage2] = useState('');
     const [login1, setLogin] = useState({
         login:'',
         password:''
@@ -47,18 +50,28 @@ function Login(props) {
             }
             console.log(response)
         }).catch((error) => {
+
                 axios.post(`${ApiName}auth/login`,login1).then((response)=>{
                     localStorage.setItem("token", response.data.data.token);
 
                     navigate("/Submit")
                 }).catch((error)=>{
-                    console.log(error);
+                    setMessage2(error.response.data.error);
                 })
             })
+    }
+    useEffect(() => {
+        notify();
+        setMessage2('')
+    },[message2]);
+    function notify() {
+        if (message !== ''){message && message.map((item) => (toast.error(item)))}
+        if (message2 !== ''){toast.error(message2)}
     }
     return (
         <>
             <Navbar/>
+            <ToastContainer/>
 
             <div className="container loginPage">
                 <div className="row">

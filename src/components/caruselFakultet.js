@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -6,10 +6,30 @@ import "swiper/css/pagination";
 import {Autoplay, FreeMode, Pagination} from "swiper";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
+import axios from "axios";
+import {ApiName1} from "../APIname1";
 
 
 function CaruselFakultet(props) {
     const {t } = useTranslation();
+    const [kvota, setKvota] = useState([]);
+    const [Courskvota, setCoursKvota] = useState([]);
+
+
+    useEffect(() => {
+        Getkvta()
+    },[]);
+    function Getkvta() {
+        axios.get(`${ApiName1}/public/main`, '',).then((response) => {
+            console.log(response.data);
+            setKvota(response.data);
+
+        }).catch((error) => {
+            console.log(error.response)
+        });
+
+    }
+
     return (
         <div className="container caruselBox">
             <div className="row">
@@ -29,78 +49,38 @@ function CaruselFakultet(props) {
                         modules={[FreeMode, Pagination, Autoplay]}
                         className="swiper1"
                     >
-                        <SwiperSlide >
-                            <img src="./1.png" alt=""/>
-                            <div className="content">
-                                <div className="title">
-                                    72-B TTJ 588-o'ringa ega
-                                </div>
-                                <div className="d-flex">
-                                    <div className="orinlar">
-                                        <div className="text">{t("carusel.Band")}</div>
-                                        <p>1-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>2-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>3-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>4-{t("carusel.Kurs")}: <span>400</span></p>
+                        {kvota && kvota.map((item, index)=>{
+                            const jsonCourse = item?.courses;
+                            let course;
+                            if (jsonCourse){
+                              course=JSON.parse(item?.courses);
+                            }
+                            console.log(course)
+                            return <SwiperSlide key={index}>
+                                <img src={`${ApiName1}${item.photo_url}`} alt=""/>
+                                <div className="content">
+                                    <div className="title">
+                                        {item.name}- Umumiy joylar soni {item.actual_count}
                                     </div>
-                                    <div className="orinlar">
-                                        <div className="text">{t("carusel.Bo'sh")}</div>
-                                        <p>1-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>2-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>3-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>4-{t("carusel.Kurs")}: <span>400</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide >
-                            <img src="./1.png" alt=""/>
-                            <div className="content">
-                                <div className="title">
-                                    72-A TTJ 588-o'ringa ega
-                                </div>
-                                <div className="d-flex">
-                                    <div className="orinlar">
-                                        <div className="text">{t("carusel.Band")}</div>
-                                        <p>1-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>2-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>3-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>4-{t("carusel.Kurs")}: <span>400</span></p>
-                                    </div>
-                                    <div className="orinlar">
-                                        <div className="text">{t("carusel.Bo'sh")}</div>
-                                        <p>1-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>2-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>3-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>4-{t("carusel.Kurs")}: <span>400</span></p>
+                                    <div className="d-flex">
+                                        <div className="orinlar">
+                                            <div className="text">{t("carusel.Band")}</div>
+                                            {course?.map((item, index)=>{
+                                                return <p>{index+1}-{t("carusel.Kurs")}: <span>{item.left_count}</span></p>
+                                            })}
+                                        </div>
+                                        <div className="orinlar">
+                                            <div className="text">{t("carusel.Bo'sh")}</div>
+                                            {course?.map((item, index)=>{
+                                                return <p>{index+1}-{t("carusel.Kurs")}: <span>{item.actual_count}</span></p>
+                                            })}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </SwiperSlide>
-                        <SwiperSlide >
-                            <img src="./1.png" alt=""/>
-                            <div className="content">
-                                <div className="title">
-                                    72-C TTJ 588-o'ringa ega
-                                </div>
-                                <div className="d-flex">
-                                    <div className="orinlar">
-                                        <div className="text">{t("carusel.Band")}</div>
-                                        <p>1-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>2-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>3-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>4-{t("carusel.Kurs")}: <span>400</span></p>
-                                    </div>
-                                    <div className="orinlar">
-                                        <div className="text">{t("carusel.Bo'sh")}</div>
-                                        <p>1-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>2-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>3-{t("carusel.Kurs")}: <span>400</span></p>
-                                        <p>4-{t("carusel.Kurs")}: <span>400</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </SwiperSlide>
+                            </SwiperSlide>
+                        })}
+
+
                     </Swiper>
                 </div>
                 <div className="col-6 right">

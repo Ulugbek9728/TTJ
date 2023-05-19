@@ -1,3 +1,3 @@
-const ApiName1 = 'https://mukhtarovsarvar.jprq.live';
+const ApiName1 = 'https://ttj.jprq.live';
 
 export {ApiName1}
