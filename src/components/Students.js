@@ -14,6 +14,7 @@ function Student(props) {
     const [sucsessText, setSucsessText] = useState('');
     const [Dekan, setDekan] = useState([]);
     const [Students, setStudent] = useState([]);
+    const [StudentFile, setStudentFile] = useState([]);
     const [Studentunic, setStudentUnic] = useState({});
     const [FakultyName, setFakultyName] = useState('');
     const [Kurs, setKurs] = useState('');
@@ -26,12 +27,12 @@ function Student(props) {
         DekanInfo();
         if (FakultyName !== '') {
             if(Kurs !==''){
-                FakultyInfo()
+                StudentList()
             }
         }
     }, [sucsessText, Kurs]);
 
-    function FakultyInfo() {
+    function StudentList() {
         axios.post(`${ApiName1}/private/student/list/${FakultyName} fakulteti/${Kurs}`, '', {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
@@ -47,7 +48,8 @@ function Student(props) {
         axios.post(`${ApiName1}/private/student/file/show/${e}`, '', {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
-            console.log(response)
+            setStudentFile(response.data);
+            console.log(response.data);
         }).catch((error) => {
             console.log(error.response)
         })
@@ -87,7 +89,6 @@ function Student(props) {
             toast.error(message2)
         }
     }
-console.log(Studentunic)
     return (
         <div>
             <ToastContainer/>
@@ -148,43 +149,83 @@ console.log(Studentunic)
                 </tbody>
             </table>
             <div className="modal" id="myModal">
-                <div className="modal-content mx-auto" style={{width:"70vw"}}>
+                <div className="modal-dialog" style={{marginLeft:"15%"}}>
+                    <div className="modal-content " style={{width:"50vw"}}>
+                        <div className="modal-header">
+                            <h4 className="modal-title">Talaba to'liq ma'lumoti</h4>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"/>
+                        </div>
+                        <div className="modal-body">
+                            <div className="d-flex  justify-content-between" >
 
-                    <div className="modal-header">
-                        <h4 className="modal-title">Talaba to'liq ma'lumoti</h4>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal"/>
-                    </div>
-
-                    <div className="modal-body d-flex">
-                        <div className="d-flex" style={{width:"65%"}}>
-                            <img src={Studentunic.imageUrl} width={150} height={180} alt=""/>
-                            <div className="mx-2">
-                                <p className='m-0'>F.I.SH</p>
-                                <b className="">{Studentunic.name}</b>
-                                <hr/>
-                                <p className='m-0'>Jinsi</p>
-                                <b className="">
-                                    {Studentunic.gender}
-                                </b>
-                                <hr/>
-                                <p className='m-0'>Yashash manzili</p>
-                                <b className="">
-                                    {Studentunic.country} / {Studentunic.city} / {Studentunic.district}
-                                </b>
-                                <hr/>
+                                <img src={Studentunic.imageUrl} width='20%' height='auto' alt=""/>
+                                <div className='w-75'>
+                                    <p className='m-0'>F.I.SH</p>
+                                    <b className="">{Studentunic.name}</b>
+                                    <hr/>
+                                    <p className='m-0'>Jinsi</p>
+                                    <b className="">
+                                        {Studentunic.gender}
+                                    </b>
+                                    <hr/>
+                                    <p className='m-0'>Yashash manzili</p>
+                                    <b className="">
+                                        {Studentunic.country} / {Studentunic.city} / {Studentunic.district}
+                                    </b>
+                                    <hr/>
+                                </div>
                             </div>
+                            <div className="mt-4 d-flex">
+                                <div className="w-50 p-2">
+                                    <p className='m-0'>Tel raqami</p>
+                                    <b className="">
+                                        {Studentunic.phone}
+                                    </b>
+                                    <hr/>
+                                    <p className='m-0'>Fakulteti</p>
+                                    <b className="">
+                                        {Studentunic.faculty}
+                                    </b>
+                                    <hr/>
+                                    <p className='m-0'>Kurs</p>
+                                    <b className="">
+                                        {Studentunic.course}
+                                    </b>
+                                    <hr/>
+                                    <p className='m-0'>Yo'nalish</p>
+                                    <b className="">
+                                        {Studentunic.specialty}
+                                    </b>
+                                    <hr/>
+                                </div>
+                                <div className="w-50 p-2">
+                                    <h4 className='text-center' style={{marginTop:'13px'}}>
+                                        Yuklangan fayllar
+                                    </h4>
+                                    <hr/>
+                                    {StudentFile && StudentFile.map((item, index)=>{
+                                        return <div key={index}>
+                                            <a href={`${ApiName1}${item.attachUrl}`} target='_blank' className='m-0'>{item.name}</a>
+                                            {/*<b className="">*/}
+                                            {/*    {item.attachUrl}*/}
+                                            {/*</b>*/}
+                                            <hr/>
+                                        </div>
+                                    })}
 
+
+                                </div>
+
+
+                            </div>
                         </div>
-                        <div className="d-flex" style={{width: "35%"}}>
-
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-danger"
+                                    data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
-
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                    </div>
-
                 </div>
+
             </div>
         </div>
     );

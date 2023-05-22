@@ -75,6 +75,11 @@ function AdminPage(props) {
                               icon:<UserAddOutlined/>
                               },
                           {
+                              label:"Dekanlar",
+                              key:"2",
+                              icon:<UserAddOutlined/>
+                          },
+                          {
                               label:"Fakultet",
                               key:"6",
                               icon:<GoldOutlined />
@@ -89,13 +94,6 @@ function AdminPage(props) {
                               key:"8",
                               icon:<GoldOutlined />
                           },
-
-                          {
-                              label:"Dekanlar",
-                              key:"2",
-                              icon:<UserAddOutlined/>
-                          },
-
                           {
                               label:"Studentlar",
                               key:"3",

@@ -95,16 +95,15 @@ function Dekan(props) {
             setDekan(response.data);
             console.log(response.data);
         }).catch((error) => {
-            if (error.response.status === 502){
+            if (error.response.status <= 500){
                 setMessage2('Server bilan ulanishda xatolik')
             }
             if (error.response.status === 401){
                 navigate("/")
             }
+            console.log(error.response)
         })
     }
-    console.log(creatDecan)
-
     function GetFakultet() {
         axios.post(`${ApiName1}/adm/faculty/faculty_list`, '',{
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
