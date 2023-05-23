@@ -97,7 +97,6 @@ function Ariza(props) {
 
     }
 
-
     function postStudent() {
         const allData = new FormData();
 

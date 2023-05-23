@@ -7,40 +7,111 @@ import {ApiName1} from "../APIname1";
 import "../asset/Admin.scss"
 import {useNavigate} from "react-router";
 
+const {Option} = Select;
+const { TextArea } = Input;
+
 
 function Student(props) {
     const navigate = useNavigate();
 
     const [sucsessText, setSucsessText] = useState('');
+    const [Status, setstatus] = useState('');
+    const [StatusBulin, setStatusBulin] = useState(true);
     const [Dekan, setDekan] = useState([]);
     const [Students, setStudent] = useState([]);
+    const [StudentID, setStudentID] = useState('');
+    const [TTJID, setTTJID] = useState('');
     const [StudentFile, setStudentFile] = useState([]);
+    const [GetTTJList,  setGetTTJList] = useState([]);
     const [Studentunic, setStudentUnic] = useState({});
     const [FakultyName, setFakultyName] = useState('');
+    const [FakultyID, setFakultyID] = useState('');
     const [Kurs, setKurs] = useState('');
+    const [Messeg, setMesseg] = useState('');
 
     const [message, setMessage] = useState([]);
     const [message2, setMessage2] = useState('');
 
+    const [file, setFile] = useState([{
+        fileBox: null
+    }]);
+
+    const handleInputFile = (e, index) => {
+        file.fileBox = e.target.files[0]
+    };
 
     useEffect(() => {
         DekanInfo();
         if (FakultyName !== '') {
             if(Kurs !==''){
-                StudentList()
+                if(Status!== ''){
+                    StudentList()
+                }
+
             }
         }
-    }, [sucsessText, Kurs]);
+
+        getTTJ()
+    }, [sucsessText, Kurs, FakultyID,Status]);
 
     function StudentList() {
         axios.post(`${ApiName1}/private/student/list/${FakultyName} fakulteti/${Kurs}`, '', {
-            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
+            params:{status:Status}
         }).then((response) => {
-            console.log(response)
+            console.log(response.data);
             setStudent(response.data);
 
         }).catch((error) => {
             console.log(error.response)
+        })
+    }
+
+    function changeStatus() {
+
+        axios.put(`${ApiName1}/private/student/cancel/${StudentID}`,{message:Messeg}, {
+                headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
+            }).then((res)=>{
+                console.log(res)
+            setSucsessText('Talaba arizasi bekor qilindi')
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+
+    function getTTJ() {
+        axios.get(`${ApiName1}/private/admin/dormitory/show/faculty_id/${FakultyID}`,{
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+        }).then((res)=>{
+            setGetTTJList(res.data)
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+
+    function postStudentTTJ() {
+        const allData = new FormData();
+        allData.append(`file`,file.fileBox)
+        console.log(TTJID)
+        console.log(StudentID)
+        axios.post(`${ApiName1}/attach/upload`, allData)
+            .then((response) => {
+                console.log(response);
+                axios.post(
+                    `${ApiName1}/private/admin/dormitory_join_student/${TTJID}/${StudentID}/${response.data[0]?.id}`,
+                    '',{
+                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+                    .then((response) => {
+                        console.log(response)
+                        if (response.status === 200){
+                            file.fileBox=null
+                            setSucsessText("Talaba muvofaqiyatli qo'shildi")
+                        }
+                    }).catch((error) => {
+                    console.log(error)
+                })
+            }).catch((error) => {
+            console.log(error)
         })
     }
 
@@ -71,13 +142,41 @@ function Student(props) {
         })
     }
 
+    function deleteStudent(e) {
+        console.log(e)
+        axios.delete(`${ApiName1}/private/student/delete/${e}`,{
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+        }).then((res)=>{
+            console.log(res)
+            setSucsessText("Talaba arizasi o'chirildi")
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+
+    function FacultySelect(value,key) {
+        setFakultyName(value);
+        setFakultyID(key.key)
+    }
+    function CoursSelect(value,key) {
+        setKurs(value)
+    }
+    function StatusSelect(value,key) {
+        setstatus(value)
+        if (value==='NOT_ACCEPTED'){
+            setStatusBulin(true)
+        }
+        else {
+            setStatusBulin(false)
+        }
+    }
+
     useEffect(() => {
         notify();
         setMessage('');
         setMessage2('');
         setSucsessText('')
     }, [message, sucsessText, message2]);
-
     function notify() {
         if (message != '') {
             message && message.map((item) => (toast.error(item)))
@@ -92,27 +191,34 @@ function Student(props) {
     return (
         <div>
             <ToastContainer/>
-            <select className='form-control my-2' style={{width: "30%"}}
-                    onChange={(e) => {
-                        setFakultyName(e.target.value);
+            <div className='d-flex'>
+                <div className="w-25">
+                    <label htmlFor="fakultet">Fakultet</label> <br/>
+                    <Select className='my-2 w-100' id='fakultet'
+                            onChange={FacultySelect}>
+                        {Dekan && Dekan.map((item, index) => {
+                            return <Option key={item.id} value={item.name}>{item.name}</Option>
+                        })}
+                    </Select>
+                    <br/>
+                    <label htmlFor="kurs">Kurs</label> <br/>
+                    <Select id='kurs' className='my-2 w-100'
+                            onChange={CoursSelect}>
+                        <Option value='1-kurs'>1-Kurs</Option>
+                        <Option value='2-kurs'>2-Kurs</Option>
+                        <Option value='3-kurs'>3-Kurs</Option>
+                        <Option value='4-kurs'>4-Kurs</Option>
 
-                    }}>
-                <option>Fakultet</option>
-                {Dekan && Dekan.map((item, index) => {
-                    return <option key={index} value={item.name}>{item.name}</option>
-                })}
-            </select>
-            <select  className='form-control my-2' style={{width: "30%"}}
-                    onChange={(e) => {
-                        setKurs(e.target.value);}}>
-                <option>Kurs</option>
-                <option value='1-kurs'>1-Kurs</option>
-                <option value='2-kurs'>2-Kurs</option>
-                <option value='3-kurs'>3-Kurs</option>
-                <option value='4-kurs'>4-Kurs</option>
+                    </Select>
+                    <label htmlFor="status">Status</label>
+                    <Select id='status' className='my-2 w-100'
+                            onChange={StatusSelect}>
+                        <Option value='IS_ACCEPTED'>Kelib tushgan arizalar</Option>
+                        <Option value='NOT_ACCEPTED'>Arizasi bekor qilingan talabalar </Option>
 
-            </select>
-
+                    </Select>
+                </div>
+            </div>
             <table className="table table-bordered ">
                 <thead>
                 <tr>
@@ -132,17 +238,36 @@ function Student(props) {
                         <td>{item.course}</td>
                         <td>{item.phone}</td>
                         <td>
-                            <button className="btn btn-outline-success mx-1"
+                            <button className="btn btn-success mx-1"
                                     data-bs-toggle="modal" data-bs-target="#myModal"
                             onClick={(e)=>{seeStudent(item.id); setStudentUnic(item)}}>
                                 <img style={{width: "20px", height: "20px"}}
-                                     className='iconEdit' src="/img/show.png" alt=""/>
+                                     className='iconEdit' src="/img/view.png" alt=""/>
                             </button>
-                            <button className="btn btn-danger mx-1">
+                            <button className="btn btn-warning mx-1"
+                                    data-bs-toggle="modal" data-bs-target="#myModal1"
+                            onClick={(e)=>{setStudentID(item.id)}}>
                                 <img style={{width: "20px", height: "20px"}} className='iconEdit'
-                                     src="/img/delete.png"
-                                     alt=""/>
+                                     src="/img/editing.png" alt=""/>
                             </button>
+                            {StatusBulin ?
+                                <button className="btn btn-danger mx-1"
+                                        onClick={()=>{deleteStudent(item.id)}}
+                                >
+                                    <img style={{width: "20px", height: "20px"}} className='iconEdit'
+                                         src="/img/delete.png"
+                                         alt=""/>
+                                </button>
+                                :
+                                <button className="btn btn-danger mx-1"
+                                        data-bs-toggle="modal" data-bs-target="#myModal2"
+                                        onClick={(e)=>{setStudentID(item.id)}}>
+                                    <img style={{width: "15px", height: "15px"}} className='iconEdit'
+                                         src="/img/close.png"
+                                         alt=""/>
+                                </button>
+                            }
+
                         </td>
                     </tr>
                 })}
@@ -206,9 +331,6 @@ function Student(props) {
                                     {StudentFile && StudentFile.map((item, index)=>{
                                         return <div key={index}>
                                             <a href={`${ApiName1}${item.attachUrl}`} target='_blank' className='m-0'>{item.name}</a>
-                                            {/*<b className="">*/}
-                                            {/*    {item.attachUrl}*/}
-                                            {/*</b>*/}
                                             <hr/>
                                         </div>
                                     })}
@@ -220,6 +342,56 @@ function Student(props) {
                             </div>
                         </div>
                         <div className="modal-footer">
+                            <button type="button" className="btn btn-danger"
+                                    data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div className="modal" id="myModal1">
+                <div className="modal-dialog" style={{marginLeft:"15%"}}>
+                    <div className="modal-content " style={{width:"50vw"}}>
+                        <div className="modal-header">
+                            <h4>Talabani Universitet yotoqxonasiga joylashtirish</h4>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"/>
+                        </div>
+                        <div className="modal-body">
+                            <label htmlFor="TTJ">Yotoqxonani belgilang</label>
+                            <select id='TTJ' className='my-2 form-control' style={{width: "100%"}}
+                            onChange={(e)=>{setTTJID(e.target.value)}}>
+                                <option value="">TTJ ni tanlang</option>
+                                {GetTTJList && GetTTJList.map((item, index) => {
+                                    return <option key={item.id} value={item.id}>{item.name}</option>
+                                })}
+                            </select>
+                            <label htmlFor="File">PDF faylni yuklang</label> <br/>
+                            <input type="file" id='File' accept="application/pdf"
+                                   onChange={(e) => handleInputFile(e)}/>
+                        </div>
+                        <div className="modal-footer">
+                            <button className='btn btn-success' onClick={postStudentTTJ}>yuborish</button>
+                            <button type="button" className="btn btn-danger"
+                                    data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div className="modal" id="myModal2">
+                <div className="modal-dialog" style={{marginLeft:"15%"}}>
+                    <div className="modal-content " style={{width:"50vw"}}>
+                        <div className="modal-header">
+                            <h4>Talabani Universitet yotoqxonasiga joylashtirish</h4>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"/>
+                        </div>
+                        <div className="modal-body">
+                            <label htmlFor="Message">Bekor qilish sababini yozing</label>
+                            <TextArea rows="5" name="text"
+                                      onChange={(e)=>{setMesseg(e.target.value)}}/>
+                        </div>
+                        <div className="modal-footer">
+                            <button className='btn btn-success' onClick={changeStatus}>yuborish</button>
                             <button type="button" className="btn btn-danger"
                                     data-bs-dismiss="modal">Close</button>
                         </div>

@@ -1,13 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
 import user from "../img/user.png";
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
+import {toast} from "react-toastify";
 
 function Natija(props) {
     const {t } = useTranslation();
+    const [status, setStatus] = useState(true);
     const [login, setLogin] = useState('');
     const [Student, setStudent] = useState({});
 
@@ -17,6 +19,12 @@ function Natija(props) {
         axios.post(`${ApiName1}/public/student/login`, {login:login}).then((response) => {
             console.log(response.data)
             setStudent(response.data)
+            if (response.data.status === 'NOT_ACCEPTED'){
+                setStatus(true)
+            }
+            else {
+                setStatus(false)
+            }
         }).catch((error) => {
             console.log(error)
         })
@@ -30,18 +38,30 @@ function Natija(props) {
                     <div className="login-page">
                         <div className="left-side">
                             <div className="title">
-                                Welcome Back!
+                                Natija
                             </div>
-                            <div className="commit">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit. Asperiores, perspiciatis.
-                            </div>
+                            {status ?
+                                <div className="commit">
+                                    {Student.message}
+                                </div>
+                            :
+                                <div className="">
+                                    <span className='commit'>
+                                        Tabriklaymiz quyidagi ruxsatnomani yuklab olishingiz mumkun.
+                                    </span>
+                                    <br/>
+                                    <a href={`${ApiName1}${Student.response_file_url}`} target='_blank'>
+                                        Ruxsatnoma
+                                    </a>
+                                </div>
+                            }
                         </div>
+
 
                         <div className="right-side">
                             <div className="container">
                                 <div className="create">
-                                    Natija
+                                    Natijani bilish
                                 </div>
                                 <div className="text">
                                     "Hemis" Talaba ID ni kiriting
@@ -51,7 +71,7 @@ function Natija(props) {
                                            onChange={(e) => setLogin(e.target.value)}/>
                                     <img src={user} alt="user-icon" className='user-icon'/>
                                 </div>
-                                <button className="signUp" onClick={Login}>Kirish</button>
+                                <button className="signUp" onClick={Login}>Yuborish</button>
                             </div>
 
 

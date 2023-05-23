@@ -18,6 +18,7 @@ import Media from "./media";
 import Faculty from "../components/faculty";
 import Ttj from "../components/TTJ";
 import Kvota from "../components/kvota";
+import TtjStudents from "../components/TTJStudents";
 
 
 
@@ -55,7 +56,6 @@ function AdminPage(props) {
                     position: 'fixed', left: 0, top: 0, bottom: 0,
                 }}>
                 <div style={{height: 32, margin: 16, background: 'rgba(255, 255, 255, 0.2)',}}/>
-
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}
                       onClick={(into)=>{
 
@@ -67,6 +67,7 @@ function AdminPage(props) {
                           if (into.key === "6"){ navigate("/Adminyoli/Faculty");}
                           if (into.key === "7"){ navigate("/Adminyoli/TTJ");}
                           if (into.key === "8"){ navigate("/Adminyoli/Kvota");}
+                          if (into.key === "9"){ navigate("/Adminyoli/TTJStudets");}
                       }}
                       items={[
                           {
@@ -95,8 +96,13 @@ function AdminPage(props) {
                               icon:<GoldOutlined />
                           },
                           {
-                              label:"Studentlar",
+                              label:"Arizalar",
                               key:"3",
+                              icon:<TeamOutlined />
+                          },
+                          {
+                              label:"TTJ da turuvchi Talabalar",
+                              key:"9",
                               icon:<TeamOutlined />
                           },
                           {
@@ -142,7 +148,6 @@ function AdminPage(props) {
                             <label htmlFor="editPassword">Yangi parol kiriting</label>
                             <Input id='editPassword' allowClear value={NewPassword.password}
                                    onChange={(e)=>{setNewPassword({...NewPassword, password: e.target.value,})}}/>
-
                         </div>
 
                     </Modal>
@@ -156,6 +161,7 @@ function AdminPage(props) {
                         <Route path={"/Kvota"} element={<Kvota/>}/>
                         <Route path={"/AddNews"} element={<News/>}/>
                         <Route path={"/StudentList"} element={<Student/>}/>
+                        <Route path={"/TTJStudets"} element={<TtjStudents/>}/>
                         <Route path={"/Media"} element={<Media/>}/>
                         <Route path={"/"} element={<Rector/>}/>
                     </Routes>
