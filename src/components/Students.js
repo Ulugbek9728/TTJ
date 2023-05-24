@@ -41,7 +41,7 @@ function Student(props) {
     };
 
     useEffect(() => {
-        DekanInfo();
+        Fakulty();
         if (FakultyName !== '') {
             if(Kurs !==''){
                 if(Status!== ''){
@@ -126,7 +126,7 @@ function Student(props) {
         })
     }
 
-    function DekanInfo() {
+    function Fakulty() {
         axios.post(`${ApiName1}/adm/faculty/faculty_list`, '', {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
@@ -161,6 +161,7 @@ function Student(props) {
     function CoursSelect(value,key) {
         setKurs(value)
     }
+
     function StatusSelect(value,key) {
         setstatus(value)
         if (value==='NOT_ACCEPTED'){

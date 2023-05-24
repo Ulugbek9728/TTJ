@@ -159,7 +159,7 @@ function Ttj(props)  {
                             <b>Umumiy joylar: </b>{item.actualCount} <br/>
                             <b>Qolgan joylar: </b>{item.leftCount}
                         </td>
-                        <td colspan="2">{item.faculty.map((item, index)=>{
+                        <td colSpan="2">{item.faculty.map((item, index)=>{
                             return <div key={index}>
                                 <div className='d-flex  w-100'>
                                     <div  className="w-50">
@@ -169,7 +169,7 @@ function Ttj(props)  {
                                     </div>
                                     <div className="w-50 px-2" style={{borderLeft:"1px solid black"}}>
                                         {item.courses.map((item, index)=>{
-                                            return <div>
+                                            return <div key={index}>
                                                 <b>Kurs </b>{item.name} <br/>
                                                 Umumiy joylar: {item.actualCount} <br/>
                                                 Qolgan joylar: {item.leftCount}

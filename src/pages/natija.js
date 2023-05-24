@@ -42,7 +42,8 @@ function Natija(props) {
                             </div>
                             {status ?
                                 <div className="commit">
-                                    {Student.message}
+                                    Sizning Arizangiz qabul qilinmadi,
+                                    to'liq ma'lumot uchun dekanatingizga uchrashing
                                 </div>
                             :
                                 <div className="">
