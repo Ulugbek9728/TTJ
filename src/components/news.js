@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Modal,Input, Select,} from 'antd';
+import {Modal, Input, Pagination,} from 'antd';
 import axios from "axios";
-import {toast, ToastContainer} from "react-toastify";import CustomPagination from "./Pagination"
+import {toast, ToastContainer} from "react-toastify";
 
 import {ApiName1} from "../APIname1";
 import "../asset/Admin.scss"
@@ -14,13 +14,13 @@ function News(props) {
     const [edit, setedit] = useState(false);
     const [sucsessText, setSucsessText] = useState('');
     const [NewsId, setNewsId] = useState('');
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
-    const [isLast, setIsLast] = useState(true);
+    const [pageSizes, setPageSize] = useState(20);
+
 
     const [creatNews, setCreatNews] = useState({});
     const [NewsGroup, setNews] = useState([]);
-
     const [file, setFile] = useState([{
         fileBox: null
     }]);
@@ -112,10 +112,9 @@ function News(props) {
     },[ sucsessText,page]);
 
     function GetNews() {
-        axios.post(`${ApiName1}/public/news`, '',{params:{page:page,size:12}})
+        axios.post(`${ApiName1}/public/news`, '',{params:{page:(page-1),size:pageSizes}})
             .then((response) => {
                 setNews(response.data.content)
-                setIsLast(response.data.last);
                 setTotalPage(response.data.totalElements)
             }).catch((error) => {
             console.log(error)
@@ -213,11 +212,13 @@ function News(props) {
                 </tbody>
             </table>
 
-            <CustomPagination
-                currentPage={page}
-                setCurrentPage={setPage}
-                postsPerPage={12}
-                totalElement={totalPage}
+
+            <Pagination
+                current={page}
+                total={totalPage}
+                pageSize={pageSizes}
+                onChange={(e)=>{setPage(e)}}
+                showQuickJumper
             />
 
             <div className="modal" id="myModal">

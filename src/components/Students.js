@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Modal, Input, Select,} from 'antd';
+import {Modal, Input, Select,Pagination } from 'antd';
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
+
 
 import {ApiName1} from "../APIname1";
 import "../asset/Admin.scss"
@@ -29,6 +30,9 @@ function Student(props) {
     const [Kurs, setKurs] = useState('');
     const [Messeg, setMesseg] = useState('');
 
+    const [page, setPage] = useState(1);
+    const [pageSizes, setPageSize] = useState(20);
+    const [totalPage, setTotalPage] = useState(0);
     const [message, setMessage] = useState([]);
     const [message2, setMessage2] = useState('');
 
@@ -52,15 +56,15 @@ function Student(props) {
         }
 
         getTTJ()
-    }, [sucsessText, Kurs, FakultyID,Status]);
+    }, [sucsessText, Kurs, FakultyID,Status,page]);
 
     function StudentList() {
-        axios.post(`${ApiName1}/private/student/list/${FakultyName} fakulteti/${Kurs}`, '', {
+        axios.post(`${ApiName1}/private/student/list/${FakultyName}/${Kurs}`, '', {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
-            params:{status:Status}
+            params:{status:Status,page:(page-1),size:pageSizes}
         }).then((response) => {
-            console.log(response.data);
-            setStudent(response.data);
+            setStudent(response.data.content);
+            setTotalPage(response.data.totalElements)
 
         }).catch((error) => {
             console.log(error.response)
@@ -92,8 +96,6 @@ function Student(props) {
     function postStudentTTJ() {
         const allData = new FormData();
         allData.append(`file`,file.fileBox)
-        console.log(TTJID)
-        console.log(StudentID)
         axios.post(`${ApiName1}/attach/upload`, allData)
             .then((response) => {
                 console.log(response);
@@ -172,12 +174,17 @@ function Student(props) {
         }
     }
 
+    function editPage(pageSize){
+        console.log(pageSize)
+    }
+
     useEffect(() => {
         notify();
         setMessage('');
         setMessage2('');
         setSucsessText('')
     }, [message, sucsessText, message2]);
+
     function notify() {
         if (message != '') {
             message && message.map((item) => (toast.error(item)))
@@ -189,6 +196,8 @@ function Student(props) {
             toast.error(message2)
         }
     }
+
+console.log(page);
     return (
         <div>
             <ToastContainer/>
@@ -253,8 +262,7 @@ function Student(props) {
                             </button>
                             {StatusBulin ?
                                 <button className="btn btn-danger mx-1"
-                                        onClick={()=>{deleteStudent(item.id)}}
-                                >
+                                        onClick={()=>{deleteStudent(item.id)}}>
                                     <img style={{width: "20px", height: "20px"}} className='iconEdit'
                                          src="/img/delete.png"
                                          alt=""/>
@@ -274,6 +282,15 @@ function Student(props) {
                 })}
                 </tbody>
             </table>
+
+            <Pagination
+                current={page}
+                total={totalPage}
+                pageSize={pageSizes}
+                onChange={(e)=>{setPage(e)}}
+                showQuickJumper
+            />
+
             <div className="modal" id="myModal">
                 <div className="modal-dialog" style={{marginLeft:"15%"}}>
                     <div className="modal-content " style={{width:"50vw"}}>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Input, Select} from "antd";
+import {Input, Pagination, Select} from "antd";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {useNavigate} from "react-router";
@@ -19,6 +19,15 @@ function TtjStudents(props) {
     const [GetTTJList, setGetTTJList] = useState([]);
     const [TTJID, setTTJID] = useState('');
     const [Students, setStudent] = useState([]);
+    const [Studentunic, setStudentUnic] = useState({});
+    const [StudentFile, setStudentFile] = useState([]);
+    const [StudentStatus, setStudenStatus] = useState('JOINED');
+    const [StudentJOINED, setStudentJOINED] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(0);
+    const [pageSizes, setPageSize] = useState(20);
+
+
 
 
     useEffect(() => {
@@ -29,7 +38,7 @@ function TtjStudents(props) {
                 StudentList()
             }
         }
-    }, [sucsessText, Kurs, FakultyID, TTJID]);
+    }, [sucsessText, Kurs, FakultyID, TTJID, StudentStatus]);
 
     function Fakulty() {
         axios.post(`${ApiName1}/adm/faculty/faculty_list`, '', {
@@ -61,15 +70,44 @@ function TtjStudents(props) {
         axios.post(`${ApiName1}/admin/dormitory_student`, {
             course: Kurs,
             dormitory_id: TTJID,
-            faculty_id: FakultyID
+            faculty_id: FakultyID,
+            status:StudentStatus
         }, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
+            params:{page:(page-1),size:pageSizes}
         }).then((response) => {
             console.log(response.data.content);
             setStudent(response.data.content);
+            setTotalPage(response.data.totalElements)
 
         }).catch((error) => {
             console.log(error.response)
+        })
+    }
+
+    function seeStudent(e) {
+        axios.post(`${ApiName1}/private/student/file/show/${e}`, '', {
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+        }).then((response) => {
+            setStudentFile(response.data);
+            console.log(response);
+        }).catch((error) => {
+            console.log(error.response)
+        })
+    }
+
+    function deleteStudent(e) {
+        setSucsessText('')
+        axios.put(`${ApiName1}/admin/dormitory_student/change_status/${e}/${
+            StudentJOINED ? 'REMOVED':'JOINED'}`,'',{
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+
+        }).then((res)=>{
+            console.log(res)
+
+            setSucsessText("Talaba TTJ dan o'chirildi")
+        }).catch((error)=>{
+            console.log(error)
         })
     }
 
@@ -77,44 +115,59 @@ function TtjStudents(props) {
         setFakultyName(value);
         setFakultyID(key.key)
     }
-
     function TTJSelect(value, key) {
         setTTJID(value);
     }
-
     function CoursSelect(value, key) {
         setKurs(value)
+    }
+    function StatusSelect(value,key) {
+        setStudenStatus(value);
+        if (value==='REMOVED'){
+            setStudentJOINED(false)
+        }
+        else setStudentJOINED(true)
     }
 
     return (
         <div>
-            <div className="w-25">
-                <label htmlFor="fakultet">Fakultet</label> <br/>
-                <Select className='my-2 w-100' id='fakultet'
-                        onChange={FacultySelect}>
-                    {Faculty && Faculty.map((item, index) => {
-                        return <Option key={item.id} value={item.name}>{item.name}</Option>
-                    })}
-                </Select>
-                <br/>
-                <label htmlFor="TTJ">Yotoqxona</label>
-                <Select id='TTJ' className='my-2' style={{width: "100%"}}
-                        onChange={TTJSelect}>
-                    {GetTTJList && GetTTJList.map((item, index) => {
-                        return <Option key={item.id} value={item.id}>{item.name}</Option>
-                    })}
-                </Select> <br/>
-                <label htmlFor="kurs">Kurs</label> <br/>
-                <Select id='kurs' className='my-2 w-100'
-                        onChange={CoursSelect}>
-                    <Option value='COURSE_1'>1-Kurs</Option>
-                    <Option value='COURSE_2'>2-Kurs</Option>
-                    <Option value='COURSE_3'>3-Kurs</Option>
-                    <Option value='COURSE_4'>4-Kurs</Option>
+            <div className="w-100 d-flex">
+                <div className="w-25">
+                    <label htmlFor="fakultet">Fakultet</label> <br/>
+                    <Select className='my-2 w-100' id='fakultet'
+                            onChange={FacultySelect}>
+                        {Faculty && Faculty.map((item, index) => {
+                            return <Option key={item.id} value={item.name}>{item.name}</Option>
+                        })}
+                    </Select>
+                    <br/>
+                    <label htmlFor="TTJ">Yotoqxona</label>
+                    <Select id='TTJ' className='my-2' style={{width: "100%"}}
+                            onChange={TTJSelect}>
+                        {GetTTJList && GetTTJList.map((item, index) => {
+                            return <Option key={item.id} value={item.id}>{item.name}</Option>
+                        })}
+                    </Select> <br/>
+                    <label htmlFor="kurs">Kurs</label> <br/>
+                    <Select id='kurs' className='my-2 w-100'
+                            onChange={CoursSelect}>
+                        <Option value='COURSE_1'>1-Kurs</Option>
+                        <Option value='COURSE_2'>2-Kurs</Option>
+                        <Option value='COURSE_3'>3-Kurs</Option>
+                        <Option value='COURSE_4'>4-Kurs</Option>
 
-                </Select> <br/>
-
+                    </Select> <br/>
+                </div>
+                <div className="w-25 mx-4">
+                    <label htmlFor="status">TTJ dan o'chirilgan yoki qabul qilingan talabalar</label>
+                    <Select id='status' className='my-2 w-100'
+                            onChange={StatusSelect}>
+                        <Option value='REMOVED'>O'chirilgan talabalar</Option>
+                        <Option value='JOINED'>Qabul qilingan talabalar </Option>
+                    </Select>
+                </div>
             </div>
+
             <table className="table table-bordered ">
                 <thead>
                 <tr>
@@ -134,21 +187,121 @@ function TtjStudents(props) {
                         <td>{item.student.course}</td>
                         <td>{item.student.phone}</td>
                         <td>
-                            <button className="btn btn-success mx-1">
+                            <button className="btn btn-success mx-1"
+                                    data-bs-toggle="modal" data-bs-target="#myModal"
+                                    onClick={(e)=>{seeStudent(item.student.id); setStudentUnic(item.student)}}>
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
                             </button>
 
-                            <button className="btn btn-danger mx-1">
-                                <img style={{width: "20px", height: "20px"}} className='iconEdit'
-                                     src="/img/delete.png" alt=""/>
-                            </button>
+                            {
+                                StudentJOINED ?
+                                    <button className="btn btn-danger mx-1"
+                                            onClick={(e)=>{deleteStudent(item.id)}}>
+                                        <img style={{width: "15px", height: "15px"}} className='iconEdit'
+                                             src="/img/close.png"
+                                             alt=""/>
+                                    </button>
+                                    :
+                                    <button className="btn btn-warning mx-1"
+                                            onClick={(e)=>{deleteStudent(item.id)}}>
+                                        <img style={{width: "15px", height: "15px"}} className='iconEdit'
+                                             src="/img/editing.png"
+                                             alt=""/>
+                                    </button>
+
+                            }
+
 
                         </td>
                     </tr>
                 })}
                 </tbody>
             </table>
+            <Pagination
+                current={page}
+                total={totalPage}
+                pageSize={pageSizes}
+                onChange={(e)=>{setPage(e)}}
+                showQuickJumper
+            />
+
+            <div className="modal" id="myModal">
+                <div className="modal-dialog" style={{marginLeft:"15%"}}>
+                    <div className="modal-content " style={{width:"50vw"}}>
+                        <div className="modal-header">
+                            <h4 className="modal-title">Talaba to'liq ma'lumoti</h4>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"/>
+                        </div>
+                        <div className="modal-body">
+                            <div className="d-flex  justify-content-between" >
+
+                                <img src={Studentunic.imageUrl} width='20%' height='auto' alt=""/>
+                                <div className='w-75'>
+                                    <p className='m-0'>F.I.SH</p>
+                                    <b className="">{Studentunic.name}</b>
+                                    <hr/>
+                                    <p className='m-0'>Jinsi</p>
+                                    <b className="">
+                                        {Studentunic.gender}
+                                    </b>
+                                    <hr/>
+                                    <p className='m-0'>Yashash manzili</p>
+                                    <b className="">
+                                        {Studentunic.country} / {Studentunic.city} / {Studentunic.district}
+                                    </b>
+                                    <hr/>
+                                </div>
+                            </div>
+                            <div className="mt-4 d-flex">
+                                <div className="w-50 p-2">
+                                    <p className='m-0'>Tel raqami</p>
+                                    <b className="">
+                                        {Studentunic.phone}
+                                    </b>
+                                    <hr/>
+                                    <p className='m-0'>Fakulteti</p>
+                                    <b className="">
+                                        {Studentunic.faculty}
+                                    </b>
+                                    <hr/>
+                                    <p className='m-0'>Kurs</p>
+                                    <b className="">
+                                        {Studentunic.course}
+                                    </b>
+                                    <hr/>
+                                    <p className='m-0'>Yo'nalish</p>
+                                    <b className="">
+                                        {Studentunic.specialty}
+                                    </b>
+                                    <hr/>
+                                </div>
+                                <div className="w-50 p-2">
+                                    <h4 className='text-center' style={{marginTop:'13px'}}>
+                                        Yuklangan fayllar
+                                    </h4>
+                                    <hr/>
+                                    {StudentFile && StudentFile.map((item, index)=>{
+                                        return <div key={index}>
+                                            <a href={`${ApiName1}${item.attachUrl}`} target='_blank' className='m-0'>{item.name}</a>
+                                            <hr/>
+                                        </div>
+                                    })}
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-danger"
+                                    data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     );
 }
