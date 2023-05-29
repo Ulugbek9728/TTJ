@@ -7,11 +7,13 @@ import {Autoplay, FreeMode, Pagination} from "swiper";
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
+import ReactBnbGallery from "react-bnb-gallery";
 
 function Section(props) {
     const {t } = useTranslation();
     const [Media, setMedia] = useState([]);
     const [Allkvota, setAllKvota] = useState({});
+    const [isOpen, setIsOpen] = useState(true);
 
 
     useEffect(() => {
@@ -62,20 +64,14 @@ function Section(props) {
                         slidesPerView={2}
                         spaceBetween={20}
                         freeMode={true}
-                        pagination={{
-                            clickable: true,
-                        }}
-                        autoplay={{
-                            delay: 2000,
-                            disableOnInteraction: false,
-                            pauseOnMouseEnter: true,
-                        }}
+                        pagination={{clickable: true,}}
+                        autoplay={{delay: 2000, disableOnInteraction: false, pauseOnMouseEnter: true,}}
                         modules={[FreeMode, Pagination, Autoplay]}
-                        className="swiper2"
-                    >
+                        className="swiper2">
                    {Media.photos && Media.photos.map((item, index)=>{
                     return<SwiperSlide key={index}>
                             <img src={`${ApiName1}${item}`} alt=""/>
+
 
                         </SwiperSlide>
                 })}

@@ -12,62 +12,71 @@ import Footer from "../components/footer";
 import {toast, ToastContainer} from "react-toastify";
 
 function Login(props) {
-    const {t } = useTranslation();
+    const {t} = useTranslation();
 
     const [passwordBoolin, setPasswordBoolin] = useState(true);
     const [message, setMessage] = useState([]);
     const [message2, setMessage2] = useState('');
     const [login1, setLogin] = useState({
-        login:'',
-        password:''
+        login: '',
+        password: ''
     });
     const navigate = useNavigate();
 
 
     function Login() {
         axios.post(`${ApiName1}/public/login`, login1).then((response) => {
+            console.log(response.data)
             if (response.status === 200) {
-                if (response.data.DEGREE === 'ADMIN'){
+                if (response.data.DEGREE === 'ADMIN') {
                     localStorage.setItem("token", response.data.jwt);
                     localStorage.setItem("user_Info", response.data.NAME);
                     localStorage.setItem("id", response.data.id);
                     navigate("/Adminyoli");
                 }
-                if  (response.data.DEGREE === 'USTOZ'){
+                if (response.data.DEGREE === 'USTOZ') {
                     localStorage.setItem("token", response.data.jwt);
                     localStorage.setItem("user_Info", response.data.NAME);
                     localStorage.setItem("id", response.data.id);
                     localStorage.setItem("faculty", response.data.FACULTY);
+                    localStorage.setItem("faculty_ID", response.data.FACULTY_ID);
                     navigate("/Tyutoryoli");
                 }
-                if  (response.data.DEGREE === 'DEKAN'){
+                if (response.data.DEGREE === 'DEKAN') {
                     localStorage.setItem("token", response.data.jwt);
                     localStorage.setItem("user_Info", response.data.NAME);
-                    localStorage.setItem("id", response.data.id);
+                    localStorage.setItem("id", response.data.ID);
                     localStorage.setItem("faculty", response.data.FACULTY);
+                    localStorage.setItem("faculty_ID", response.data.FACULTY_ID);
                     navigate("/Dekanyoli");
                 }
             }
-            console.log(response)
         }).catch((error) => {
+            if (error.response.status === 403){
+                setMessage2(error.response.data);
+            }
+            axios.post(`${ApiName}auth/login`, login1).then((response) => {
+                localStorage.setItem("token", response.data.data.token);navigate("/Submit")
+            }).catch((error) => {})
 
-                axios.post(`${ApiName}auth/login`,login1).then((response)=>{
-                    localStorage.setItem("token", response.data.data.token);
 
-                    navigate("/Submit")
-                }).catch((error)=>{
-                    setMessage2(error.response.data.error);
-                })
-            })
+        })
     }
+
     useEffect(() => {
         notify();
         setMessage2('')
-    },[message2]);
+    }, [message2]);
+
     function notify() {
-        if (message !== ''){message && message.map((item) => (toast.error(item)))}
-        if (message2 !== ''){toast.error(message2)}
+        if (message !== '') {
+            message && message.map((item) => (toast.error(item)))
+        }
+        if (message2 !== '') {
+            toast.error(message2)
+        }
     }
+
     return (
         <>
             <Navbar/>
@@ -96,14 +105,16 @@ function Login(props) {
                                 </div>
                                 <div className="all-input">
                                     <input type="text" placeholder="Talaba ID" name="ism"
-                                           onChange={(e) => setLogin({...login1,
-                                               login:e.target.value})}/>
+                                           onChange={(e) => setLogin({
+                                               ...login1,
+                                               login: e.target.value
+                                           })}/>
                                     <img src={user} alt="user-icon" className='user-icon'/>
                                 </div>
                                 <div className="all-input">
                                     <input type={passwordBoolin ? "password" : "text"}
                                            placeholder="parol" name="Parol"
-                                           onChange={(e) => setLogin({...login1,password:e.target.value})}/>
+                                           onChange={(e) => setLogin({...login1, password: e.target.value})}/>
                                     <img src={pasword} alt="user-icon" className='user-icon'/>
                                     {passwordBoolin ?
                                         <img onClick={() => setPasswordBoolin(!passwordBoolin)}

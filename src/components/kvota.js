@@ -73,8 +73,9 @@ function Kvota(props) {
     useEffect(() => {
         GetTTJInfo();
         GetFakultet();
-        notify()
-    },[sucsessText,setMessage2]);
+        notify();
+        setMessage2('')
+    },[sucsessText,message2]);
 
     function GetTTJInfo() {
         axios.get(`${ApiName1}/private/admin/dormitory`, {
@@ -132,7 +133,6 @@ function Kvota(props) {
                 setSucsessText("Ma'lumotlar qo'shildi")
 
             }).catch((error) => {
-            setMessage2('')
             console.log(error.response);
             if (error.response.status === 400){
                 setMessage2(error.response.data)

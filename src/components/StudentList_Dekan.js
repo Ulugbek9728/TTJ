@@ -1,24 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {Modal, Input, Select,Pagination } from 'antd';
-import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
-
-
-import {ApiName1} from "../APIname1";
-import "../asset/Admin.scss"
 import {useNavigate} from "react-router";
+import axios from "axios";
+import {ApiName1} from "../APIname1";
+import {Input, Pagination, Select} from "antd";
 
 const {Option} = Select;
 const { TextArea } = Input;
 
-
-function Student(props) {
+function StudentListDekan(props) {
     const navigate = useNavigate();
 
     const [sucsessText, setSucsessText] = useState('');
     const [Status, setstatus] = useState('');
     const [StatusBulin, setStatusBulin] = useState(true);
-    const [Dekan, setDekan] = useState([]);
     const [Students, setStudent] = useState([]);
     const [StudentID, setStudentID] = useState('');
     const [TTJID, setTTJID] = useState('');
@@ -26,7 +21,6 @@ function Student(props) {
     const [GetTTJList,  setGetTTJList] = useState([]);
     const [Studentunic, setStudentUnic] = useState({});
     const [FakultyName, setFakultyName] = useState('');
-    const [FakultyID, setFakultyID] = useState('');
     const [Kurs, setKurs] = useState('');
     const [Messeg, setMesseg] = useState('');
 
@@ -45,18 +39,16 @@ function Student(props) {
     };
 
     useEffect(() => {
-        Fakulty();
-        if (FakultyName !== '') {
-            if(Kurs !==''){
-                if(Status!== ''){
-                    StudentList()
-                }
-
+        setFakultyName(localStorage.getItem("faculty"));
+        getTTJ();
+        if(Kurs !==''){
+            if(Status!== ''){
+                StudentList()
             }
-        }
 
-        getTTJ()
-    }, [sucsessText, Kurs, FakultyID,Status,page]);
+        }
+    }, [sucsessText, Kurs,Status,page]);
+
 
     function StudentList() {
         axios.post(`${ApiName1}/private/student/list/${FakultyName}/${Kurs}`, '', {
@@ -74,20 +66,22 @@ function Student(props) {
     function changeStatus() {
 
         axios.put(`${ApiName1}/private/student/cancel/${StudentID}`,{message:Messeg}, {
-                headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
-            }).then((res)=>{
-                console.log(res)
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
+        }).then((res)=>{
+            console.log(res)
             setSucsessText('Talaba arizasi bekor qilindi')
+
         }).catch((error)=>{
             console.log(error)
         })
     }
 
     function getTTJ() {
-        axios.get(`${ApiName1}/private/admin/dormitory/show/faculty_id/${FakultyID}`,{
+        axios.get(`${ApiName1}/private/dekan/show/dormitories`,{
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((res)=>{
             setGetTTJList(res.data)
+            console.log(res.data)
         }).catch((error)=>{
             console.log(error)
         })
@@ -103,6 +97,7 @@ function Student(props) {
                     '',{
                         headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
                     .then((response) => {
+                        console.log(response)
                         if (response.status === 200){
                             file.fileBox=null
                             setSucsessText("Talaba muvofaqiyatli qo'shildi")
@@ -126,22 +121,6 @@ function Student(props) {
         })
     }
 
-    function Fakulty() {
-        axios.post(`${ApiName1}/adm/faculty/faculty_list`, '', {
-            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-        }).then((response) => {
-            setDekan(response.data);
-
-        }).catch((error) => {
-            if (error.response.status === 502) {
-                setMessage2('Server bilan ulanishda xatolik')
-            }
-            if (error.response.status === 401) {
-                navigate("/")
-            }
-        })
-    }
-
     function deleteStudent(e) {
         console.log(e)
         axios.delete(`${ApiName1}/private/student/delete/${e}`,{
@@ -154,10 +133,6 @@ function Student(props) {
         })
     }
 
-    function FacultySelect(value,key) {
-        setFakultyName(value);
-        setFakultyID(key.key)
-    }
     function CoursSelect(value,key) {
         setKurs(value)
     }
@@ -176,7 +151,8 @@ function Student(props) {
         notify();
         setMessage('');
         setMessage2('');
-        setSucsessText('')
+        setSucsessText('');
+        setMesseg('')
     }, [message, sucsessText, message2]);
 
     function notify() {
@@ -196,14 +172,6 @@ function Student(props) {
             <ToastContainer/>
             <div className='d-flex'>
                 <div className="w-25">
-                    <label htmlFor="fakultet">Fakultet</label> <br/>
-                    <Select className='my-2 w-100' id='fakultet'
-                            onChange={FacultySelect}>
-                        {Dekan && Dekan.map((item, index) => {
-                            return <Option key={item.id} value={item.name}>{item.name}</Option>
-                        })}
-                    </Select>
-                    <br/>
                     <label htmlFor="kurs">Kurs</label> <br/>
                     <Select id='kurs' className='my-2 w-100'
                             onChange={CoursSelect}>
@@ -240,18 +208,12 @@ function Student(props) {
                         <td>{item.faculty}</td>
                         <td>{item.course}</td>
                         <td>{item.phone}</td>
-                        <td>
+                        <td className='d-flex'>
                             <button className="btn btn-success mx-1"
                                     data-bs-toggle="modal" data-bs-target="#myModal"
-                            onClick={(e)=>{seeStudent(item.id); setStudentUnic(item)}}>
+                                    onClick={(e)=>{seeStudent(item.id); setStudentUnic(item)}}>
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
-                            </button>
-                            <button className="btn btn-warning mx-1"
-                                    data-bs-toggle="modal" data-bs-target="#myModal1"
-                            onClick={(e)=>{setStudentID(item.id)}}>
-                                <img style={{width: "20px", height: "20px"}} className='iconEdit'
-                                     src="/img/editing.png" alt=""/>
                             </button>
                             {StatusBulin ?
                                 <button className="btn btn-danger mx-1"
@@ -261,15 +223,22 @@ function Student(props) {
                                          alt=""/>
                                 </button>
                                 :
-                                <button className="btn btn-danger mx-1"
-                                        data-bs-toggle="modal" data-bs-target="#myModal2"
-                                        onClick={(e)=>{setStudentID(item.id)}}>
-                                    <img style={{width: "15px", height: "15px"}} className='iconEdit'
-                                         src="/img/close.png"
-                                         alt=""/>
-                                </button>
+                                <div>
+                                    <button className="btn btn-warning mx-1"
+                                            data-bs-toggle="modal" data-bs-target="#myModal1"
+                                            onClick={(e)=>{setStudentID(item.id)}}>
+                                        <img style={{width: "20px", height: "20px"}} className='iconEdit'
+                                             src="/img/editing.png" alt=""/>
+                                    </button>
+                                    <button className="btn btn-danger mx-1"
+                                            data-bs-toggle="modal" data-bs-target="#myModal2"
+                                            onClick={(e)=>{setStudentID(item.id)}}>
+                                        <img style={{width: "15px", height: "15px"}} className='iconEdit'
+                                             src="/img/close.png"
+                                             alt=""/>
+                                    </button>
+                                </div>
                             }
-
                         </td>
                     </tr>
                 })}
@@ -370,10 +339,10 @@ function Student(props) {
                         <div className="modal-body">
                             <label htmlFor="TTJ">Yotoqxonani belgilang</label>
                             <select id='TTJ' className='my-2 form-control' style={{width: "100%"}}
-                            onChange={(e)=>{setTTJID(e.target.value)}}>
+                                    onChange={(e)=>{setTTJID(e.target.value)}}>
                                 <option value="">TTJ ni tanlang</option>
                                 {GetTTJList && GetTTJList.map((item, index) => {
-                                    return <option key={item.id} value={item.id}>{item.name}</option>
+                                    return <option key={index} value={item.id}>{item.name}</option>
                                 })}
                             </select>
                             <label htmlFor="File">PDF faylni yuklang</label> <br/>
@@ -393,12 +362,12 @@ function Student(props) {
                 <div className="modal-dialog" style={{marginLeft:"15%"}}>
                     <div className="modal-content " style={{width:"50vw"}}>
                         <div className="modal-header">
-                            <h4>Talabani Universitet yotoqxonasiga joylashtirish</h4>
+                            <h4>Talabani Universitet yotoqxonasiga qabulni bekor qilish</h4>
                             <button type="button" className="btn-close" data-bs-dismiss="modal"/>
                         </div>
                         <div className="modal-body">
                             <label htmlFor="Message">Bekor qilish sababini yozing</label>
-                            <TextArea rows="5" name="text"
+                            <TextArea rows="5" name="text" value={Messeg}
                                       onChange={(e)=>{setMesseg(e.target.value)}}/>
                         </div>
                         <div className="modal-footer">
@@ -414,4 +383,4 @@ function Student(props) {
     );
 }
 
-export default Student;
+export default StudentListDekan;

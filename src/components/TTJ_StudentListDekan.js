@@ -1,24 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {Input, Pagination, Select} from "antd";
+import {useNavigate} from "react-router";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
-import {useNavigate} from "react-router";
 import {toast, ToastContainer} from "react-toastify";
+import {Pagination, Select} from "antd";
 
 
 const {Option} = Select;
+function TtjStudentListDekan(props) {
 
-function TtjStudents(props) {
-
-    const navigate = useNavigate();
     const [sucsessText, setSucsessText] = useState('');
     const [message2, setMessage2] = useState('');
     const [message, setMessage] = useState([]);
 
-    const [FakultyName, setFakultyName] = useState('');
     const [Kurs, setKurs] = useState('');
-    const [Faculty, setFaculty] = useState([]);
-    const [FakultyID, setFakultyID] = useState('');
     const [GetTTJList, setGetTTJList] = useState([]);
     const [TTJID, setTTJID] = useState('');
     const [Students, setStudent] = useState([]);
@@ -32,33 +27,16 @@ function TtjStudents(props) {
 
 
     useEffect(() => {
-        Fakulty();
-        if (FakultyName !== '') {
+
             getTTJ();
             if (Kurs !== '') {
                 StudentList()
             }
-        }
-    }, [sucsessText, Kurs, FakultyID, TTJID, StudentStatus]);
+    }, [sucsessText, Kurs, TTJID, StudentStatus]);
 
-    function Fakulty() {
-        axios.post(`${ApiName1}/adm/faculty/faculty_list`, '', {
-            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-        }).then((response) => {
-            setFaculty(response.data);
-
-        }).catch((error) => {
-            if (error.response.status === 502) {
-                setMessage2('Server bilan ulanishda xatolik')
-            }
-            if (error.response.status === 401) {
-                navigate("/")
-            }
-        })
-    }
 
     function getTTJ() {
-        axios.get(`${ApiName1}/private/admin/dormitory/show/faculty_id/${FakultyID}`, {
+        axios.get(`${ApiName1}/private/dekan/show/dormitories`, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((res) => {
             setGetTTJList(res.data)
@@ -68,16 +46,14 @@ function TtjStudents(props) {
     }
 
     function StudentList() {
-        axios.post(`${ApiName1}/admin/dormitory_student`, {
+        axios.post(`${ApiName1}/dekan/dormitory_student`, {
             course: Kurs,
             dormitory_id: TTJID,
-            faculty_id: FakultyID,
             status:StudentStatus
         }, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
             params:{page:(page-1),size:pageSizes}
         }).then((response) => {
-            console.log(response.data.content);
             setStudent(response.data.content);
             setTotalPage(response.data.totalElements)
 
@@ -113,10 +89,6 @@ function TtjStudents(props) {
         })
     }
 
-    function FacultySelect(value, key) {
-        setFakultyName(value);
-        setFakultyID(key.key)
-    }
     function TTJSelect(value, key) {
         setTTJID(value);
     }
@@ -155,14 +127,6 @@ function TtjStudents(props) {
             <ToastContainer/>
             <div className="w-100 d-flex">
                 <div className="w-25">
-                    <label htmlFor="fakultet">Fakultet</label> <br/>
-                    <Select className='my-2 w-100' id='fakultet'
-                            onChange={FacultySelect}>
-                        {Faculty && Faculty.map((item, index) => {
-                            return <Option key={item.id} value={item.name}>{item.name}</Option>
-                        })}
-                    </Select>
-                    <br/>
                     <label htmlFor="TTJ">Yotoqxona</label>
                     <Select id='TTJ' className='my-2' style={{width: "100%"}}
                             onChange={TTJSelect}>
@@ -328,4 +292,4 @@ function TtjStudents(props) {
     );
 }
 
-export default TtjStudents;
+export default TtjStudentListDekan;
