@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Modal, Input, Select,Pagination } from 'antd';
+import {Modal, Input, Select,Pagination, Alert, Space, Spin } from 'antd';
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
 
@@ -36,6 +36,9 @@ function Student(props) {
     const [message, setMessage] = useState([]);
     const [message2, setMessage2] = useState('');
 
+    const [RectorBulin, setRectorBulin] = useState(true);
+    const [loading, setLoading] = useState(false);
+
     const [file, setFile] = useState([{
         fileBox: null
     }]);
@@ -45,6 +48,11 @@ function Student(props) {
     };
 
     useEffect(() => {
+        if (localStorage.getItem("degree")!='RECTOR'){
+            setRectorBulin(false)
+        }
+        else {setRectorBulin(true)}
+
         Fakulty();
         if (FakultyName !== '') {
             if(Kurs !==''){
@@ -84,16 +92,20 @@ function Student(props) {
     }
 
     function getTTJ() {
-        axios.get(`${ApiName1}/private/admin/dormitory/show/faculty_id/${FakultyID}`,{
-            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-        }).then((res)=>{
-            setGetTTJList(res.data)
-        }).catch((error)=>{
-            console.log(error)
-        })
+        if (localStorage.getItem("degree")!='RECTOR'){
+            axios.get(`${ApiName1}/private/admin/dormitory/show/faculty_id/${FakultyID}`,{
+                headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+            }).then((res)=>{
+                setGetTTJList(res.data)
+            }).catch((error)=>{
+                console.log(error)
+            })
+
+        }
     }
 
     function postStudentTTJ() {
+        setLoading(true)
         const allData = new FormData();
         allData.append(`file`,file.fileBox)
         axios.post(`${ApiName1}/attach/upload`, allData)
@@ -103,11 +115,15 @@ function Student(props) {
                     '',{
                         headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
                     .then((response) => {
+                        setLoading(false)
                         if (response.status === 200){
                             file.fileBox=null
-                            setSucsessText("Talaba muvofaqiyatli qo'shildi")
+                            setSucsessText("Talaba muvofaqiyatli qo'shildi");
+                            document.getElementById('File').value = ''
+                            setTTJID('')
                         }
                     }).catch((error) => {
+                    setLoading(false)
                     console.log(error.response.data)
                     setMessage2(error.response.data)
                 })
@@ -240,35 +256,44 @@ function Student(props) {
                         <td>{item.faculty}</td>
                         <td>{item.course}</td>
                         <td>{item.phone}</td>
-                        <td>
+                        <td className='d-flex'>
                             <button className="btn btn-success mx-1"
                                     data-bs-toggle="modal" data-bs-target="#myModal"
                             onClick={(e)=>{seeStudent(item.id); setStudentUnic(item)}}>
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
                             </button>
-                            <button className="btn btn-warning mx-1"
-                                    data-bs-toggle="modal" data-bs-target="#myModal1"
-                            onClick={(e)=>{setStudentID(item.id)}}>
-                                <img style={{width: "20px", height: "20px"}} className='iconEdit'
-                                     src="/img/editing.png" alt=""/>
-                            </button>
-                            {StatusBulin ?
-                                <button className="btn btn-danger mx-1"
-                                        onClick={()=>{deleteStudent(item.id)}}>
-                                    <img style={{width: "20px", height: "20px"}} className='iconEdit'
-                                         src="/img/delete.png"
-                                         alt=""/>
-                                </button>
+
+                            {RectorBulin ?
+                                ''
                                 :
-                                <button className="btn btn-danger mx-1"
-                                        data-bs-toggle="modal" data-bs-target="#myModal2"
-                                        onClick={(e)=>{setStudentID(item.id)}}>
-                                    <img style={{width: "15px", height: "15px"}} className='iconEdit'
-                                         src="/img/close.png"
-                                         alt=""/>
-                                </button>
+                                <div className='d-flex'>
+                                    <button className="btn btn-warning mx-1"
+                                            data-bs-toggle="modal" data-bs-target="#myModal1"
+                                            onClick={(e)=>{setStudentID(item.id)}}>
+                                        <img style={{width: "20px", height: "20px"}} className='iconEdit'
+                                             src="/img/editing.png" alt=""/>
+                                    </button>
+                                    {StatusBulin ?
+                                        <button className="btn btn-danger mx-1"
+                                                onClick={()=>{deleteStudent(item.id)}}>
+                                            <img style={{width: "20px", height: "20px"}} className='iconEdit'
+                                                 src="/img/delete.png"
+                                                 alt=""/>
+                                        </button>
+                                        :
+                                        <button className="btn btn-danger mx-1"
+                                                data-bs-toggle="modal" data-bs-target="#myModal2"
+                                                onClick={(e)=>{setStudentID(item.id)}}>
+                                            <img style={{width: "15px", height: "15px"}} className='iconEdit'
+                                                 src="/img/close.png"
+                                                 alt=""/>
+                                        </button>
+                                    }
+                                </div>
                             }
+
+
 
                         </td>
                     </tr>
@@ -283,6 +308,7 @@ function Student(props) {
                 onChange={(e)=>{setPage(e)}}
                 showQuickJumper
             />
+
 
             <div className="modal" id="myModal">
                 <div className="modal-dialog" style={{marginLeft:"15%"}}>
@@ -365,11 +391,11 @@ function Student(props) {
                     <div className="modal-content " style={{width:"50vw"}}>
                         <div className="modal-header">
                             <h4>Talabani Universitet yotoqxonasiga joylashtirish</h4>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal"/>
+                            <button type="button" className="btn-close" disabled={loading} data-bs-dismiss="modal"/>
                         </div>
                         <div className="modal-body">
                             <label htmlFor="TTJ">Yotoqxonani belgilang</label>
-                            <select id='TTJ' className='my-2 form-control' style={{width: "100%"}}
+                            <select id='TTJ' className='my-2 form-control' value={TTJID} style={{width: "100%"}}
                             onChange={(e)=>{setTTJID(e.target.value)}}>
                                 <option value="">TTJ ni tanlang</option>
                                 {GetTTJList && GetTTJList.map((item, index) => {
@@ -381,8 +407,23 @@ function Student(props) {
                                    onChange={(e) => handleInputFile(e)}/>
                         </div>
                         <div className="modal-footer">
-                            <button className='btn btn-success' onClick={postStudentTTJ}>yuborish</button>
-                            <button type="button" className="btn btn-danger"
+                            {loading ?
+                                <Space direction="vertical" style={{width: '100%',}}>
+                                    <Spin tip="Loading...">
+                                        <Alert
+                                            message="Ma'lumot yuklanmoqda"
+                                            description="Iltimos kutib turing"
+                                            type="info"
+                                        />
+                                    </Spin>
+                                </Space>
+                                :
+                                ''
+                            }
+
+                            <button className='btn btn-success' disabled={loading}
+                                    onClick={postStudentTTJ}>yuborish</button>
+                            <button type="button" className="btn btn-danger" disabled={loading}
                                     data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>

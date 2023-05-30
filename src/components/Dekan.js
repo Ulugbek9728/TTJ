@@ -109,8 +109,6 @@ function Dekan(props) {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
             setGetFakultet(response.data);
-            console.log(response.data);
-
         }).catch((error) => {
             console.log(error.response)
         })

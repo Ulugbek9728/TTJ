@@ -24,6 +24,8 @@ function TtjStudentListDekan(props) {
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
     const [pageSizes, setPageSize] = useState(20);
+    const [StudentunicFile, setStudentUnicFile] = useState('');
+
 
 
     useEffect(() => {
@@ -70,22 +72,6 @@ function TtjStudentListDekan(props) {
             console.log(response);
         }).catch((error) => {
             console.log(error.response)
-        })
-    }
-
-    function deleteStudent(e) {
-        setSucsessText('')
-        axios.put(`${ApiName1}/admin/dormitory_student/change_status/${e}/${
-            StudentJOINED ? 'REMOVED':'JOINED'}`,'',{
-            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-
-        }).then((res)=>{
-            console.log(res)
-
-            setSucsessText("Talaba TTJ dan o'chirildi")
-        }).catch((error)=>{
-            console.log(error)
-            setMessage2(error.response.data)
         })
     }
 
@@ -148,7 +134,7 @@ function TtjStudentListDekan(props) {
                     <label htmlFor="status">TTJ dan o'chirilgan yoki qabul qilingan talabalar</label>
                     <Select id='status' className='my-2 w-100'
                             onChange={StatusSelect}>
-                        <Option value='REMOVED'>O'chirilgan talabalar</Option>
+                        <Option value='REMOVED'>Ichki tartibni buzgan talabalar</Option>
                         <Option value='JOINED'>Qabul qilingan talabalar </Option>
                     </Select>
                 </div>
@@ -175,29 +161,14 @@ function TtjStudentListDekan(props) {
                         <td>
                             <button className="btn btn-success mx-1"
                                     data-bs-toggle="modal" data-bs-target="#myModal"
-                                    onClick={(e)=>{seeStudent(item.student.id); setStudentUnic(item.student)}}>
+                                    onClick={(e)=>{
+                                        seeStudent(item.student.id);
+                                        setStudentUnic(item.student);
+                                        setStudentUnicFile(item.fileOpenUrl)
+                                    }}>
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
                             </button>
-
-                            {
-                                StudentJOINED ?
-                                    <button className="btn btn-danger mx-1"
-                                            onClick={(e)=>{deleteStudent(item.id)}}>
-                                        <img style={{width: "15px", height: "15px"}} className='iconEdit'
-                                             src="/img/close.png"
-                                             alt=""/>
-                                    </button>
-                                    :
-                                    <button className="btn btn-warning mx-1"
-                                            onClick={(e)=>{deleteStudent(item.id)}}>
-                                        <img style={{width: "15px", height: "15px"}} className='iconEdit'
-                                             src="/img/editing.png"
-                                             alt=""/>
-                                    </button>
-
-                            }
-
 
                         </td>
                     </tr>
@@ -264,7 +235,7 @@ function TtjStudentListDekan(props) {
                                 </div>
                                 <div className="w-50 p-2">
                                     <h4 className='text-center' style={{marginTop:'13px'}}>
-                                        Yuklangan fayllar
+                                        Talaba yuklagan fayllari
                                     </h4>
                                     <hr/>
                                     {StudentFile && StudentFile.map((item, index)=>{
@@ -277,8 +248,10 @@ function TtjStudentListDekan(props) {
 
                                 </div>
 
-
                             </div>
+                            <hr/>
+                            <a href={`${ApiName1}${StudentunicFile}`} target='_blank'
+                               className='m-0'>TTJ dan chetlashtirish sababi</a>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-danger"

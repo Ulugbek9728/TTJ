@@ -13,6 +13,7 @@ import DekanPage from "./pages/DekanPage";
 import TyutorPage from "./pages/TyutorPage";
 import Natija from "./pages/natija";
 import YangilikBatafsil from "./components/yangilik batafsil";
+import {ToastContainer} from "react-toastify";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
 
   return (
     <div className="App">
+        <ToastContainer/>
 
         {auth.bgCircle ?
             <>
@@ -42,7 +44,7 @@ function App() {
 
                     <Route path={"/Adminyoli/*"} element={ <AdminPage/>}/>
                     <Route path={"/Dekanyoli/*"} element={ <DekanPage/>}/>
-                    <Route path={"/Tyutoryoli/*"} element={ <TyutorPage/>}/>
+                    <Route path={"/SeeAll/*"} element={ <TyutorPage/>}/>
 
                     <Route path={"/"} element={ <HOME/>}/>
                 </Routes>

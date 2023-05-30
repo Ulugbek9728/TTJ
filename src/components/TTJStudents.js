@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Input, Pagination, Select} from "antd";
+import {Alert, Input, Modal, Pagination, Select, Space, Spin} from "antd";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {useNavigate} from "react-router";
@@ -11,6 +11,8 @@ const {Option} = Select;
 function TtjStudents(props) {
 
     const navigate = useNavigate();
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const [sucsessText, setSucsessText] = useState('');
     const [message2, setMessage2] = useState('');
     const [message, setMessage] = useState([]);
@@ -22,16 +24,66 @@ function TtjStudents(props) {
     const [GetTTJList, setGetTTJList] = useState([]);
     const [TTJID, setTTJID] = useState('');
     const [Students, setStudent] = useState([]);
+    const [StudentID, setStudentID] = useState('');
     const [Studentunic, setStudentUnic] = useState({});
+    const [StudentunicFile, setStudentUnicFile] = useState('');
     const [StudentFile, setStudentFile] = useState([]);
     const [StudentStatus, setStudenStatus] = useState('JOINED');
     const [StudentJOINED, setStudentJOINED] = useState(true);
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
     const [pageSizes, setPageSize] = useState(20);
+    const [loading, setLoading] = useState(false);
 
+
+    const [RectorBulin, setRectorBulin] = useState(true);
+    const [file, setFile] = useState([{
+        fileBox: null
+    }]);
+
+    const handleInputFile = (e, index) => {
+        file.fileBox = e.target.files[0]
+    };
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+    const handleOk = () => {
+        setLoading(true)
+        const allData = new FormData();
+        allData.append(`file`, file.fileBox)
+        axios.post(`${ApiName1}/attach/upload`, allData)
+            .then((response) => {
+                axios.put(`${ApiName1}/admin/dormitory_student/change_status/${StudentID}/${
+                    StudentJOINED ? 'REMOVED' : 'JOINED'}/${response.data[0].id}`, '', {
+                    headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+
+                }).then((res) => {
+                    console.log(res)
+                    setLoading(false);
+                    setIsModalVisible(false);
+                    document.getElementById('File').value = ''
+                    setSucsessText("Talaba qora ro'yxatga tushdi")
+                    setStudentID('')
+                }).catch((error) => {
+                    console.log(error)
+                    setLoading(false)
+                    setMessage2(error.response.data)
+                })
+            }).catch((error) => {
+            console.log(error)
+        })
+
+    }
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
 
     useEffect(() => {
+        if (localStorage.getItem("degree") != 'RECTOR') {
+            setRectorBulin(false)
+        } else {
+            setRectorBulin(true)
+        }
         Fakulty();
         if (FakultyName !== '') {
             getTTJ();
@@ -72,12 +124,11 @@ function TtjStudents(props) {
             course: Kurs,
             dormitory_id: TTJID,
             faculty_id: FakultyID,
-            status:StudentStatus
+            status: StudentStatus
         }, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
-            params:{page:(page-1),size:pageSizes}
+            params: {page: (page - 1), size: pageSizes}
         }).then((response) => {
-            console.log(response.data.content);
             setStudent(response.data.content);
             setTotalPage(response.data.totalElements)
 
@@ -97,19 +148,14 @@ function TtjStudents(props) {
         })
     }
 
-    function deleteStudent(e) {
-        setSucsessText('')
-        axios.put(`${ApiName1}/admin/dormitory_student/change_status/${e}/${
-            StudentJOINED ? 'REMOVED':'JOINED'}`,'',{
+    function deleteStudent() {
+        axios.delete(`${ApiName1}/private/dormitory_student/${StudentID}`, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-
-        }).then((res)=>{
+        }).then((res) => {
             console.log(res)
-
             setSucsessText("Talaba TTJ dan o'chirildi")
-        }).catch((error)=>{
+        }).catch((error) => {
             console.log(error)
-            setMessage2(error.response.data)
         })
     }
 
@@ -117,25 +163,28 @@ function TtjStudents(props) {
         setFakultyName(value);
         setFakultyID(key.key)
     }
+
     function TTJSelect(value, key) {
         setTTJID(value);
     }
+
     function CoursSelect(value, key) {
         setKurs(value)
     }
-    function StatusSelect(value,key) {
+
+    function StatusSelect(value, key) {
         setStudenStatus(value);
-        if (value==='REMOVED'){
+        if (value === 'REMOVED') {
             setStudentJOINED(false)
-        }
-        else setStudentJOINED(true)
+        } else setStudentJOINED(true)
     }
 
     useEffect(() => {
         notify();
         setMessage('');
         setMessage2('');
-        setSucsessText('')
+        setSucsessText('');
+        setStudentID('')
     }, [message, sucsessText, message2]);
 
     function notify() {
@@ -184,11 +233,32 @@ function TtjStudents(props) {
                     <label htmlFor="status">TTJ dan o'chirilgan yoki qabul qilingan talabalar</label>
                     <Select id='status' className='my-2 w-100'
                             onChange={StatusSelect}>
-                        <Option value='REMOVED'>O'chirilgan talabalar</Option>
+                        <Option value='REMOVED'>Ichki tartibni buzgan talabalar</Option>
                         <Option value='JOINED'>Qabul qilingan talabalar </Option>
                     </Select>
                 </div>
             </div>
+            <Modal className='ticherModal' title={"Talabani qora ro'yxatga qo'shish"}
+                   open={isModalVisible}
+                   onOk={handleOk} onCancel={handleCancel}>
+                <div>
+                    <label htmlFor='Title'>File (pdf)</label><br/>
+                    <input type="file" id='File' onChange={(e) => handleInputFile(e)}/>
+                </div>
+                {loading ?
+                    <Space direction="vertical" style={{width: '100%',}}>
+                        <Spin tip="Loading...">
+                            <Alert
+                                message="Ma'lumot yuklanmoqda"
+                                description="Iltimos kutib turing"
+                                type="info"
+                            />
+                        </Spin>
+                    </Space>
+                    :
+                    ''
+                }
+            </Modal>
 
             <table className="table table-bordered ">
                 <thead>
@@ -208,30 +278,44 @@ function TtjStudents(props) {
                         <td>{item.student.faculty}</td>
                         <td>{item.student.course}</td>
                         <td>{item.student.phone}</td>
-                        <td>
+                        <td className='d-flex'>
                             <button className="btn btn-success mx-1"
                                     data-bs-toggle="modal" data-bs-target="#myModal"
-                                    onClick={(e)=>{seeStudent(item.student.id); setStudentUnic(item.student)}}>
+                                    onClick={(e) => {
+                                        seeStudent(item.student.id);
+                                        setStudentUnic(item.student)
+                                        setStudentUnicFile(item.fileOpenUrl)
+                                    }}>
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
                             </button>
-
-                            {
-                                StudentJOINED ?
+                            {RectorBulin ?
+                                ''
+                                :
+                                <div className='d-flex'>
+                                    {
+                                        StudentJOINED ?
+                                            <div className="d-flex">
+                                                <button className="btn btn-danger mx-1"
+                                                        onClick={(e)=>{showModal(); setStudentID(item.id)}}>
+                                                    <img style={{width: "15px", height: "15px"}} className='iconEdit'
+                                                         src="/img/close.png"
+                                                         alt=""/>
+                                                </button>
+                                            </div>
+                                            :
+                                           ''
+                                    }
                                     <button className="btn btn-danger mx-1"
-                                            onClick={(e)=>{deleteStudent(item.id)}}>
-                                        <img style={{width: "15px", height: "15px"}} className='iconEdit'
-                                             src="/img/close.png"
+                                            data-bs-toggle="modal" data-bs-target="#myModal2"
+                                            onClick={() => {
+                                                setStudentID(item.id)
+                                            }}>
+                                        <img style={{width: "20px", height: "20px"}} className='iconEdit'
+                                             src="/img/delete.png"
                                              alt=""/>
                                     </button>
-                                    :
-                                    <button className="btn btn-warning mx-1"
-                                            onClick={(e)=>{deleteStudent(item.id)}}>
-                                        <img style={{width: "15px", height: "15px"}} className='iconEdit'
-                                             src="/img/editing.png"
-                                             alt=""/>
-                                    </button>
-
+                                </div>
                             }
 
 
@@ -244,19 +328,21 @@ function TtjStudents(props) {
                 current={page}
                 total={totalPage}
                 pageSize={pageSizes}
-                onChange={(e)=>{setPage(e)}}
+                onChange={(e) => {
+                    setPage(e)
+                }}
                 showQuickJumper
             />
 
             <div className="modal" id="myModal">
-                <div className="modal-dialog" style={{marginLeft:"15%"}}>
-                    <div className="modal-content " style={{width:"50vw"}}>
+                <div className="modal-dialog" style={{marginLeft: "15%"}}>
+                    <div className="modal-content " style={{width: "50vw"}}>
                         <div className="modal-header">
                             <h4 className="modal-title">Talaba to'liq ma'lumoti</h4>
                             <button type="button" className="btn-close" data-bs-dismiss="modal"/>
                         </div>
                         <div className="modal-body">
-                            <div className="d-flex  justify-content-between" >
+                            <div className="d-flex  justify-content-between">
 
                                 <img src={Studentunic.imageUrl} width='20%' height='auto' alt=""/>
                                 <div className='w-75'>
@@ -299,30 +385,55 @@ function TtjStudents(props) {
                                     <hr/>
                                 </div>
                                 <div className="w-50 p-2">
-                                    <h4 className='text-center' style={{marginTop:'13px'}}>
-                                        Yuklangan fayllar
+                                    <h4 className='text-center' style={{marginTop: '13px'}}>
+                                       Talaba yuklagan fayllari
                                     </h4>
                                     <hr/>
-                                    {StudentFile && StudentFile.map((item, index)=>{
+                                    {StudentFile && StudentFile.map((item, index) => {
                                         return <div key={index}>
-                                            <a href={`${ApiName1}${item.attachUrl}`} target='_blank' className='m-0'>{item.name}</a>
+                                            <a href={`${ApiName1}${item.attachUrl}`} target='_blank'
+                                               className='m-0'>{item.name}</a>
                                             <hr/>
                                         </div>
                                     })}
 
 
                                 </div>
-
-
                             </div>
+                            <hr/>
+                            <a href={`${ApiName1}${StudentunicFile}`} target='_blank'
+                               className='m-0'>TTJ dan chetlashtirish sababi</a>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-danger"
-                                    data-bs-dismiss="modal">Close</button>
+                                    data-bs-dismiss="modal">Close
+                            </button>
                         </div>
                     </div>
                 </div>
 
+            </div>
+            <div className="modal" id="myModal2">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h4 className="modal-title">Tasdiqlash oynasi </h4>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div className="modal-body">
+                            <b>Talaba</b> ni o'chirmoqchimisiz
+                        </div>
+
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-danger" data-bs-dismiss="modal"
+                                    onClick={deleteStudent}>
+                                <img style={{width: "20px", height: "20px"}} src="/img/delete.png" alt=""/>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -30,17 +30,17 @@ function Login(props) {
             if (response.status === 200) {
                 if (response.data.DEGREE === 'ADMIN') {
                     localStorage.setItem("token", response.data.jwt);
+                    localStorage.setItem("degree", response.data.DEGREE);
                     localStorage.setItem("user_Info", response.data.NAME);
                     localStorage.setItem("id", response.data.id);
                     navigate("/Adminyoli");
                 }
-                if (response.data.DEGREE === 'USTOZ') {
+                if (response.data.DEGREE === 'RECTOR') {
+                    localStorage.setItem("degree", response.data.DEGREE);
                     localStorage.setItem("token", response.data.jwt);
                     localStorage.setItem("user_Info", response.data.NAME);
-                    localStorage.setItem("id", response.data.id);
-                    localStorage.setItem("faculty", response.data.FACULTY);
-                    localStorage.setItem("faculty_ID", response.data.FACULTY_ID);
-                    navigate("/Tyutoryoli");
+                    localStorage.setItem("id", response.data.ID);
+                    navigate("/SeeAll");
                 }
                 if (response.data.DEGREE === 'DEKAN') {
                     localStorage.setItem("token", response.data.jwt);

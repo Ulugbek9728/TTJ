@@ -66,6 +66,7 @@ function AdminPage(props) {
         localStorage.removeItem("token");
         localStorage.removeItem("user_Info");
         localStorage.removeItem("id");
+        localStorage.removeItem("degree");
         navigate("/")
     }
 
