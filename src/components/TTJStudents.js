@@ -248,11 +248,8 @@ function TtjStudents(props) {
                 {loading ?
                     <Space direction="vertical" style={{width: '100%',}}>
                         <Spin tip="Loading...">
-                            <Alert
-                                message="Ma'lumot yuklanmoqda"
-                                description="Iltimos kutib turing"
-                                type="info"
-                            />
+                            <Alert message="Ma'lumot yuklanmoqda" description="Iltimos kutib turing"
+                                   type="info"/>
                         </Spin>
                     </Space>
                     :
@@ -333,7 +330,6 @@ function TtjStudents(props) {
                 }}
                 showQuickJumper
             />
-
             <div className="modal" id="myModal">
                 <div className="modal-dialog" style={{marginLeft: "15%"}}>
                     <div className="modal-content " style={{width: "50vw"}}>

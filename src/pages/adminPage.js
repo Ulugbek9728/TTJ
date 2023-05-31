@@ -22,6 +22,7 @@ import logout from "../img/logout.png"
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {toast} from "react-toastify";
+import Contact from "../components/contact";
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -103,7 +104,9 @@ function AdminPage(props) {
                           if (into.key === "6"){ navigate("/Adminyoli/Faculty");}
                           if (into.key === "7"){ navigate("/Adminyoli/TTJ");}
                           if (into.key === "8"){ navigate("/Adminyoli/Kvota");}
-                          if (into.key === "9"){ navigate("/Adminyoli/TTJStudets");}}}
+                          if (into.key === "9"){ navigate("/Adminyoli/TTJStudets");}
+                          if (into.key === "10"){ navigate("/Adminyoli/Contact");}
+                      }}
                       items={[
                           {
                               label:"Rektor",
@@ -148,6 +151,11 @@ function AdminPage(props) {
                           {
                               label:"Media",
                               key:"5",
+                              icon: <PauseCircleOutlined />
+                          },
+                          {
+                              label:"Contact",
+                              key:"10",
                               icon: <PauseCircleOutlined />
                           },
                           ]} />
@@ -205,6 +213,7 @@ function AdminPage(props) {
                         <Route path={"/StudentList"} element={<Student/>}/>
                         <Route path={"/TTJStudets"} element={<TtjStudents/>}/>
                         <Route path={"/Media"} element={<Media/>}/>
+                        <Route path={"/Contact"} element={<Contact/>}/>
                         <Route path={"/"} element={<Rector/>}/>
                     </Routes>
                 </Content>

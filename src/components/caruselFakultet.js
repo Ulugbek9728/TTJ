@@ -60,7 +60,7 @@ function CaruselFakultet(props) {
                                 <img src={`${ApiName1}${item.photo_url}`} alt=""/>
                                 <div className="content">
                                     <div className="title">
-                                        {item.name}- Umumiy joylar soni {item.actual_count}
+                                        {item.name}- {t("umumiyKvota")}  {item.actual_count}
                                     </div>
                                     <div className="d-flex">
                                         <div className="orinlar">

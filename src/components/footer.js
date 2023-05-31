@@ -1,14 +1,29 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from "react-i18next";
 import TEL from "../img/tel.svg"
-import FBOOK from "../img/fb.svg"
-import TW from "../img/tw.svg"
+import TDTU from "../img/network.png"
 import PHONE from "../img/phone-call.png"
+import YOUTUBE from "../img/youtube (1).png"
 import Bolim from "../img/logoBo'lim.png"
+import axios from "axios";
+import {ApiName1} from "../APIname1";
 
 function Footer(props) {
     const {t} = useTranslation();
+    const [GetContact, setGetContact] = useState({});
 
+
+    function getContact(){
+        axios.get(`${ApiName1}/contact`,'').then((res)=>{
+            console.log(res)
+            setGetContact(res.data)
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
+    useEffect(() => {
+        getContact();
+    }, []);
     return (
         <div className="container footerBox">
             <div className="row">
@@ -23,22 +38,37 @@ function Footer(props) {
                                 {t("Mesenger")}
                             </div>
                             <div className="mesenger">
-                                <a href="#">
-                                    <img src={TEL} alt=""/>
-                                </a>
-                                <a href="#">
-                                    <img src={FBOOK} alt=""/>
-                                </a>
-                                <a href="#">
-                                    <img src={TW} alt=""/>
-                                </a>
+                                <p>
+                                    <a href={GetContact.telegramContact} target='_blank'>
+                                        <img src={TEL} alt=""/>
+                                        Telegram
+                                    </a>
+                                </p>
+                                <p>
+                                    <a href={GetContact.siteContact} target='_blank'>
+                                    <img src={TDTU} alt=""/>
+                                    tdtu.uz
+                                    </a>
+                                </p>
+                                <p>
+                                    <a href={GetContact.youtubeContact} target='_blank'>
+                                        <img src={YOUTUBE} alt=""/>
+                                        Youtube
+                                    </a>
+                                </p>
+                                <p>
+                                    <a href={GetContact.idSiteContact} target='_blank'>
+                                    <img src={TDTU} alt=""/>
+                                    id.tdtu.uz
+                                    </a>
+                                </p>
                             </div>
                         </div>
                         <div className="tel">
                             <div className="title">{t("Aloqa")}</div>
-                            <a href="#">
+                            <a href={`tel:${GetContact.phoneContact}`}>
                                 <img src={PHONE} alt=""/>
-                                +998998715321
+                                {GetContact.phoneContact}
                             </a>
                         </div>
                     </div>

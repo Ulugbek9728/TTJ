@@ -120,7 +120,7 @@ function Media(props) {
                 <tr>
                     <th>№</th>
                     <th>video</th>
-                    <th>delet</th>
+                    <th>delete</th>
 
                 </tr>
                 </thead>
@@ -151,7 +151,7 @@ function Media(props) {
                 <tr>
                     <th>№</th>
                     <th>foto</th>
-                    <th>delet</th>
+                    <th>delete</th>
 
                 </tr>
                 </thead>

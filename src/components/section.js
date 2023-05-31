@@ -7,13 +7,11 @@ import {Autoplay, FreeMode, Pagination} from "swiper";
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
-import ReactBnbGallery from "react-bnb-gallery";
 
 function Section(props) {
     const {t } = useTranslation();
     const [Media, setMedia] = useState([]);
     const [Allkvota, setAllKvota] = useState({});
-    const [isOpen, setIsOpen] = useState(true);
 
 
     useEffect(() => {
@@ -32,7 +30,7 @@ function Section(props) {
 
         }).catch((error) => {
             console.log(error.response)
-        })
+        });
     }
 
     return (

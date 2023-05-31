@@ -126,7 +126,6 @@ function Ariza(props) {
         })
     }
 
-
     return (
         <>
             <ToastContainer/>
@@ -182,7 +181,7 @@ function Ariza(props) {
                                                     talabalar
                                                 </option>
                                             </select>
-                                            <Input type="file"  accept="application/pdf"
+                                            <Input type="file" accept="application/pdf"
                                                    onChange={(e) => handleInputFile(e, index)}/>
                                         </div>
                                     ))}

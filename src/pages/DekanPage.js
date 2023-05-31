@@ -9,6 +9,7 @@ import logout from "../img/logout.png"
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {toast} from "react-toastify";
+import AddStudent from "../components/addStudent";
 
 const {Header, Content, Sider} = Layout;
 
@@ -83,6 +84,11 @@ function DekanPage(props) {
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}
                       items={[
                           {
+                              label: "1-kurs qabuli",
+                              key: "4",
+                              icon: <GoldOutlined/>
+                          },
+                          {
                               label: "TTJ",
                               key: "3",
                               icon: <GoldOutlined/>
@@ -107,6 +113,9 @@ function DekanPage(props) {
                           }
                           if (into.key === "3") {
                               navigate("/Dekanyoli/TTJ_List");
+                          }
+                          if (into.key === "4") {
+                              navigate("/Dekanyoli/TTJ_Qabuli");
                           }
                       }}
                 />
@@ -157,6 +166,7 @@ function DekanPage(props) {
                 </div>
                 <Content style={{margin: '24px 16px 0', overflow: 'initial',}}>
                     <Routes>
+                        <Route path={"/TTJ_Qabuli"} element={<AddStudent/>}/>
                         <Route path={"/TTJ_List"} element={<TtjDekan/>}/>
                         <Route path={"/StudentList_Dekan"} element={<TtjStudentListDekan/>}/>
                         <Route path={"/"} element={<StudentListDekan/>}/>
