@@ -165,12 +165,14 @@ function AdminPage(props) {
                     <span className="HeaderTitle">TTJ Admin paneli</span>
 
                 </Header>
-                <div className="dropdown ">
-                    <button type="button" className="btn " data-bs-toggle="dropdown">
+                <div className="dropdown">
+                    <button type="button" className="btn " data-bs-toggle="dropdown"
+                            data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
                         {localStorage.getItem("user_Info")&&
                         localStorage.getItem("user_Info").slice(0, 2)}
                     </button>
-                    <ul className="dropdown-menu">
+                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li>
                             <a className="dropdown-item" href="#">
                                 {localStorage.getItem("user_Info")}

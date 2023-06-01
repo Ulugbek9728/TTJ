@@ -145,8 +145,6 @@ function AddStudent(props) {
                         })
                     })
             })
-
-
     }
 
     useEffect(() => {
@@ -223,9 +221,11 @@ function AddStudent(props) {
                                 <div key={index}
                                       style={{display: 'flex', marginBottom: 8, position:"relative"}}
                                       align="baseline">
+
                                     <div className="dropdown">
                                         <button className=" selectBtn dropdown-toggle" type="button"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
                                             {item.fileName}
                                         </button>
                                         <div className="dropdown-menu"

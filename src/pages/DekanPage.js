@@ -124,12 +124,14 @@ function DekanPage(props) {
                 <Header>
                     <span className="HeaderTitle">TTJ Dekan paneli</span>
                 </Header>
-                <div className="dropdown ">
-                    <button type="button" className="btn " data-bs-toggle="dropdown">
-                        {localStorage.getItem("user_Info") &&
+                <div className="dropdown">
+                    <button type="button" className="btn " data-bs-toggle="dropdown"
+                            data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                        {localStorage.getItem("user_Info")&&
                         localStorage.getItem("user_Info").slice(0, 2)}
                     </button>
-                    <ul className="dropdown-menu">
+                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li>
                             <a className="dropdown-item" href="#">
                                 {localStorage.getItem("user_Info")}
@@ -138,17 +140,14 @@ function DekanPage(props) {
                         <li onClick={showModal}>
                             <a className="dropdown-item" href="#">Parolni yangilash</a></li>
                         <li onClick={signOut}><a className="dropdown-item" href="#">Chiqish<img
-                            src={logout} alt=""/></a>
-                        </li>
+                            src={logout} alt=""/></a></li>
                     </ul>
                     <Modal className='ticherModal' title="Parolni o'zgartirish" open={isModalVisible}
                            onOk={handleOk} onCancel={handleCancel}>
                         <div className="w-100">
                             <label htmlFor="editLogin">Login kiriting</label>
                             <Input id='editLogin' placeholder="AA1234567" allowClear value={NewPassword.login}
-                                   onChange={(e) => {
-                                       setNewPassword({...NewPassword, login: e.target.value.toUpperCase()})
-                                   }}
+                                   onChange={(e)=>{setNewPassword({...NewPassword, login: e.target.value.toUpperCase()})}}
                                    maxLength="9"/>
                             <label htmlFor="editPassword">Eski parolingizni kiriting</label>
                             <Input id='editPassword' allowClear value={NewPassword.oldPassword}
