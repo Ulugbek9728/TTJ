@@ -53,6 +53,7 @@ function Login(props) {
                     navigate("/Dekanyoli");
                 }
             }
+            setIsButtonLoading(false);
         }).catch((error) => {
             if (error.response.status === 403){
                 setMessage2(error.response.data);
@@ -62,7 +63,9 @@ function Login(props) {
                 localStorage.setItem("token", response.data.data.token);
                 navigate("/Submit");
                 setIsButtonLoading(false);
-            }).catch((error) => {})
+            }).catch((error) => {
+                setIsButtonLoading(false);
+            })
 
 
         })

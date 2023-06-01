@@ -38,6 +38,7 @@ function Ariza(props) {
         fileName: '',
         fileBox: null
     }]);
+    const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState([]);
     const [message2, setMessage2] = useState('');
     const [sucsessText, setSucsessText] = useState('');
@@ -104,9 +105,9 @@ function Ariza(props) {
     },[message, sucsessText, message2]);
 
     function notify() {
-        if (message != ''){message && message.map((item) => (toast.error(item)))}
-        if (sucsessText != ''){toast.success(sucsessText)}
-        if (message2 != ''){toast.error(message2)}
+        if (message !== ''){message && message.map((item) => (toast.error(item)))}
+        if (sucsessText !== ''){toast.success(sucsessText)}
+        if (message2 !== ''){toast.error(message2)}
     }
 
     function getStudent() {
@@ -137,7 +138,7 @@ function Ariza(props) {
 
     function postStudent() {
         const allData = new FormData();
-
+        setIsLoading(true);
         file.map((item, index) => (<>{allData.append(item.fileName, item.fileBox)}</>));
 
         axios.post(`${ApiName1}/attach/upload`, allData)
@@ -147,7 +148,6 @@ function Ariza(props) {
                 axios.post(`${ApiName1}/public/student/join/data`, Student)
                     .then((response) => {
                         if (response.status === 201){
-                            console.log(response);
                             setFile([{
                                 fileName: '',
                                 fileBox: null
@@ -155,16 +155,17 @@ function Ariza(props) {
 
                             document.getElementById('FILE').value = null;
                             setSucsessText("Ma'lumotlar muvafaqiyatli yuborildi")
+                            setIsLoading(false);
                         }
                     }).catch((error) => {
-                    console.log(error)
+                    setIsLoading(false);
                     if (error.response.status === 400){
                         setMessage2(error.response.data)
                     }
                 })
 
             }).catch((error) => {
-
+            setIsLoading(false);
         })
     }
 
@@ -243,7 +244,8 @@ function Ariza(props) {
 
                             </div>
                             <div className="d-flex justify-content-center">
-                                <Button className="signUp" onClick={postStudent}>
+                                <Button loading={isLoading} className="signUp"
+                                        onClick={postStudent}>
                                     Submit
                                 </Button>
                             </div>
