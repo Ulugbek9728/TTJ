@@ -67,6 +67,7 @@ function AddStudent(props) {
     ]);
     const [message2, setMessage2] = useState('');
     const [sucsessText, setSucsessText] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const addLanguage = () => {
         setFile([...file, {
@@ -93,13 +94,14 @@ function AddStudent(props) {
     }
 
     function postStudent() {
+        setIsLoading(true);
         const allData = new FormData();
         const ImgStudent = new FormData();
         file.map((item, index) => (<>{allData.append(item.fileName, item.fileBox)}</>));
         ImgStudent.append('img', studentImg)
         axios.post(`${ApiName1}/attach/upload`, ImgStudent)
             .then((res)=>{
-                Student.imageUrl = res.data[0].url;
+                Student.imageUrl = res.data[0]?.url;
                 axios.post(`${ApiName1}/attach/upload`, allData)
                     .then((response) => {
                         Student.attachList = response.data;
@@ -109,6 +111,7 @@ function AddStudent(props) {
                         })
                             .then((response) => {
                                 if (response.status === 201) {
+                                    setIsLoading(false);
                                     setFile([{
                                         fileName: '',
                                         fileBox: null
@@ -130,12 +133,12 @@ function AddStudent(props) {
                                             attachList: []
                                         }
                                     );
-
                                     document.getElementById('img').value = null;                            setSucsessText("Ma'lumotlar muvafaqiyatli yuborildi")
                                     document.getElementById('file').value = null;                            setSucsessText("Ma'lumotlar muvafaqiyatli yuborildi")
                                 }
                             }).catch((error) => {
                             console.log(error)
+                            setIsLoading(false);
                             if (error.response.status === 500) {
                                 setMessage2("Ma'lumotlar 1 marotaba yuboriladi")
                             }
@@ -144,7 +147,10 @@ function AddStudent(props) {
                             }
                         })
                     })
-            })
+            }).then(()=>{
+                setIsLoading(false)
+        })
+
     }
 
     useEffect(() => {
@@ -155,13 +161,13 @@ function AddStudent(props) {
     }, [message, sucsessText, message2]);
 
     function notify() {
-        if (message != '') {
+        if (message !== '') {
             message && message.map((item) => (toast.error(item)))
         }
-        if (sucsessText != '') {
+        if (sucsessText !== '') {
             toast.success(sucsessText)
         }
-        if (message2 != '') {
+        if (message2 !== '') {
             toast.error(message2)
         }
     }
@@ -255,8 +261,11 @@ function AddStudent(props) {
                         </Form>
                     </div>
                     <div className="d-flex justify-content-center">
-                        <Button className="signUp btn btn-primary w-50 p-0" style={{height:'50px'}} onClick={postStudent}>
-                            yuborish
+                        <Button loading={isLoading}
+                                className="signUp btn btn-primary w-50 p-0"
+                                style={{height:'50px'}}
+                                onClick={postStudent}>
+                            Yuborish
                         </Button>
                     </div>
                 </div>
