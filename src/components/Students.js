@@ -80,11 +80,11 @@ function Student(props) {
     }
 
     function changeStatus() {
-
         axios.put(`${ApiName1}/private/student/cancel/${StudentID}`,{message:Messeg}, {
                 headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
             }).then((res)=>{
                 console.log(res)
+            setMesseg('')
             setSucsessText('Talaba arizasi bekor qilindi')
         }).catch((error)=>{
             console.log(error)
@@ -439,7 +439,7 @@ function Student(props) {
                         </div>
                         <div className="modal-body">
                             <label htmlFor="Message">Bekor qilish sababini yozing</label>
-                            <TextArea rows="5" name="text"
+                            <TextArea value={Messeg} rows="5" name="text"
                                       onChange={(e)=>{setMesseg(e.target.value)}}/>
                         </div>
                         <div className="modal-footer">

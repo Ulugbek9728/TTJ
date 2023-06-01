@@ -41,6 +41,37 @@ function Ariza(props) {
     const [message, setMessage] = useState([]);
     const [message2, setMessage2] = useState('');
     const [sucsessText, setSucsessText] = useState('');
+    const [sabab, setSabab] = useState([
+        {name: 'Chin yetim yoki yetim talabalar'},
+        {name: 'Boquvchisini yo‘qotgan (otasi) talabalar'},
+        {name: 'Nogironlgi bo‘lgan talabalar'},
+        {name: 'Otasi (boquvchisi) nogiron talabalar'},
+        {
+            name: `Temir daftar”, “Ayollar daftari”, “Yoshlar daftari” 
+            ro‘yxatiga kiritilgan, ijtimoiy himoyaga o‘ta muhtoj oila farzandlari`
+        },
+        {
+            name: `Oilada ikki va undan ortiq farzandlari kunduzgi 
+            ta’limda shartnoma asosida o‘qiydigan oila farzandlari`
+        },
+        {name: 'Chet eldan kelib o‘qiydigan xorijiy talabalar'},
+        {name: `Respublikaning olis hududlaridan kelgan talabalar`},
+        {name: `Yozgi ta’til vaqtida “Bunyodkor yoshlar mehnat otryadi”da faol ishtirok etgan talabalar`},
+        {
+            name: `Universitet Yoshlar ittifoqi kengashi raisining tavsiyanomasiga
+         asosan universitet yoshlar Kengashi a’zolari`
+        },
+        {
+            name: `Iqtidorli talabalar (xalqaro, respublika, hudud va universitet miqyosida 
+        o‘tkazilgan fan olimpiadalari va sport musobaqalari, ko‘rik-tanlovlar g‘oliblari, 
+        ma’naviy-ma’rifiy va sport tadbirlarida faol ishtirok etgan)`
+        },
+        {
+            name: `Talabalar turar joyida o‘tgan o‘quv yillarida namunali faoliyat yuritgan talabalar
+         kengashi raisi va qavat sardorlari`
+        },
+
+    ]);
 
     const addLanguage = () => {
         setFile([...file, {
@@ -54,11 +85,18 @@ function Ariza(props) {
     };
 
     const handleInputLanguage = (e, index) => {
-        file[index].fileName = e.target.value
+        setFile(file?.map((item,idn)=>{
+            if (idn === index){
+                item.fileName = e;
+                return item;
+            }else {
+                return item;
+            }
+        }));
     };
 
     useEffect(() => {
-        getStudent()
+        getStudent();
         notify();
         setMessage('');
         setMessage2('');
@@ -108,16 +146,20 @@ function Ariza(props) {
 
                 axios.post(`${ApiName1}/public/student/join/data`, Student)
                     .then((response) => {
-
-
                         if (response.status === 201){
-                            console.log(response)
+                            console.log(response);
+                            setFile([{
+                                fileName: '',
+                                fileBox: null
+                            }])
+
+                            document.getElementById('FILE').value = null;
                             setSucsessText("Ma'lumotlar muvafaqiyatli yuborildi")
                         }
                     }).catch((error) => {
                     console.log(error)
-                    if (error.response.status === 500){
-                        setMessage2("Ma'lumotlar 1 marotaba yuboriladi")
+                    if (error.response.status === 400){
+                        setMessage2(error.response.data)
                     }
                 })
 
@@ -160,28 +202,31 @@ function Ariza(props) {
                             <h5>TTJ da turish uchun sabab ko'rsating</h5>
                             <span>faqat pdf faylni yuklang !!!</span>
                             <div className="container">
-                                <Form
-                                    name="dynamic_form_nest_item"
-                                    onFinish={onFinish}
-                                    style={{maxWidth: 600}}
-                                    autoComplete="off">
-                                    {file.map((item, index) => (
+                                <Form name="dynamic_form_nest_item" onFinish={onFinish}
+                                    style={{maxWidth: 600}} autoComplete="off">
+                                    {file && file.map((item, index) => (
                                         <div key={index} style={{display: 'flex', marginBottom: 8}}
                                              align="baseline">
-                                            <select className="form-select" name="fileName"
-                                                    onClick={(e) => handleInputLanguage(e, index)}>
-                                                <option></option>
-                                                <option value={"Chin yetim yoki yetim talabalar"}>Chin yetim yoki yetim
-                                                    talabalar
-                                                </option>
-                                                <option value={"Boquvchisini yo'qotgan (otasi)talabalar"}>Boquvchisini
-                                                    yo'qotgan (otasi)talabalar
-                                                </option>
-                                                <option value={"Nogironligi bo'lgan talabalar"}>Nogironligi bo'lgan
-                                                    talabalar
-                                                </option>
-                                            </select>
-                                            <Input type="file" accept="application/pdf"
+                                            <div className="dropdown">
+                                                <button className=" selectBtn dropdown-toggle" type="button"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    {item.fileName}
+                                                </button>
+                                                <div className="dropdown-menu"
+                                                     aria-labelledby="dropdownMenuButton">
+
+                                                    {sabab.map((item) => {
+                                                        return <div key={item.name} className="test"
+                                                                    onClick={(e) => {
+                                                                        handleInputLanguage(item.name, index)
+                                                                    }}>
+                                                            {item.name}
+                                                        </div>
+                                                    })}
+
+                                                </div>
+                                            </div>
+                                                <input type="file" className='form-control' id='FILE' accept="application/pdf"
                                                    onChange={(e) => handleInputFile(e, index)}/>
                                         </div>
                                     ))}

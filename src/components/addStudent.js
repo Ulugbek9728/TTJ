@@ -80,10 +80,14 @@ function AddStudent(props) {
     };
 
     const handleInputLanguage = (e, index) => {
-        file[index].fileName = e;
-        console.log(e)
-        console.log(index)
-        console.log(file)
+        setFile(file.map((item,idn)=>{
+            if (idn === index){
+                item.fileName = e;
+                return item;
+            }else {
+                return item;
+            }
+        }));
     };
 
     function postStudent() {
@@ -168,19 +172,17 @@ function AddStudent(props) {
                     <h5>TTJ da turish uchun sabab ko'rsating</h5>
                     <span>faqat pdf faylni yuklang !!!</span>
                     <div className="container">
-                        <Form
-                            name="dynamic_form_nest_item"
-                            onFinish={onFinish}
-                            style={{maxWidth: 600}}
-                            autoComplete="off">
-                            {file.map((item, index) =>
-                                (<div key={index}
+                        <Form name="dynamic_form_nest_item" onFinish={onFinish}
+                            style={{maxWidth: 600}} autoComplete="off">
+                            {file.map((item, index) => {
+                                return (
+                                <div key={index}
                                       style={{display: 'flex', marginBottom: 8, position:"relative"}}
                                       align="baseline">
                                     <div className="dropdown">
                                         <button className=" selectBtn dropdown-toggle" type="button"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Sababni tanlang
+                                            {item.fileName}
                                         </button>
                                         <div className="dropdown-menu"
                                              aria-labelledby="dropdownMenuButton">
@@ -198,7 +200,9 @@ function AddStudent(props) {
                                     </div>
                                     <Input type="file" accept="application/pdf"
                                            onChange={(e) => handleInputFile(e, index)}/>
-                                </div>))}
+                                </div>
+                                )
+                            })}
                             <Form.Item>
                                 <Button type="dashed" block icon={<PlusOutlined/>} onClick={addLanguage}>
                                     Add field

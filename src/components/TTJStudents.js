@@ -27,6 +27,7 @@ function TtjStudents(props) {
     const [StudentID, setStudentID] = useState('');
     const [Studentunic, setStudentUnic] = useState({});
     const [StudentunicFile, setStudentUnicFile] = useState('');
+    const [StudentunicFile2, setStudentUnicFile2] = useState('');
     const [StudentFile, setStudentFile] = useState([]);
     const [StudentStatus, setStudenStatus] = useState('JOINED');
     const [StudentJOINED, setStudentJOINED] = useState(true);
@@ -243,7 +244,7 @@ function TtjStudents(props) {
                    onOk={handleOk} onCancel={handleCancel}>
                 <div>
                     <label htmlFor='Title'>File (pdf)</label><br/>
-                    <input type="file" id='File' onChange={(e) => handleInputFile(e)}/>
+                    <input type="file" id='File' accept='application/pdf' onChange={(e) => handleInputFile(e)}/>
                 </div>
                 {loading ?
                     <Space direction="vertical" style={{width: '100%',}}>
@@ -281,7 +282,9 @@ function TtjStudents(props) {
                                     onClick={(e) => {
                                         seeStudent(item.student.id);
                                         setStudentUnic(item.student)
-                                        setStudentUnicFile(item.fileOpenUrl)
+                                        setStudentUnicFile(item.removedFileUrl)
+                                        setStudentUnicFile2(item.fileOpenUrl)
+                                        console.log(item)
                                     }}>
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
@@ -392,13 +395,15 @@ function TtjStudents(props) {
                                             <hr/>
                                         </div>
                                     })}
-
-
                                 </div>
                             </div>
                             <hr/>
-                            <a href={`${ApiName1}${StudentunicFile}`} target='_blank'
-                               className='m-0'>TTJ dan chetlashtirish sababi</a>
+                            {StudentJOINED ?
+                                <a href={`${ApiName1}${StudentunicFile2}`} target='_blank'
+                                   className='m-0'>TTJ ga qabul file</a>
+                            :
+                                <a href={`${ApiName1}${StudentunicFile}`} target='_blank'
+                                   className='m-0'>TTJ dan chetlashtirish sababi</a>}
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-danger"

@@ -75,16 +75,19 @@ $mainColor: #418C61;
         position: relative;
         left: 0;
         top: 0;
-        width: 250px !important;
+        width: 100% !important;
         border-radius: 5px !important;
 
         .selectBtn {
-          width: 100%;
+          width: 200px;
+          border-radius: 5px;
+          box-sizing: border-box;
+          overflow: hidden;
         }
 
         .dropdown-menu {
-          width: 300%;
-
+          width: 200%;
+          padding: 10px;
           .test {
             cursor: pointer;
             width: 100%;
