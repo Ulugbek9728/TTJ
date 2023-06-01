@@ -10,6 +10,7 @@ import {useNavigate} from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
 import {toast, ToastContainer} from "react-toastify";
+import {Button} from "antd";
 
 function Login(props) {
     const {t} = useTranslation();
@@ -22,11 +23,12 @@ function Login(props) {
         password: ''
     });
     const navigate = useNavigate();
+    const [isButtonLoading, setIsButtonLoading] = useState(false);
 
 
     function Login() {
+        setIsButtonLoading(true);
         axios.post(`${ApiName1}/public/login`, login1).then((response) => {
-            console.log(response.data)
             if (response.status === 200) {
                 if (response.data.DEGREE === 'ADMIN') {
                     localStorage.setItem("token", response.data.jwt);
@@ -54,9 +56,12 @@ function Login(props) {
         }).catch((error) => {
             if (error.response.status === 403){
                 setMessage2(error.response.data);
+                setIsButtonLoading(false);
             }
             axios.post(`${ApiName}auth/login`, login1).then((response) => {
-                localStorage.setItem("token", response.data.data.token);navigate("/Submit")
+                localStorage.setItem("token", response.data.data.token);
+                navigate("/Submit");
+                setIsButtonLoading(false);
             }).catch((error) => {})
 
 
@@ -126,7 +131,11 @@ function Login(props) {
                                              className="show"/>
                                     }
                                 </div>
-                                <button className="signUp" onClick={Login}>Kirish</button>
+                                <Button
+                                    loading={isButtonLoading}
+                                    className="signUp"
+                                    onClick={Login}
+                                >Kirish</Button>
                             </div>
 
 
