@@ -72,6 +72,7 @@ function Student(props) {
             params:{status:Status,page:(page-1),size:pageSizes}
         }).then((response) => {
             setStudent(response.data.content);
+            console.log(response.data.content)
             setTotalPage(response.data.totalElements)
 
         }).catch((error) => {
@@ -320,7 +321,8 @@ function Student(props) {
                         <div className="modal-body">
                             <div className="d-flex  justify-content-between" >
 
-                                <img src={Studentunic.imageUrl} width='20%' height='auto' alt=""/>
+                                <img src={
+                                    !Studentunic.imageUrl?.startsWith('https')?ApiName1+Studentunic.imageUrl:Studentunic.imageUrl } width='20%' height='auto' alt=""/>
                                 <div className='w-75'>
                                     <p className='m-0'>F.I.SH</p>
                                     <b className="">{Studentunic.name}</b>

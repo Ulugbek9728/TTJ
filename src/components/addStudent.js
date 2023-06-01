@@ -24,14 +24,15 @@ function AddStudent(props) {
         specialty: "",
         group: "",
         gender: "",
-        faculty: "",
-        course: "",
+        faculty: localStorage.getItem('faculty'),
+        course: "COURSE_1",
         country: "",
         city: "",
         district: "",
         phone: "",
         attachList: []
     });
+    const [studentImg, setStudentImg]=useState('')
     const [message, setMessage] = useState([]);
     const [sabab, setSabab] = useState([
         {name: 'Chin yetim yoki yetim talabalar'},
@@ -67,20 +68,17 @@ function AddStudent(props) {
     const [message2, setMessage2] = useState('');
     const [sucsessText, setSucsessText] = useState('');
 
-
     const addLanguage = () => {
         setFile([...file, {
             fileName: '',
             fileBox: ''
         }])
     };
-
     const handleInputFile = (e, index) => {
         file[index].fileBox = e.target.files[0]
     };
-
     const handleInputLanguage = (e, index) => {
-        setFile(file.map((item,idn)=>{
+        setFile(file?.map((item,idn)=>{
             if (idn === index){
                 item.fileName = e;
                 return item;
@@ -89,34 +87,66 @@ function AddStudent(props) {
             }
         }));
     };
+    function GenderSelect(value,key) {
+        setStudent({...Student,
+            gender:value})
+    }
 
     function postStudent() {
         const allData = new FormData();
-
+        const ImgStudent = new FormData();
         file.map((item, index) => (<>{allData.append(item.fileName, item.fileBox)}</>));
-
-        axios.post(`${ApiName1}/attach/upload`, allData)
-            .then((response) => {
-                Student.attachList = response.data
-
-                axios.post(`${ApiName1}/public/student/join/data`, Student)
+        ImgStudent.append('img', studentImg)
+        axios.post(`${ApiName1}/attach/upload`, ImgStudent)
+            .then((res)=>{
+                Student.imageUrl = res.data[0].url;
+                axios.post(`${ApiName1}/attach/upload`, allData)
                     .then((response) => {
+                        Student.attachList = response.data;
+
+                        axios.post(`${ApiName1}/private/create/student`, Student,{
+                            headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
+                        })
+                            .then((response) => {
+                                if (response.status === 201) {
+                                    setFile([{
+                                        fileName: '',
+                                        fileBox: null
+                                    }]);
+                                    setStudent(
+                                        {
+                                            name: "",
+                                            login: "",
+                                            imageUrl: "",
+                                            specialty: "",
+                                            group: "",
+                                            gender: "",
+                                            faculty: localStorage.getItem('faculty'),
+                                            course: "COURSE_1",
+                                            country: "",
+                                            city: "",
+                                            district: "",
+                                            phone: "",
+                                            attachList: []
+                                        }
+                                    );
+
+                                    document.getElementById('img').value = null;                            setSucsessText("Ma'lumotlar muvafaqiyatli yuborildi")
+                                    document.getElementById('file').value = null;                            setSucsessText("Ma'lumotlar muvafaqiyatli yuborildi")
+                                }
+                            }).catch((error) => {
+                            console.log(error)
+                            if (error.response.status === 500) {
+                                setMessage2("Ma'lumotlar 1 marotaba yuboriladi")
+                            }
+                            if (error.response.status === 400) {
+                                setMessage2(error.response.data)
+                            }
+                        })
+                    })
+            })
 
 
-                        if (response.status === 201) {
-                            console.log(response)
-                            setSucsessText("Ma'lumotlar muvafaqiyatli yuborildi")
-                        }
-                    }).catch((error) => {
-                    console.log(error)
-                    if (error.response.status === 500) {
-                        setMessage2("Ma'lumotlar 1 marotaba yuboriladi")
-                    }
-                })
-
-            }).catch((error) => {
-
-        })
     }
 
     useEffect(() => {
@@ -143,29 +173,43 @@ function AddStudent(props) {
             <div className="box d-flex">
                 <div className="left">
                     <label htmlFor="img"><h5>Talaba rasimi</h5></label>
-                    <input className='form-control' type="file" id='img' accept="image/png, image/jpeg"/>
+                    <input className='form-control' type="file" id='img' accept="image/png, image/jpeg"
+                    onChange={(e)=>{setStudentImg(e.target.files[0])}}/>
                     <label htmlFor="Ism"><h5>F.I.Sh</h5></label><br/>
-                    <input className='form-control' type="text" id='Ism'/>
+                    <input className='form-control' value={Student.name} type="text" id='Ism'
+                    onChange={(e)=>{setStudent({...Student,name:e.target.value})}}/>
                     <label htmlFor="tel"><h5>Tel:</h5></label><br/>
-                    <input className='form-control' type="text" id='tel'/>
+                    <input className='form-control'  value={Student.phone} type="text" id='tel'
+                           onChange={(e)=>{setStudent({...Student,phone:e.target.value})}}/>
                     <label htmlFor="Jinsi"><h5>Jinsi</h5></label>
-                    <Select className='w-100' name="" id="Jinsi">
-                        <Option value="">Erkak</Option>
-                        <Option value="">Ayol</Option>
+                    <Select className='w-100' value={Student.gender} name="" id="Jinsi"
+                            onChange={GenderSelect}>
+                        <Option value="Erkak">Erkak</Option>
+                        <Option value="Ayol">Ayol</Option>
                     </Select>
                     <label htmlFor="Davlat"><h5>Davlat</h5></label>
-                    <input className='form-control' type="text" id='Davlat'/>
+                    <input className='form-control' value={Student.country} type="text" id='Davlat'
+                           onChange={(e)=>{setStudent({...Student,country:e.target.value})}}/>
                     <label htmlFor="Shaxar"><h5>Shaxar yoki viloyat</h5></label>
-                    <input className='form-control' type="text" id='Shaxar'/>
+                    <input className='form-control' value={Student.city} type="text" id='Shaxar'
+                           onChange={(e)=>{setStudent({...Student,city:e.target.value})}}/>
                     <label htmlFor="Tuman"><h5>Tuman</h5></label>
-                    <input className='form-control' type="text" id='Tuman'/>
+                    <input className='form-control' value={Student.district} type="text" id='Tuman'
+                           onChange={(e)=>{setStudent({...Student,district:e.target.value})}}/>
                     <label htmlFor="Fakultet"><h5>Fakultet</h5></label>
                     <input className='form-control' value={localStorage.getItem('faculty')}
                            type="text" id='Fakultet' disabled={true}/>
                     <label htmlFor="Yo'nalish"><h5>Yo'nalish</h5></label>
-                    <input className='form-control' type="text" id="Yo'nalish"/>
+                    <input className='form-control' value={Student.specialty} type="text" id="Yo'nalish"
+                           onChange={(e)=>{setStudent({...Student,specialty:e.target.value})}}/>
                     <label htmlFor="Kurs"><h5>Kurs</h5></label>
                     <input className='form-control' value='1' disabled={true} type="text" id="Kurs"/>
+                    <label htmlFor="Guruh"><h5>Guruh raqami</h5></label>
+                    <input className='form-control' value={Student.group} type="text" id="Guruh"
+                           onChange={(e)=>{setStudent({...Student,group:e.target.value})}}/>
+                    <label htmlFor="Login"><h5>Login</h5></label>
+                    <input className='form-control' value={Student.login} type="text" id="Login"
+                           onChange={(e)=>{setStudent({...Student,login:e.target.value})}}/>
 
                 </div>
                 <div className="right">
@@ -198,21 +242,21 @@ function AddStudent(props) {
 
                                         </div>
                                     </div>
-                                    <Input type="file" accept="application/pdf"
+                                    <input type="file" className='form-control' id='file' accept="application/pdf"
                                            onChange={(e) => handleInputFile(e, index)}/>
                                 </div>
                                 )
                             })}
                             <Form.Item>
                                 <Button type="dashed" block icon={<PlusOutlined/>} onClick={addLanguage}>
-                                    Add field
+                                    Sabab qo'shish
                                 </Button>
                             </Form.Item>
                         </Form>
                     </div>
                     <div className="d-flex justify-content-center">
-                        <Button className="signUp" onClick={postStudent}>
-                            Submit
+                        <Button className="signUp btn btn-primary w-50 p-0" style={{height:'50px'}} onClick={postStudent}>
+                            yuborish
                         </Button>
                     </div>
                 </div>
