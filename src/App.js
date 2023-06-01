@@ -45,15 +45,13 @@ function App() {
                     <Route path={"/Adminyoli/*"} element={ <AdminPage/>}/>
                     <Route path={"/Dekanyoli/*"} element={ <DekanPage/>}/>
                     <Route path={"/SeeAll/*"} element={ <TyutorPage/>}/>
-
                     <Route path={"/"} element={ <HOME/>}/>
+
                 </Routes>
             </>
           :
             <Loader/>
         }
-        {/*<button onClick={() => }>Change</button>*/}
-        {/*<button onClick={() => dispatch(changeTrue())}>true</button>*/}
 
     </div>
   );
