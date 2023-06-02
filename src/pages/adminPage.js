@@ -80,10 +80,10 @@ function AdminPage(props) {
 
     function notify() {
 
-        if (sucsessText != '') {
+        if (sucsessText !== '') {
             toast.success(sucsessText)
         }
-        if (message != '') {
+        if (message !== '') {
             toast.error(message)
         }
     }

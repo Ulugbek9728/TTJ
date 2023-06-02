@@ -54,18 +54,21 @@ function Login(props) {
                 }
             }
             setIsButtonLoading(false);
-        }).catch((error) => {
-            if (error.response.status === 403){
-                setMessage2(error.response.data);
+        }).catch((e) => {
+            if (e.response.status === 403){
+                setMessage2(e.response.data);
                 setIsButtonLoading(false);
+            }else {
+                axios.post(`${ApiName}auth/login`, login1).then((response) => {
+                    localStorage.setItem("token", response.data.data.token);
+                    navigate("/Submit");
+                    setIsButtonLoading(false);
+                }).catch((error) => {
+                    setIsButtonLoading(false);
+                    setMessage2('Login yoki parol xato');
+                })
             }
-            axios.post(`${ApiName}auth/login`, login1).then((response) => {
-                localStorage.setItem("token", response.data.data.token);
-                navigate("/Submit");
-                setIsButtonLoading(false);
-            }).catch((error) => {
-                setIsButtonLoading(false);
-            })
+
 
 
         })

@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
 import user from "../img/user.png";
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
-import {toast} from "react-toastify";
 
 function Natija(props) {
     const {t } = useTranslation();

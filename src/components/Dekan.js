@@ -67,7 +67,11 @@ function Dekan(props) {
                 }
             }).catch((error) => {
                 if (error.response.status === 400){
-                    setMessage(error.response.data.errors)
+                    if (error.response.data.errors){
+                        setMessage(error.response.data.errors)
+                    }else {
+                        setMessage2(error.response.data);
+                    }
                 }
                 if (error.response.status === 406){
                     setMessage2(error.response.data)
