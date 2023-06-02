@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
 import user from "../img/user.png";
@@ -7,23 +7,18 @@ import axios from "axios";
 import {ApiName1} from "../APIname1";
 
 function Natija(props) {
-    const {t } = useTranslation();
-    const [status, setStatus] = useState(true);
+    const {t} = useTranslation();
+    const [status, setStatus] = useState('');
     const [login, setLogin] = useState('');
     const [Student, setStudent] = useState({});
 
 
-
-    function Login(){
-        axios.post(`${ApiName1}/public/student/login`, {login:login}).then((response) => {
+    function Login() {
+        axios.post(`${ApiName1}/public/student/login`, {login: login}).then((response) => {
             console.log(response.data)
             setStudent(response.data)
-            if (response.data.status === 'NOT_ACCEPTED'){
-                setStatus(true)
-            }
-            else {
-                setStatus(false)
-            }
+            setStatus(response.data.status)
+
         }).catch((error) => {
             console.log(error)
         })
@@ -39,24 +34,38 @@ function Natija(props) {
                             <div className="title">
                                 Natija
                             </div>
-                            {status ?
+                            {status &&  <>
+                            {status === 'NOT_ACCEPTED' ?
                                 <div className="commit">
                                     Sizning Arizangiz qabul qilinmadi,
                                     to'liq ma'lumot uchun dekanatingizga uchrashing
                                 </div>
-                            :
-                                <div className="">
+                                :
+                                <>
+                                    {status === 'IS_ACCEPTED' ?
+                                        <div className="">
+                                    <span className='commit'>
+                                        Sizning arizangiz ko'rib chiqilmoqda!
+                                    </span>
+                                        </div> :
+                                        <div className="">
                                     <span className='commit'>
                                         Tabriklaymiz quyidagi ruxsatnomani yuklab olishingiz mumkun.
                                     </span>
-                                    <br/>
-                                    <a href={`${ApiName1}${Student.response_file_url}`} target='_blank'>
-                                        Ruxsatnoma
-                                    </a>
-                                </div>
+                                            <br/>
+                                            <a href={`${ApiName1}${Student.response_file_url}`} target='_blank'>
+                                                Ruxsatnoma
+                                            </a>
+                                        </div>
+                                    }
+                                </>
                             }
-                        </div>
+                            </> }
+                            <>
 
+                            </>
+
+                        </div>
 
                         <div className="right-side">
                             <div className="container">
