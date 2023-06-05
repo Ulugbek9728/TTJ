@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Input, Modal, Pagination, Select, Space, Spin} from "antd";
+import {Alert, Button, Input, Modal, Pagination, Select, Space, Spin} from "antd";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {useNavigate} from "react-router";
 import {toast, ToastContainer} from "react-toastify";
+import {exportToCSV} from "../utils/ExcelCreator";
 
 
 const {Option} = Select;
@@ -80,7 +81,7 @@ function TtjStudents(props) {
     };
 
     useEffect(() => {
-        if (localStorage.getItem("degree") != 'RECTOR') {
+        if (localStorage.getItem("degree") !== 'RECTOR') {
             setRectorBulin(false)
         } else {
             setRectorBulin(true)
@@ -189,17 +190,31 @@ function TtjStudents(props) {
     }, [message, sucsessText, message2]);
 
     function notify() {
-        if (message != '') {
+        if (message !== '') {
             message && message.map((item) => (toast.error(item)))
         }
-        if (sucsessText != '') {
+        if (sucsessText !== '') {
             toast.success(sucsessText)
         }
-        if (message2 != '') {
+        if (message2 !== '') {
             toast.error(message2)
         }
     }
 
+    const exportExcel = () => {
+
+        axios.post(`${ApiName1}/admin/dormitory_student/all`,{
+            course: Kurs?.length > 0? Kurs:null,
+            dormitory_id: TTJID,
+            faculty_id: FakultyID,
+            status: StudentStatus
+        }, {
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+        }).then((response)=>{
+            exportToCSV(response.data, 'students')
+        })
+
+    }
     return (
         <div>
             <ToastContainer/>
@@ -238,7 +253,15 @@ function TtjStudents(props) {
                         <Option value='JOINED'>Qabul qilingan talabalar </Option>
                     </Select>
                 </div>
+
             </div>
+
+            <Button
+                className="btn btn-success p-1"
+                onClick={exportExcel}
+            >Ma'lumotlarini yuklab olish</Button>
+            <br/>
+            <br/>
             <Modal className='ticherModal' title={"Talabani qora ro'yxatga qo'shish"}
                    open={isModalVisible}
                    onOk={handleOk} onCancel={handleCancel}>
@@ -297,14 +320,17 @@ function TtjStudents(props) {
                                         StudentJOINED ?
                                             <div className="d-flex">
                                                 <button className="btn btn-danger mx-1"
-                                                        onClick={(e)=>{showModal(); setStudentID(item.id)}}>
+                                                        onClick={(e) => {
+                                                            showModal();
+                                                            setStudentID(item.id)
+                                                        }}>
                                                     <img style={{width: "15px", height: "15px"}} className='iconEdit'
                                                          src="/img/close.png"
                                                          alt=""/>
                                                 </button>
                                             </div>
                                             :
-                                           ''
+                                            ''
                                     }
                                     <button className="btn btn-danger mx-1"
                                             data-bs-toggle="modal" data-bs-target="#myModal2"
@@ -385,7 +411,7 @@ function TtjStudents(props) {
                                 </div>
                                 <div className="w-50 p-2">
                                     <h4 className='text-center' style={{marginTop: '13px'}}>
-                                       Talaba yuklagan fayllari
+                                        Talaba yuklagan fayllari
                                     </h4>
                                     <hr/>
                                     {StudentFile && StudentFile.map((item, index) => {
@@ -401,7 +427,7 @@ function TtjStudents(props) {
                             {StudentJOINED ?
                                 <a href={`${ApiName1}${StudentunicFile2}`} target='_blank'
                                    className='m-0'>TTJ ga qabul file</a>
-                            :
+                                :
                                 <a href={`${ApiName1}${StudentunicFile}`} target='_blank'
                                    className='m-0'>TTJ dan chetlashtirish sababi</a>}
                         </div>
