@@ -10,25 +10,26 @@ import {useNavigate} from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
 import {toast, ToastContainer} from "react-toastify";
-import {Button} from "antd";
+import {Button, Checkbox, Form, Input} from 'antd';
 
 function Login(props) {
+    const formRef = React.useRef(null);
+
     const {t} = useTranslation();
 
     const [passwordBoolin, setPasswordBoolin] = useState(true);
     const [message, setMessage] = useState([]);
     const [message2, setMessage2] = useState('');
-    const [login1, setLogin] = useState({
-        login: '',
-        password: ''
-    });
     const navigate = useNavigate();
     const [isButtonLoading, setIsButtonLoading] = useState(false);
 
-
-    function Login() {
+    function Login(values) {
+        const requestData = {
+            login: values?.ism,
+            password: values?.Parol
+        };
         setIsButtonLoading(true);
-        axios.post(`${ApiName1}/public/login`, login1).then((response) => {
+        axios.post(`${ApiName1}/public/login`,requestData).then((response) => {
             if (response.status === 200) {
                 if (response.data.DEGREE === 'ADMIN') {
                     localStorage.setItem("token", response.data.jwt);
@@ -55,11 +56,11 @@ function Login(props) {
             }
             setIsButtonLoading(false);
         }).catch((e) => {
-            if (e.response.status === 403){
+            if (e.response.status === 403) {
                 setMessage2(e.response.data);
                 setIsButtonLoading(false);
-            }else {
-                axios.post(`${ApiName}auth/login`, login1).then((response) => {
+            } else {
+                axios.post(`${ApiName}auth/login`, requestData).then((response) => {
                     localStorage.setItem("token", response.data.data.token);
                     navigate("/Submit");
                     setIsButtonLoading(false);
@@ -68,7 +69,6 @@ function Login(props) {
                     setMessage2('Login yoki parol xato');
                 })
             }
-
 
 
         })
@@ -114,37 +114,76 @@ function Login(props) {
                                 <div className="text">
                                     "Hemis" Talaba ID parolingizni kiriting
                                 </div>
-                                <div className="all-input">
-                                    <input type="text" placeholder="Talaba ID" name="ism"
-                                           onChange={(e) => setLogin({
-                                               ...login1,
-                                               login: e.target.value
-                                           })}/>
-                                    <img src={user} alt="user-icon" className='user-icon'/>
-                                </div>
-                                <div className="all-input">
-                                    <input type={passwordBoolin ? "password" : "text"}
-                                           placeholder="parol" name="Parol"
-                                           onChange={(e) => setLogin({...login1, password: e.target.value})}/>
-                                    <img src={pasword} alt="user-icon" className='user-icon'/>
-                                    {passwordBoolin ?
-                                        <img onClick={() => setPasswordBoolin(!passwordBoolin)}
-                                             src="/img/show(1).png" alt=""
-                                             className="show"/>
-                                        :
-                                        <img onClick={() => setPasswordBoolin(!passwordBoolin)}
-                                             src="/img/show.png" alt=""
-                                             className="show"/>
-                                    }
-                                </div>
-                                <Button
-                                    loading={isButtonLoading}
-                                    className="signUp"
-                                    onClick={Login}
-                                >Kirish</Button>
+                                <Form
+                                    layout={{
+                                        labelCol: {
+                                            span: 8,
+                                        },
+                                        wrapperCol: {
+                                            span: 16,
+                                        },
+                                    }}
+                                    ref={formRef}
+                                    autoComplete="off"
+                                    onFinish={Login}
+                                >
+                                    <Form.Item
+                                        name="ism"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: t("required.name"),
+                                                min: 1
+                                            }
+                                        ]}
+                                    >
+                                        <div className="all-input">
+                                            <Input
+                                                type="text"
+                                                placeholder="Talaba ID"
+                                                name="ism"
+                                            >
+
+                                            </Input>
+                                            <img src={user} alt="user-icon" className='user-icon'/>
+                                        </div>
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="Parol"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: t('required.password'),
+                                                min: 1
+                                            }
+                                        ]}
+                                    >
+                                        <div className="all-input">
+                                            <Input type={passwordBoolin ? "password" : "text"}
+                                                   placeholder="parol" name="Parol"
+                                            />
+                                            <img src={pasword} alt="user-icon" className='user-icon'/>
+                                            {passwordBoolin ?
+                                                <img onClick={() => setPasswordBoolin(!passwordBoolin)}
+                                                     src="/img/show(1).png" alt=""
+                                                     className="show"/>
+                                                :
+                                                <img onClick={() => setPasswordBoolin(!passwordBoolin)}
+                                                     src="/img/show.png" alt=""
+                                                     className="show"/>
+                                            }
+                                        </div>
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button
+                                            type="primary"
+                                            htmlType="submit"
+                                            loading={isButtonLoading}
+                                            className="signUp"
+                                        >Kirish</Button>
+                                    </Form.Item>
+                                </Form>
                             </div>
-
-
                         </div>
                     </div>
                 </div>

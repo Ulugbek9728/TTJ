@@ -21,6 +21,10 @@
   "FotoLavha": "Foto lavhalar",
   "Bo'limName": "Talabalarni turar joy bilan ta’minlash ishlarini muvofiqlashtiruvchi bo’lim",
   "Aloqa": "Aloqa",
-  "Mesenger": "Ijtimoiy tarmoqlar"
+  "Mesenger": "Ijtimoiy tarmoqlar",
+  "required": {
+    "name": "Iltimos Talaba ID kiriting!",
+    "password": "Iltimos parolingizni kiriting!"
+  }
 
 }
