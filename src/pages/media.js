@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {toast, ToastContainer} from "react-toastify";
-import {Input, Modal} from "antd";
+import {Input, Modal, Progress} from "antd";
 
 function Media(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -13,9 +13,10 @@ function Media(props) {
 
     const [MediaId, setMediaId] = useState('');
     const [sucsessText, setSucsessText] = useState('');
-    const [attachId, setAttachId] = useState('');
+    const [showProcessBar, setShowProcessBar] = useState(false);
     const [file, setFile] = useState([{
-        fileBox: null
+        fileBox: null,
+        percentage: 0
     }]);
 
     const handleInputFile = (e, index) => {
@@ -23,27 +24,38 @@ function Media(props) {
         setCreatMedia(e.target.files[0].type.split('/')[0])
     };
     const showModal = () => {
+
+        setFile({percentage: 0, fileBox: null});
         setIsModalVisible(true);
     };
     const handleOk = () => {
         const allData = new FormData();
-        allData.append(`file`,file.fileBox)
-        axios.post(`${ApiName1}/attach/upload`, allData)
+        allData.append(`file`, file.fileBox)
+        setShowProcessBar(true);
+        axios.post(`${ApiName1}/attach/upload`, allData, {
+            onUploadProgress: (progress) => {
+                const percent = Math.round(
+                    (progress.loaded * 100) / progress.total
+                );
+                setFile({...file, percentage: percent - 1});
+            }
+        })
             .then((response) => {
 
-                if (creatMedia==='image'){
-                    axios.post(`${ApiName1}/clips`,{mediaId:response.data[0].id,type:'PHOTO'} ,{
-                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+                if (creatMedia === 'image') {
+                    axios.post(`${ApiName1}/clips`, {mediaId: response.data[0].id, type: 'PHOTO'}, {
+                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+                    })
                         .then((response) => {
                             setIsModalVisible(false);
                             setSucsessText("Rasim qo'shildi");
                         }).catch((error) => {
                         console.log(error)
                     })
-                }
-                else {
-                    axios.post(`${ApiName1}/clips`,{mediaId:response.data[0].id,type:'VIDEO'} ,{
-                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+                } else {
+                    axios.post(`${ApiName1}/clips`, {mediaId: response.data[0].id, type: 'VIDEO'}, {
+                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+                    })
                         .then((response) => {
                             setIsModalVisible(false);
                             setSucsessText("Video qo'shildi");
@@ -51,14 +63,15 @@ function Media(props) {
                         console.log(error)
                     })
                 }
-
-
+                setShowProcessBar(false);
+                setFile({...file, percentage: 100});
             }).catch((error) => {
-            console.log(error)
+            setShowProcessBar(false);
         })
     }
     const handleCancel = () => {
-        setIsModalVisible(false);setedit(false);
+        setIsModalVisible(false);
+        setedit(false);
     };
     useEffect(() => {
         GetNews();
@@ -68,13 +81,13 @@ function Media(props) {
     function GetNews() {
         axios.get(`${ApiName1}/clips`, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
-            params:{page:0,size:100}
+            params: {page: 0, size: 100}
         })
             .then((response) => {
-            setMedia(response.data.content);
+                setMedia(response.data.content);
                 setSucsessText('')
 
-        }).catch((error) => {
+            }).catch((error) => {
             console.log(error)
         })
     }
@@ -94,7 +107,7 @@ function Media(props) {
     }
 
     function notify() {
-        if (sucsessText != '') {
+        if (sucsessText !== '') {
             toast.success(sucsessText)
         }
     }
@@ -107,12 +120,13 @@ function Media(props) {
                     Media qo'shish
                 </button>
             </div>
-            <Modal className='ticherModal' title={edit ? "Tahrirlash" : "Yangiliklar qo'shish"}
+            <Modal className='ticherModal' title={edit ? "Tahrirlash" : "Media qo'shish"}
                    open={isModalVisible}
                    onOk={handleOk} onCancel={handleCancel}>
                 <div>
                     <label htmlFor='Title'>Rasm yoki Video</label>
-                    <Input type="file" onChange={(e) => handleInputFile(e)}/>
+                    <Input id="media-id" type="file" onChange={(e) => handleInputFile(e)}/>
+                    {showProcessBar && <Progress percent={file?.percentage}/>}
                 </div>
             </Modal>
             <table className="table table-bordered ">
@@ -125,7 +139,7 @@ function Media(props) {
                 </tr>
                 </thead>
                 <tbody>
-                {Media && Media.filter(item=>item.type==='VIDEO').map((item,index)=>{
+                {Media && Media.filter(item => item.type === 'VIDEO').map((item, index) => {
                     return <tr key={index}>
                         <td>{index + 1}</td>
                         <td>
@@ -135,7 +149,9 @@ function Media(props) {
                         </td>
                         <td>
                             <button className="btn btn-danger mx-1"
-                                    onClick={() => {setMediaId(item.id)}}
+                                    onClick={() => {
+                                        setMediaId(item.id)
+                                    }}
                                     data-bs-toggle="modal" data-bs-target="#myModal">
                                 <img className='iconEdit' src="/img/delete.png" alt=""
                                      style={{width: "25px", height: "25px"}}/>
@@ -156,7 +172,7 @@ function Media(props) {
                 </tr>
                 </thead>
                 <tbody>
-                {Media && Media.filter(item=>item.type==='PHOTO').map((item, index) => {
+                {Media && Media.filter(item => item.type === 'PHOTO').map((item, index) => {
                     return <tr key={index}>
                         <td>{index + 1}</td>
                         <td>
