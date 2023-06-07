@@ -21,19 +21,20 @@ function Yangiliklar(props) {
     }, [page]);
 
     function GetNews() {
-        axios.post(`${ApiName1}/public/news`, '',{params:{page:page,size:12}})
+        axios.post(`${ApiName1}/public/news`, '', {params: {page: page, size: 12}})
             .then((response) => {
-                NewsGroup.push(...response.data.content);
-               setIsLast(response.data.last);
-        }).catch((error) => {
+                // NewsGroup.push(...response.data.content);
+                setNews(...NewsGroup,response.data?.content)
+                setIsLast(response.data.last);
+            }).catch((error) => {
             console.log(error)
         })
     }
 
     const reloadNews = () => {
-        setPage(page+1);
+        setPage(page + 1);
     }
-
+    console.log(NewsGroup)
     return (
         <>
             <Navbar/>
@@ -47,15 +48,15 @@ function Yangiliklar(props) {
                         <div className="row">
                             {NewsGroup && NewsGroup?.map((item, index) => {
                                 return <div className="col-6 big" key={index}
-                                            onClick={()=>navigate(`/News/${item.id}`)}>
+                                            onClick={() => navigate(`/News/${item.id}`)}>
                                     <img src={`${ApiName1}${item.imageUrl}`} alt=""/>
                                     <div className="box">
                                         <div className="date">{item.created_date}</div>
                                         <div className="title">
-                                            {(lang === 'uz' || lang === 'ru') ? (lang=== 'uz'? item.titleUz:item.titleRu) : item.titleEn}
+                                            {(lang === 'uz' || lang === 'ru') ? (lang === 'uz' ? item.titleUz : item.titleRu) : item.titleEn}
                                         </div>
                                         <div className="text">
-                                            {(lang === 'uz' || lang === 'ru') ? (lang=== 'uz'? item.nameUz:item.nameRu) : item.nameEn}
+                                            {(lang === 'uz' || lang === 'ru') ? (lang === 'uz' ? item.nameUz : item.nameRu) : item.nameEn}
                                         </div>
                                     </div>
                                 </div>

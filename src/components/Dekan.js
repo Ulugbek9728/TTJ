@@ -144,9 +144,9 @@ function Dekan(props) {
     },[message, sucsessText, message2]);
 
     function notify() {
-        if (message != ''){message && message.map((item) => (toast.error(item)))}
-        if (sucsessText != ''){toast.success(sucsessText)}
-        if (message2 != ''){toast.error(message2)}
+        if (message !== ''){message && message.map((item) => (toast.error(item)))}
+        if (sucsessText !== ''){toast.success(sucsessText)}
+        if (message2 !== ''){toast.error(message2)}
     }
 
     return (
