@@ -34,7 +34,6 @@ function Yangiliklar(props) {
     const reloadNews = () => {
         setPage(page + 1);
     }
-    console.log(NewsGroup)
     return (
         <>
             <Navbar/>

@@ -5,6 +5,8 @@ import user from "../img/user.png";
 import {useTranslation} from "react-i18next";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
+import {Button, Form, Input} from "antd";
+import {toast} from "react-toastify";
 
 function Natija(props) {
     const {t} = useTranslation();
@@ -13,41 +15,44 @@ function Natija(props) {
     const [Student, setStudent] = useState({});
     const [text, setText] = useState('');
     const [fileUrl, setFileUrl] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
 
-    function Login() {
-        axios.post(`${ApiName1}/public/student/login`, {login: login}).then((response) => {
-            console.log(response.data)
-            setStudent(response.data)
-            setStatus(response.data.status);
-            switch (response.data?.dormitoryStudentStatus) {
-                case 'ACCEPTED': {
-                    setText('Tabriklaymiz quyidagi ruxsatnomani yuklab olishingiz mumkun.');
-                    setFileUrl(response.data?.response_file_url)
-                    break;
-                }
-                case 'REMOVED': {
-                    setText('Haydalgansiz');
-                    setFileUrl(response.data?.response_file_url)
-                    break;
-                }
-                case 'IS_ACCEPTED': {
+    function Login(values) {
+        setIsLoading(true);
+        setLogin(values.ism);
+        axios.post(`${ApiName1}/public/student/login`, {login: values.ism})
+            .then((response) => {
+                setStudent(response.data)
+                setStatus(response.data.status);
+                switch (response.data?.dormitoryStudentStatus) {
+                    case 'ACCEPTED': {
+                        setText('Tabriklaymiz quyidagi ruxsatnomani yuklab olishingiz mumkun.');
+                        setFileUrl(response.data?.response_file_url)
+                        break;
+                    }
+                    case 'REMOVED': {
+                        setText('Haydalgansiz');
+                        setFileUrl(response.data?.response_file_url)
+                        break;
+                    }
+                    case 'IS_ACCEPTED': {
 
-                    setText('Arizangiz ko\'rib chiqilmoqda');
-                    break;
+                        setText('Arizangiz ko\'rib chiqilmoqda');
+                        break;
+                    }
+                    case 'NOT_ACCEPTED': {
+                        setText('Arizangiz qabul qilinmadi!');
+                        break;
+                    }
                 }
-                case 'NOT_ACCEPTED': {
-                    setText('Arizangiz qabul qilinmadi!');
-                    break;
-                }
-            }
-        }).catch((error) => {
-            console.log(error)
+                setLogin('')
+                setIsLoading(false);
+            }).catch((error) => {
+            toast.error(error.response?.data);
+            setIsLoading(false);
         })
     }
-
-    console.log(text);
-    console.log(fileUrl);
     return (
         <>
             <Navbar/>
@@ -59,23 +64,14 @@ function Natija(props) {
                                 Natija
                             </div>
                             <div className="">
-                    <span className='commit'>
-                        {text}
-                    </span>
+                                <span className='commit'>
+                                    {text}
+                                </span>
                                 <br/>
                                 {fileUrl && <a href={`${ApiName1}${fileUrl}`} target='_blank'>
                                     file
                                 </a>}
                             </div>
-                            {/*<div className="">*/}
-                            {/*    <span className='commit'>*/}
-                            {/*            Tabriklaymiz quyidagi ruxsatnomani yuklab olishingiz mumkun.*/}
-                            {/*    </span>*/}
-                            {/*    <br/>*/}
-                            {/*    <a href={`${ApiName1}${Student.response_file_url}`} target='_blank'>*/}
-                            {/*        Ruxsatnoma*/}
-                            {/*    </a>*/}
-                            {/*</div>*/}
                         </div>
 
                         <div className="right-side">
@@ -86,15 +82,49 @@ function Natija(props) {
                                 <div className="text">
                                     "Hemis" Talaba ID ni kiriting
                                 </div>
-                                <div className="all-input">
-                                    <input type="text" placeholder="Talaba ID" name="ism"
-                                           onChange={(e) => setLogin(e.target.value)}/>
-                                    <img src={user} alt="user-icon" className='user-icon'/>
-                                </div>
-                                <button className="signUp" onClick={Login}>Yuborish</button>
+
+                                <Form
+                                    fields={[
+                                        {
+                                            name: ['ism'],
+                                            value: login
+                                        }
+                                    ]}
+                                    onFinish={Login}
+                                >
+                                    <Form.Item
+                                        name="ism"
+                                        rules={
+                                            [
+                                                {
+                                                    required: true,
+                                                    message: t('required.name')
+                                                }
+                                            ]
+                                        }
+
+                                    >
+                                        <div className="all-input">
+                                            <Input
+                                                type="text"
+                                                placeholder="Talaba ID"
+                                                name="ism"
+                                            >
+                                            </Input>
+                                            <img src={user} alt="user-icon" className='user-icon'/>
+                                        </div>
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button
+                                            loading={isLoading}
+                                            htmlType="submit"
+                                            className="signUp"
+                                        >
+                                            Yuborish
+                                        </Button>
+                                    </Form.Item>
+                                </Form>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
