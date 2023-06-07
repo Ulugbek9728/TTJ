@@ -1,15 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {Modal,Input, Select,} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
+import {Modal, Input, Select, Form, Button,} from 'antd';
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
 import {ApiName1} from "../APIname1";
 import "../asset/Admin.scss"
 import {useNavigate} from "react-router";
+import {useTranslation} from "react-i18next";
 
 
-const { Option } = Select;
+const {Option} = Select;
 
 function Dekan(props) {
+    const [form] = Form.useForm();
+    const formRef = useRef();
+    const {t} = useTranslation();
     const navigate = useNavigate();
 
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -26,57 +30,60 @@ function Dekan(props) {
     const showModal = () => {
         setIsModalVisible(true);
     };
-    const handleOk = () => {
+    const handleOk = (values) => {
+        console.log(values)
         edit ?
             axios.post(`${ApiName1}/adm/dekan/update/${creatDecan.id}`,
-                creatDecan,{
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("token")
-                }
-            }).then((response) => {
-                if (response.status === 200){
+                values, {
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    }
+                }).then((response) => {
+                if (response.status === 200) {
                     setIsModalVisible(false);
                     setedit(false);
                     setCreatDecan('');
                     setDekan('');
                     setSucsessText("Dekan ma'lumotlari tahrirlandi")
+                    form.resetFields();
                 }
             }).catch((error) => {
                 console.log(error.response);
-                if (error.response.status === 400){
+                if (error.response.status === 400) {
                     setMessage(error.response.data.errors)
                 }
-                if (error.response.status === 406){
+                if (error.response.status === 406) {
                     setMessage2(error.response.data)
                 }
-                if (error.response.status === 502){
+                if (error.response.status === 502) {
                     setMessage2('Server bilan ulanishda xatolik')
                 }
             })
             :
-            axios.post(`${ApiName1}/adm/dekan/create`, creatDecan,{
+            axios.post(`${ApiName1}/adm/dekan/create`, values, {
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem("token")
                 }
             }).then((response) => {
-                if (response.status === 201){
+                if (response.status === 201) {
                     setIsModalVisible(false);
                     setCreatDecan('');
                     setDekan('');
-                    setSucsessText("Dekan ma'lumotlari qo'shildi")
+                    setSucsessText("Dekan ma'lumotlari qo'shildi");
+                    form.resetFields();
                 }
             }).catch((error) => {
-                if (error.response.status === 400){
-                    if (error.response.data.errors){
+                if (error.response.status === 400) {
+                    if (error.response.data.errors) {
                         setMessage(error.response.data.errors)
-                    }else {
+                    } else {
                         setMessage2(error.response.data);
                     }
                 }
-                if (error.response.status === 406){
+                if (error.response.status === 406) {
                     setMessage2(error.response.data)
                 }
-                if (error.response.status === 502){
+                if (error.response.status === 502) {
                     setMessage2('Server bilan ulanishda xatolik')
                 }
             });
@@ -85,31 +92,33 @@ function Dekan(props) {
         setIsModalVisible(false);
         setCreatDecan('');
         setedit(false);
+        form.resetFields();
     };
 
     useEffect(() => {
         DekanInfo();
         GetFakultet()
-    },[sucsessText]);
+    }, [sucsessText]);
 
     function DekanInfo() {
-        axios.post(`${ApiName1}/adm/dekan/dekan_list`, '',{
+        axios.post(`${ApiName1}/adm/dekan/dekan_list`, '', {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
             setDekan(response.data);
             console.log(response.data);
         }).catch((error) => {
-            if (error.response.status <= 500){
+            if (error.response.status <= 500) {
                 setMessage2('Server bilan ulanishda xatolik')
             }
-            if (error.response.status === 401){
+            if (error.response.status === 401) {
                 navigate("/")
             }
             console.log(error.response)
         })
     }
+
     function GetFakultet() {
-        axios.post(`${ApiName1}/adm/faculty/faculty_list`, '',{
+        axios.post(`${ApiName1}/adm/faculty/faculty_list`, '', {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
             setGetFakultet(response.data);
@@ -124,13 +133,13 @@ function Dekan(props) {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         }).then((response) => {
-            if (response.status === 200){
+            if (response.status === 200) {
                 setSucsessText("Ma'lumotlar o'chirildi");
                 setDekan('')
             }
         }).catch((error) => {
             console.log(error.response)
-            if (error.response.status === 502){
+            if (error.response.status === 502) {
                 setMessage2('Server bilan ulanishda xatolik')
             }
         });
@@ -141,12 +150,18 @@ function Dekan(props) {
         setMessage('');
         setMessage2('');
         setSucsessText('')
-    },[message, sucsessText, message2]);
+    }, [message, sucsessText, message2]);
 
     function notify() {
-        if (message !== ''){message && message.map((item) => (toast.error(item)))}
-        if (sucsessText !== ''){toast.success(sucsessText)}
-        if (message2 !== ''){toast.error(message2)}
+        if (message !== '') {
+            message && message.map((item) => (toast.error(item)))
+        }
+        if (sucsessText !== '') {
+            toast.success(sucsessText)
+        }
+        if (message2 !== '') {
+            toast.error(message2)
+        }
     }
 
     return (
@@ -159,42 +174,192 @@ function Dekan(props) {
             </div>
             <Modal className='ticherModal' title={edit ? "Tahrirlash" : "Dekan qo'shish"}
                    open={isModalVisible}
-                   onOk={handleOk} onCancel={handleCancel}>
-                <div>
-                    <label htmlFor='Familya'>Familya</label>
-                    <Input id='Familya' value={creatDecan.surname} allowClear onChange={(e)=>{
-                        setCreatDecan({...creatDecan, surname: e.target.value,})}}/>
-                    <label htmlFor='Ism'>Ism</label>
-                    <Input id='Ism' value={creatDecan.name} allowClear
-                           onChange={(e)=>{setCreatDecan({...creatDecan, name: e.target.value,})}}/>
+                   footer={null}
+                   onCancel={handleCancel}
+            >
+                <Form
+                    form={form}
+                    onFinish={handleOk}
+                    layout="vertical"
+                    fields={[
+                        {
+                            name: "surname",
+                            value: creatDecan?.surname
+                        },
+                        {
+                            name: 'name',
+                            value: creatDecan?.name
+                        },
+                        {
+                            name: 'patronymic',
+                            value: creatDecan?.patronymic
+                        },
+                        {
+                            name: 'facultyId',
+                            value: creatDecan?.facultyId
+                        },
+                        {
+                            name: 'login',
+                            value: creatDecan?.login
+                        },
+                        {
+                            name: 'password',
+                            value: creatDecan?.password
+                        }
+                    ]}
+                >
+                    <Form.Item
+                        name="surname"
+                        rules={[
+                            {
+                                required: true,
+                                message: t('required.surname')
+                            }
+                        ]}
+                        label="Familya"
+                    >
+                        <Input
+                            onChange={(e) => {
+                                setCreatDecan({
+                                    ...creatDecan,
+                                    surname: e.target.value,
+                                })
+                            }}
+                            id='Familya'
+                            name='surname'
+                            allowClear
+                        />
+                    </Form.Item>
 
-                    <label htmlFor='Sharif'>Sharif</label>
-                    <Input id='Sharif' value={creatDecan.patronymic} allowClear
-                           onChange={(e)=>{setCreatDecan({...creatDecan,
-                               patronymic: e.target.value,})}}/>
-                    <label htmlFor='Fakultet'>Fakultet</label>
-                    <select name="cars" className='form-control' id="Fakultet"
-                            value={ creatDecan.facultyId}
-                            onChange={(e =>{setCreatDecan({...creatDecan,
-                                facultyId: e.target.value,})})} >
-                        <option value="fakultet">Fakultet</option>
-                        {Getfakultet && Getfakultet.map((item, index) => (
-                            <option value={item.id} key={index}>{item.name}</option>
-                        ))}
-                    </select>
+                    <Form.Item
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: t('required.field-name')
+                            }
+                        ]}
+                        label="Ism"
+                    >
+                        <Input id='Ism' name="name"
+                               onChange={(e) => {
+                                   setCreatDecan({
+                                       ...creatDecan,
+                                       name: e.target.value,
+                                   })
+                               }}
+                               value={creatDecan.name} allowClear/>
+                    </Form.Item>
 
-                    <label htmlFor="Login">Login</label>
-                    <Input id='Login' value={creatDecan.login} allowClear maxLength="9"
-                           onChange={(e)=>{setCreatDecan({...creatDecan,
-                               login: e.target.value.toUpperCase(),})}}/>
-                    <label htmlFor="Parol">Parol</label>
-                    <Input id='Parol' value={creatDecan.password} allowClear  onChange={(e)=>{
-                        setCreatDecan({
-                            ...creatDecan,
-                            password: e.target.value,
-                        })
-                    }}/>
-                </div>
+                    <Form.Item
+                        name="patronymic"
+                        rules={[
+                            {
+                                required: true,
+                                message: t('required.patronymic')
+                            }
+                        ]}
+                        label="Sharif"
+                    >
+                        <Input type="text" id='Sharif' name="patronymic" allowClear
+                               onChange={(e) => {
+                                   setCreatDecan({
+                                       ...creatDecan,
+                                       patronymic: e.target.value,
+                                   })
+                               }}/>
+                    </Form.Item>
+
+                    <Form.Item
+                        name="facultyId"
+                        rules={[
+                            {
+                                required: true,
+                                message: t('required.faculty')
+                            }
+                        ]}
+                        label="Fakultet"
+                    >
+                        <Select
+                            name={"facultyId"}
+                            onChange={(e => {
+                                console.log(e)
+                                setCreatDecan({
+                                    ...creatDecan,
+                                    facultyId: e,
+                                })
+                            })}
+                            placeholder='Facultet'
+                            options={Getfakultet.map((item, index) => (
+                                {value: item.id, label: item.name}
+                            ))}
+                        />
+
+                    </Form.Item>
+
+                    <Form.Item
+                        name="login"
+                        rules={[
+                            {
+                                required: true,
+                                message: t('required.login'),
+                                max: 9
+                            }
+                        ]}
+                        label="Login"
+                    >
+                        <Input id='Login' allowClear
+                               maxlength="9"
+                               onChange={(e) => {
+                                   setCreatDecan({
+                                       ...creatDecan,
+                                       login: e.target.value.toUpperCase(),
+                                   })
+                               }}
+                               name={"login"}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="password"
+                        rules={[
+                            {
+                                required: true,
+                                message: t('required.password'),
+                                min:7
+                            }
+                        ]}
+                        label="Parol"
+                    >
+
+                        <Input id='Parol'
+                               name="password"
+                               allowClear onChange={(e) => {
+                            setCreatDecan({
+                                ...creatDecan,
+                                password: e.target.value,
+                            })
+                        }}/>
+                    </Form.Item>
+                    <div className="d-flex justify-content-end">
+                        <Form.Item>
+                            <Button
+                                className="mx-2 btn btn-danger"
+                                onClick={handleCancel}
+                            >
+                                Bekor qilish
+                            </Button>
+
+                            <Button
+                                type="primary"
+                                className="btn btn-info text-white"
+                                htmlType="submit"
+                            >
+                                Qo'shish
+                            </Button>
+                        </Form.Item>
+                    </div>
+                </Form>
             </Modal>
 
             <table className="table table-bordered ">
@@ -210,9 +375,9 @@ function Dekan(props) {
                 </tr>
                 </thead>
                 <tbody>
-                {Dekan && Dekan.map((item, index)=>{
+                {Dekan && Dekan.map((item, index) => {
                     return <tr key={index}>
-                        <td>{index+1}</td>
+                        <td>{index + 1}</td>
                         <td>{item.surname}</td>
                         <td>{item.name}</td>
                         <td>{item.patronymic}</td>
@@ -220,16 +385,22 @@ function Dekan(props) {
                         <td>{item.login}</td>
                         <td>{item.password}</td>
                         <td>
-                            <button onClick={()=>{showModal();setCreatDecan(item);
-                            setCreatDecan({...item,facultyId:item.faculty.id});
-                            setedit(true)}}
+                            <button onClick={() => {
+                                showModal();
+                                setCreatDecan(item);
+                                setCreatDecan({...item, facultyId: item.faculty.id});
+                                setedit(true)
+                            }}
                                     className="btn btn-warning mx-1">
-                                <img style={{width:"20px", height:"20px"}}
+                                <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/editing.png" alt=""/>
                             </button>
-                            <button onClick={()=>{setDekanId(item.id)}} className="btn btn-danger mx-1"
+                            <button onClick={() => {
+                                setDekanId(item.id)
+                            }} className="btn btn-danger mx-1"
                                     data-bs-toggle="modal" data-bs-target="#myModal">
-                                <img style={{width:"20px", height:"20px"}} className='iconEdit' src="/img/delete.png" alt=""/>
+                                <img style={{width: "20px", height: "20px"}} className='iconEdit' src="/img/delete.png"
+                                     alt=""/>
                             </button>
                         </td>
                     </tr>
@@ -252,7 +423,7 @@ function Dekan(props) {
                         <div className="modal-footer">
                             <button type="button" className="btn btn-danger" data-bs-dismiss="modal"
                                     onClick={Delet}>
-                                <img style={{width:"20px", height:"20px"}} src="/img/delete.png" alt=""/>
+                                <img style={{width: "20px", height: "20px"}} src="/img/delete.png" alt=""/>
                             </button>
                         </div>
 

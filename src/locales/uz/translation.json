@@ -24,9 +24,13 @@
   "Mesenger": "Ijtimoiy tarmoqlar",
   "required": {
     "name": "Iltimos Talaba ID kiriting!",
-    "password": "Iltimos parolingizni kiriting!",
+    "password": "Iltimos parol kiriting!",
     "field-name": "Iltimos nomini kiriting!",
-    "file": "Iltimos fileni tanlang!"
+    "file": "Iltimos fileni tanlang!",
+    "surname": "Iltimos familya kiriting!",
+    "patronymic": "Iltimos sharif kiriting!",
+    "login": "Iltimos login kiriting!",
+    "faculty": "Iltimos fakultet tanlang!"
   }
 
 }
