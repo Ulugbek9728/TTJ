@@ -57,9 +57,9 @@ function DekanPage(props) {
         localStorage.removeItem("id");
         navigate("/")
     }
+
     useEffect(() => {
         notify();
-
         setMessage('');
         setSucsessText('')
     }, [sucsessText, message]);

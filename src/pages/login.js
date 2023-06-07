@@ -10,7 +10,7 @@ import {useNavigate} from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
 import {toast, ToastContainer} from "react-toastify";
-import {Button, Checkbox, Form, Input} from 'antd';
+import {Button, Form, Input} from 'antd';
 
 function Login(props) {
     const formRef = React.useRef(null);

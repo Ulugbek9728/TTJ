@@ -24,7 +24,8 @@
   "Mesenger": "Ijtimoiy tarmoqlar",
   "required": {
     "name": "Iltimos Talaba ID kiriting!",
-    "password": "Iltimos parolingizni kiriting!"
+    "password": "Iltimos parolingizni kiriting!",
+    "field-name": "Iltimos nomini kiriting!"
   }
 
 }
