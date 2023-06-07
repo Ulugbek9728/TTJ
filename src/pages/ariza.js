@@ -201,7 +201,7 @@ function Ariza(props) {
 
                         <div className="right-side overflow-auto">
                             <h5>TTJ da turish uchun sabab ko'rsating</h5>
-                            <span>faqat pdf faylni yuklang !!!</span>
+                            <span>Faqat pdf faylni yuklang !!!</span>
                             <div className="container">
                                 <Form name="dynamic_form_nest_item" onFinish={onFinish}
                                     style={{maxWidth: 600}} autoComplete="off">

@@ -25,7 +25,8 @@
   "required": {
     "name": "Iltimos Talaba ID kiriting!",
     "password": "Iltimos parolingizni kiriting!",
-    "field-name": "Iltimos nomini kiriting!"
+    "field-name": "Iltimos nomini kiriting!",
+    "file": "Iltimos fileni tanlang!"
   }
 
 }
