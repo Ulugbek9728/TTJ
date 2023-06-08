@@ -93,9 +93,8 @@ function Faculty(props) {
                         value:fakultet
                     }
                 ]}
+                layout="vertical"
             >
-                <label htmlFor='fakultet'>Fakultet yaratish</label>
-
                 <Form.Item
                     rules={[
                         {
@@ -104,6 +103,7 @@ function Faculty(props) {
                         }
                     ]}
                     name="name"
+                    label="Fakultet yaratish"
                 >
                     <Input
                         name="name"

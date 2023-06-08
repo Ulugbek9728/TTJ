@@ -2,10 +2,12 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {toast, ToastContainer} from "react-toastify";
-import {Input} from "antd";
+import {Button, Form, Input, Upload} from "antd";
+import {PlusOutlined} from "@ant-design/icons";
+import {UploadOutlined} from '@ant-design/icons';
 
-function Ttj(props)  {
-
+function Ttj(props) {
+    const [form] = Form.useForm();
     const [edit, setedit] = useState(false);
     const [sucsessText, setSucsessText] = useState('');
     const [TTJ, setTTJ] = useState({});
@@ -19,41 +21,58 @@ function Ttj(props)  {
         file.fileBox = e.target.files[0]
     };
 
-    function creatTTJ() {
+    function creatTTJ(values) {
+        console.log(values);
         const allData = new FormData();
-        allData.append(`file`,file.fileBox);
-        if (edit === true){
+        allData.append(`file`, file.fileBox);
+        if (edit === true) {
 
-            if (file.fileBox===undefined || null){
-                axios.put(`${ApiName1}/private/admin/dormitory/${TTJ.id}`, TTJ,{
-                    headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+            if (file.fileBox === undefined || null) {
+                axios.put(`${ApiName1}/private/admin/dormitory/${TTJ.id}`,
+                    {
+                        name: values.name,
+                        count: values.count,
+                        photoId: TTJ.photoId
+                    },
+                    {
+                        headers: {
+                            "Authorization":
+                                "Bearer " + localStorage.getItem("token")
+                        }
+                    }
+                )
                     .then((response) => {
                         console.log(response)
-                        if (response.status === 200){
+                        if (response.status === 200) {
                             setFile(null);
                             setTTJ('');
                             setGetTTJ([]);
-                            setSucsessText("TTJ muvofaqiyatli o'zgartirildi")
+                            setSucsessText("TTJ muvofaqiyatli o'zgartirildi");
+                            form.resetFields();
                         }
                     }).catch((error) => {
                     console.log(error)
                 })
-            }
-            else {
+            } else {
                 axios.post(`${ApiName1}/attach/upload`, allData)
                     .then((response) => {
-                        TTJ.photoId=response.data[0].id;
-                        axios.put(`${ApiName1}/private/admin/dormitory/${TTJ.id}`, TTJ,
+                        axios.put(`${ApiName1}/private/admin/dormitory/${TTJ.id}`, {
+                                name: values.name,
+                                count: values.count,
+                                photoId: TTJ.photoId
+                            },
                             {
-                                headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+                                headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+                            })
                             .then((response) => {
                                 console.log(response)
-                                if (response.status === 200){
-                                    file.fileBox=null;
+                                if (response.status === 200) {
+                                    file.fileBox = null;
                                     setTTJ('');
-                                    file.fileBox=null
+                                    file.fileBox = null
                                     setGetTTJ('');
                                     setSucsessText("TTJ muvofaqiyatli o'zgartirildi")
+                                    form.resetFields();
                                 }
                             }).catch((error) => {
                             console.log(error)
@@ -62,22 +81,26 @@ function Ttj(props)  {
                     console.log(error)
                 })
             }
-        }
-        else {
+        } else {
             axios.post(`${ApiName1}/attach/upload`, allData)
                 .then((response) => {
-                    TTJ.photoId=response.data[0].id;
+                    TTJ.photoId = response.data[0].id;
 
-                    axios.post(`${ApiName1}/private/admin/dormitory`, TTJ, {
-                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+                    axios.post(`${ApiName1}/private/admin/dormitory`, {
+                        name: values.name,
+                        count: values.count,
+                        photoId: TTJ.photoId
+                    }, {
+                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+                    })
                         .then((response) => {
-                            if (response.status === 201){
-                                file.fileBox=null;
+                            if (response.status === 201) {
+                                file.fileBox = null;
                                 setTTJ('');
                                 setGetTTJ('');
                                 setSucsessText("TTJ muvofaqiyatli qo'shildi")
+                                form.resetFields();
                             }
-                            console.log(response)
                         }).catch((error) => {
                         console.log(error)
                     })
@@ -86,11 +109,15 @@ function Ttj(props)  {
             })
         }
     }
-
+    const onCancel = ()=>{
+        setedit(false);
+        setTTJ({});
+        form.resetFields();
+    }
     useEffect(() => {
         GetTTJInfo();
         notify()
-    },[sucsessText]);
+    }, [sucsessText]);
 
     function GetTTJInfo() {
         axios.get(`${ApiName1}/private/admin/dormitory`, {
@@ -119,22 +146,92 @@ function Ttj(props)  {
     }
 
     function notify() {
-        if (sucsessText != '') {
+        if (sucsessText !== '') {
             toast.success(sucsessText)
         }
     }
+
     return (
         <div>
             <ToastContainer/>
-            <label htmlFor='Title'>Rasm</label>
-            <input type="file" className='form-control w-25 mb-2'  onChange={(e) => handleInputFile(e)}/>
-            <label htmlFor='ttj'>TTJ nomini kiriting</label>
-            <input type="text" value={TTJ.name || ''} className='form-control w-25 mb-2'
-                   onChange={(e)=>{setTTJ({...TTJ,name:e.target.value})}}/>
-            <label htmlFor='cvota'>TTJ umumiy kvotani kiriting</label>
-            <input type="text" value={TTJ.count || ''} className='form-control w-25 mb-2'
-                   onChange={(e)=>{setTTJ({...TTJ,count:e.target.value})}}/>
-            <button className='btn btn-success' onClick={creatTTJ}>yaratish</button>
+            <Form
+                form={form}
+                fields={[
+                    {
+                        name: 'name',
+                        value: TTJ?.name
+                    },
+                    {
+                        name: 'count',
+                        value: TTJ.count
+                    }
+                ]}
+                onFinish={creatTTJ}
+                layout="vertical"
+            >
+                <Form.Item
+                    label="Rasm"
+                    name="photo"
+                    rules={[
+                        {
+                            required: !edit,
+                            message: 'upload photo'
+                        }
+                    ]}
+                >
+                    <Input type="file"
+                           name="photo"
+                           className='form-control w-25 mb-2'
+                           onChange={(e) => handleInputFile(e)}/>
+                </Form.Item>
+                <Form.Item
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Enter name'
+                        }
+                    ]}
+                    label="TTJ nomini kiriting">
+                    <Input type="text"
+                           name="name"
+                           className='form-control w-25 mb-2'
+                           onChange={(e) => {
+                               setTTJ({...TTJ, name: e.target.value})
+                           }}>
+                    </Input>
+
+                </Form.Item>
+                <Form.Item
+                    name="count"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Enter name'
+                        }
+                    ]}
+                    label="TTJ umumiy kvotani kiriting">
+                    <Input type="text" value={TTJ.count || ''}
+                           name="count"
+                           className='form-control w-25 mb-2'
+                           onChange={(e) => {
+                               setTTJ({...TTJ, count: e.target.value})
+                           }}>
+
+                    </Input>
+                </Form.Item>
+                <Form.Item>
+                    <div className="d-flex justify-content-lg-start">
+                        <Button className="btn btn-danger mx-2" onClick={onCancel}>
+                            Bekor qilish
+                        </Button>
+
+                        <Button htmlType="submit" className="btn btn-success">
+                            Yaratish
+                        </Button>
+                    </div>
+                </Form.Item>
+            </Form>
             <hr/>
 
             <table className="table table-bordered ">
@@ -150,25 +247,26 @@ function Ttj(props)  {
                 </tr>
                 </thead>
                 <tbody>
-                {GetTTJ && GetTTJ.map((item, index)=>{
+                {GetTTJ && GetTTJ.map((item, index) => {
                     return <tr key={index}>
-                        <td>{index+1}</td>
-                        <td><img src={`${ApiName1}${item.photoUrl}`} style={{width:"100px", height:"100px"}} alt=""/></td>
+                        <td>{index + 1}</td>
+                        <td><img src={`${ApiName1}${item.photoUrl}`} style={{width: "100px", height: "100px"}} alt=""/>
+                        </td>
                         <td>
                             <b>Yotoqxona nomi: </b>{item.name} <br/>
                             <b>Umumiy joylar: </b>{item.actualCount} <br/>
                             <b>Qolgan joylar: </b>{item.leftCount}
                         </td>
-                        <td colSpan="2">{item.faculty.map((item, index)=>{
+                        <td colSpan="2">{item.faculty.map((item, index) => {
                             return <div key={index}>
                                 <div className='d-flex  w-100'>
-                                    <div  className="w-50">
+                                    <div className="w-50">
                                         <b>{item.name}</b> <br/>
                                         <b>Umumiy joylar: </b>{item.actualCount} <br/>
                                         <b>Qolgan joylar: </b>{item.leftCount}
                                     </div>
-                                    <div className="w-50 px-2" style={{borderLeft:"1px solid black"}}>
-                                        {item.courses.map((item, index)=>{
+                                    <div className="w-50 px-2" style={{borderLeft: "1px solid black"}}>
+                                        {item.courses.map((item, index) => {
                                             return <div key={index}>
                                                 <b>Kurs </b>{item.name} <br/>
                                                 Umumiy joylar: {item.actualCount} <br/>
@@ -184,23 +282,30 @@ function Ttj(props)  {
                         })}</td>
                         <td>
                             <button className="btn btn-warning mx-1"
-                                    onClick={()=>{setTTJId(item.id);
-                                    setTTJ({...TTJ,
-                                        name: item.name,
-                                        count: item.actualCount,
-                                        id: item.id,
-                                        photoId: item.photoId,
-                                    });setedit(true)}}>
+                                    onClick={() => {
+                                        setTTJId(item.id);
+                                        setTTJ({
+                                            ...TTJ,
+                                            name: item.name,
+                                            count: item.actualCount,
+                                            id: item.id,
+                                            photoId: item.photoId,
+                                        });
+                                        setedit(true)
+                                    }}>
 
-                                <img style={{width:"20px", height:"20px"}}
+                                <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/editing.png" alt=""/>
                             </button>
                         </td>
                         <td>
                             <button className="btn btn-danger mx-1"
-                                    onClick={() => {setTTJId(item.id)}}
+                                    onClick={() => {
+                                        setTTJId(item.id)
+                                    }}
                                     data-bs-toggle="modal" data-bs-target="#myModal">
-                                <img style={{width:"20px", height:"20px"}} className='iconEdit' src="/img/delete.png" alt=""/>
+                                <img style={{width: "20px", height: "20px"}} className='iconEdit' src="/img/delete.png"
+                                     alt=""/>
                             </button>
                         </td>
                     </tr>

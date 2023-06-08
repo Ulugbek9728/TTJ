@@ -48,7 +48,7 @@ function TtjDekan(props) {
                         <td>
                             <b>{item.name}</b><br/>
                             <span>Bo'sh joylar soni <b>{item.actualCount}</b></span><br/>
-                            <span>Band joylar soni <b>{item.leftCount}</b></span>
+                            <span>Band joylar soni <b>{item?.actualCount-item?.leftCount}</b></span>
                         </td>
                         <td>
                             {item.faculty[0].courses.map((item, index)=>{
