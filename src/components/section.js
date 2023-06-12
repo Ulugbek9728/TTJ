@@ -74,9 +74,6 @@ function Section(props) {
                         </SwiperSlide>
                 })}
                     </Swiper>
-
-
-
             </div>
         </div>
 

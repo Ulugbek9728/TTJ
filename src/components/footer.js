@@ -8,7 +8,7 @@ import Bolim from "../img/logoBo'lim.png"
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 
-function Footer(props) {
+function    Footer(props) {
     const {t} = useTranslation();
     const [GetContact, setGetContact] = useState({});
 
@@ -32,7 +32,7 @@ function Footer(props) {
                         <img src={Bolim} alt=""/>
                         <span>{t("Bo'limName")}.</span>
                     </div>
-                    <div className="d-flex w-100">
+                    <div className="d-flex w-100 contact_Box">
                         <div className="aloqa">
                             <div className="title">
                                 {t("Mesenger")}

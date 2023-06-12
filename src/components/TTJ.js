@@ -3,8 +3,7 @@ import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {toast, ToastContainer} from "react-toastify";
 import {Button, Form, Input, Upload} from "antd";
-import {PlusOutlined} from "@ant-design/icons";
-import {UploadOutlined} from '@ant-design/icons';
+
 
 function Ttj(props) {
     const [form] = Form.useForm();
@@ -22,7 +21,6 @@ function Ttj(props) {
     };
 
     function creatTTJ(values) {
-        console.log(values);
         const allData = new FormData();
         allData.append(`file`, file.fileBox);
         if (edit === true) {
@@ -39,8 +37,7 @@ function Ttj(props) {
                             "Authorization":
                                 "Bearer " + localStorage.getItem("token")
                         }
-                    }
-                )
+                    })
                     .then((response) => {
                         console.log(response)
                         if (response.status === 200) {
@@ -53,13 +50,14 @@ function Ttj(props) {
                     }).catch((error) => {
                     console.log(error)
                 })
-            } else {
+            }
+            else {
                 axios.post(`${ApiName1}/attach/upload`, allData)
                     .then((response) => {
                         axios.put(`${ApiName1}/private/admin/dormitory/${TTJ.id}`, {
                                 name: values.name,
                                 count: values.count,
-                                photoId: TTJ.photoId
+                                photoId: response.data[0].id
                             },
                             {
                                 headers: {"Authorization": "Bearer " + localStorage.getItem("token")}

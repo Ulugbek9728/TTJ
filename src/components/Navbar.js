@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import { getLocale } from "../utils/locales/getLocale";
 import { useTranslation } from "react-i18next";
 import "../asset/navbar.scss"
 import {Link} from "react-router-dom";
@@ -10,9 +9,6 @@ import Logo from "../img/logo.png"
 function Navbar(props) {
     const {t, i18n } = useTranslation();
     const [leng, setLeng] = useState('');
-
-
-    const lang = getLocale();
 
     const changeLanguage = (language)=>{
         i18n.changeLanguage(language);
@@ -42,16 +38,15 @@ function Navbar(props) {
     return (
 <div className="container navbar">
     <div className="row">
-        <div className="col-6 left">
+        <div className="col-lg-6 col-md-6 col-12 left">
             <Link to="/">
             <img src={Logo} alt=""/>
             </Link>
             <p className="title">
                 {t("header.Title")}
             </p>
-
         </div>
-        <div className="col-6 rihgt">
+        <div className="col-lg-6 col-md-6 col-12 rihgt">
             <div className="profilBox">
                 <Link className="profil" to="/login">
                     {t("header.profilButton")}

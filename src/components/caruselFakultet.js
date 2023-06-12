@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from "react-i18next";
+import {Link} from "react-router-dom";
+import axios from "axios";
+import {ApiName1} from "../APIname1";
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import {Autoplay, FreeMode, Pagination} from "swiper";
-import {useTranslation} from "react-i18next";
-import {Link} from "react-router-dom";
-import axios from "axios";
-import {ApiName1} from "../APIname1";
+
 
 
 function CaruselFakultet(props) {
@@ -55,7 +56,7 @@ function CaruselFakultet(props) {
                             if (jsonCourse){
                               course=JSON.parse(item?.courses);
                             }
-                            console.log(course)
+
                             return <SwiperSlide key={index}>
                                 <img src={`${ApiName1}${item.photo_url}`} alt=""/>
                                 <div className="content">
@@ -82,6 +83,7 @@ function CaruselFakultet(props) {
 
 
                     </Swiper>
+
                 </div>
                 <div className="col-6 right">
                     <div className="menu">

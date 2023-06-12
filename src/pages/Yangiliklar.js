@@ -22,7 +22,6 @@ function Yangiliklar(props) {
     function GetNews() {
         axios.post(`${ApiName1}/public/news`, '', {params: {page: page, size: 12}})
             .then((response) => {
-                // NewsGroup.push(...response.data.content);
                 setNews(...NewsGroup,response.data?.content)
                 setIsLast(response.data.last);
             }).catch((error) => {
@@ -68,7 +67,6 @@ function Yangiliklar(props) {
 
             <Footer/>
         </>
-
     );
 }
 
