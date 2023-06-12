@@ -136,7 +136,7 @@ function News(props) {
     }
 
     function notify() {
-        if (sucsessText != ''){toast.success(sucsessText)}
+        if (sucsessText !== ''){toast.success(sucsessText)}
     }
 
     return (

@@ -22,6 +22,12 @@
   "Bo'limName": "Talabalarni turar joy bilan ta’minlash ishlarini muvofiqlashtiruvchi bo’lim",
   "Aloqa": "Aloqa",
   "Mesenger": "Ijtimoiy tarmoqlar",
+  "know-result": "Natijani ko'rish, Ariza holati",
+  "enter-hemis-id": "\"Hemis\" Talaba IDni kiriting",
+  "send": "Yuborish",
+  "result": "Natija",
+  "student-id": "Talaba ID",
+  "give-reason-for-ttj": "TTJda turish uchun sabab ko'rsating",
   "required": {
     "name": "Iltimos Talaba ID kiriting!",
     "password": "Iltimos parol kiriting!",
@@ -31,6 +37,19 @@
     "patronymic": "Iltimos sharif kiriting!",
     "login": "Iltimos login kiriting!",
     "faculty": "Iltimos fakultet tanlang!"
+  },
+  "reasons": {
+    "1": "Chin yetim yoki yetim talabalar",
+    "2": "Boquvchisini yo‘qotgan (otasi) talabalar",
+    "3": "Nogironlgi bo‘lgan talabalar",
+    "4": "Otasi (boquvchisi) nogiron talabalar",
+    "5": "Temir daftar”, “Ayollar daftari”, “Yoshlar daftari” \n ro‘yxatiga kiritilgan, ijtimoiy himoyaga o‘ta muhtoj oila farzandlari",
+    "6": "Oilada ikki va undan ortiq farzandlari kunduzgi \n            ta’limda shartnoma asosida o‘qiydigan oila farzandlari",
+    "7": "Chet eldan kelib o‘qiydigan xorijiy talabalar",
+    "8": "Respublikaning olis hududlaridan kelgan talabalar",
+    "9": "Yozgi ta’til vaqtida “Bunyodkor yoshlar mehnat otryadi”da faol ishtirok etgan talabalar",
+    "10": "Universitet Yoshlar ittifoqi kengashi raisining tavsiyanomasiga\n         asosan universitet yoshlar Kengashi a’zolari",
+    "11": "Iqtidorli talabalar (xalqaro, respublika, hudud va universitet miqyosida \n        o‘tkazilgan fan olimpiadalari va sport musobaqalari, ko‘rik-tanlovlar g‘oliblari, \n        ma’naviy-ma’rifiy va sport tadbirlarida faol ishtirok etgan)",
+    "12": "Talabalar turar joyida o‘tgan o‘quv yillarida namunali faoliyat yuritgan talabalar\n         kengashi raisi va qavat sardorlari"
   }
-
 }

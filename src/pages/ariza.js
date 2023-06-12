@@ -25,7 +25,7 @@ function Ariza(props) {
         imageUrl: "",
         specialty: "",
         group: "",
-        gender:"",
+        gender: "",
         faculty: "",
         course: "",
         country: "",
@@ -42,55 +42,33 @@ function Ariza(props) {
     const [message, setMessage] = useState([]);
     const [message2, setMessage2] = useState('');
     const [sucsessText, setSucsessText] = useState('');
-    const [sabab, setSabab] = useState([
-        {name: 'Chin yetim yoki yetim talabalar'},
-        {name: 'Boquvchisini yo‘qotgan (otasi) talabalar'},
-        {name: 'Nogironlgi bo‘lgan talabalar'},
-        {name: 'Otasi (boquvchisi) nogiron talabalar'},
-        {
-            name: `Temir daftar”, “Ayollar daftari”, “Yoshlar daftari” 
-            ro‘yxatiga kiritilgan, ijtimoiy himoyaga o‘ta muhtoj oila farzandlari`
-        },
-        {
-            name: `Oilada ikki va undan ortiq farzandlari kunduzgi 
-            ta’limda shartnoma asosida o‘qiydigan oila farzandlari`
-        },
-        {name: 'Chet eldan kelib o‘qiydigan xorijiy talabalar'},
-        {name: `Respublikaning olis hududlaridan kelgan talabalar`},
-        {name: `Yozgi ta’til vaqtida “Bunyodkor yoshlar mehnat otryadi”da faol ishtirok etgan talabalar`},
-        {
-            name: `Universitet Yoshlar ittifoqi kengashi raisining tavsiyanomasiga
-         asosan universitet yoshlar Kengashi a’zolari`
-        },
-        {
-            name: `Iqtidorli talabalar (xalqaro, respublika, hudud va universitet miqyosida 
-        o‘tkazilgan fan olimpiadalari va sport musobaqalari, ko‘rik-tanlovlar g‘oliblari, 
-        ma’naviy-ma’rifiy va sport tadbirlarida faol ishtirok etgan)`
-        },
-        {
-            name: `Talabalar turar joyida o‘tgan o‘quv yillarida namunali faoliyat yuritgan talabalar
-         kengashi raisi va qavat sardorlari`
-        },
+    const [sabab, setSabab] = useState([{}]);
 
-    ]);
-
+    const lang = localStorage.getItem('i18nextLng');
     const addLanguage = () => {
         setFile([...file, {
             fileName: '',
             fileBox: ''
         }])
     };
-
+    useEffect(() => {
+        setSabab([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            .map((item) => (
+                {
+                    name: t(`reasons.${item}`)
+                }))
+        )
+    }, [lang])
     const handleInputFile = (e, index) => {
         file[index].fileBox = e.target.files[0]
     };
 
     const handleInputLanguage = (e, index) => {
-        setFile(file?.map((item,idn)=>{
-            if (idn === index){
+        setFile(file?.map((item, idn) => {
+            if (idn === index) {
                 item.fileName = e;
                 return item;
-            }else {
+            } else {
                 return item;
             }
         }));
@@ -102,12 +80,18 @@ function Ariza(props) {
         setMessage('');
         setMessage2('');
         setSucsessText('')
-    },[message, sucsessText, message2]);
+    }, [message, sucsessText, message2]);
 
     function notify() {
-        if (message !== ''){message && message.map((item) => (toast.error(item)))}
-        if (sucsessText !== ''){toast.success(sucsessText)}
-        if (message2 !== ''){toast.error(message2)}
+        if (message !== '') {
+            message && message.map((item) => (toast.error(item)))
+        }
+        if (sucsessText !== '') {
+            toast.success(sucsessText)
+        }
+        if (message2 !== '') {
+            toast.error(message2)
+        }
     }
 
     function getStudent() {
@@ -147,7 +131,7 @@ function Ariza(props) {
 
                 axios.post(`${ApiName1}/public/student/join/data`, Student)
                     .then((response) => {
-                        if (response.status === 201){
+                        if (response.status === 201) {
                             setFile([{
                                 fileName: '',
                                 fileBox: null
@@ -159,7 +143,7 @@ function Ariza(props) {
                         }
                     }).catch((error) => {
                     setIsLoading(false);
-                    if (error.response.status === 400){
+                    if (error.response.status === 400) {
                         setMessage2(error.response.data)
                     }
                 })
@@ -200,17 +184,18 @@ function Ariza(props) {
                         </div>
 
                         <div className="right-side overflow-auto">
-                            <h5>TTJ da turish uchun sabab ko'rsating</h5>
+                            <h5>{t('give-reason-for-ttj')}</h5>
                             <span>Faqat pdf faylni yuklang !!!</span>
                             <div className="container">
                                 <Form name="dynamic_form_nest_item" onFinish={onFinish}
-                                    style={{maxWidth: 600}} autoComplete="off">
+                                      style={{maxWidth: 600}} autoComplete="off">
                                     {file && file.map((item, index) => (
                                         <div key={index} style={{display: 'flex', marginBottom: 8}}
                                              align="baseline">
                                             <div className="dropdown">
                                                 <button className=" selectBtn dropdown-toggle" type="button"
-                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
                                                     {item.fileName}
                                                 </button>
                                                 <div className="dropdown-menu"
@@ -227,7 +212,8 @@ function Ariza(props) {
 
                                                 </div>
                                             </div>
-                                                <input type="file" className='form-control' id='FILE' accept="application/pdf"
+                                            <input type="file" className='form-control' id='FILE'
+                                                   accept="application/pdf"
                                                    onChange={(e) => handleInputFile(e, index)}/>
                                         </div>
                                     ))}
@@ -246,7 +232,7 @@ function Ariza(props) {
                             <div className="d-flex justify-content-center">
                                 <Button loading={isLoading} className="signUp"
                                         onClick={postStudent}>
-                                    Submit
+                                    {t('send')}
                                 </Button>
                             </div>
                         </div>

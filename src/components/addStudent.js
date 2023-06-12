@@ -5,6 +5,7 @@ import {PlusOutlined} from '@ant-design/icons';
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {toast} from "react-toastify";
+import {useTranslation} from "react-i18next";
 
 
 const {Option} = Select;
@@ -13,6 +14,8 @@ const onFinish = (values: any) => {
 };
 
 function AddStudent(props) {
+    const {t} = useTranslation();
+
     const [file, setFile] = useState([{
         fileName: '',
         fileBox: null
@@ -217,8 +220,8 @@ function AddStudent(props) {
 
                 </div>
                 <div className="right">
-                    <h5>TTJ da turish uchun sabab ko'rsating</h5>
-                    <span>faqat pdf faylni yuklang !!!</span>
+                    <h5>{t('give-reason-for-ttj')}</h5>
+                    <span>Faqat pdf faylni yuklang !!!</span>
                     <div className="container">
                         <Form name="dynamic_form_nest_item" onFinish={onFinish}
                             style={{maxWidth: 600}} autoComplete="off">
@@ -265,7 +268,7 @@ function AddStudent(props) {
                                 className="signUp btn btn-primary w-50 p-0"
                                 style={{height:'50px'}}
                                 onClick={postStudent}>
-                            Yuborish
+                            {t('send')}
                         </Button>
                     </div>
                 </div>

@@ -61,7 +61,7 @@ function Natija(props) {
                     <div className="login-page">
                         <div className="left-side">
                             <div className="title">
-                                Natija
+                                {t('result')}
                             </div>
                             <div className="">
                                 <span className='commit'>
@@ -77,10 +77,10 @@ function Natija(props) {
                         <div className="right-side">
                             <div className="container">
                                 <div className="create">
-                                    Natijani bilish
+                                    {t('know-result')}
                                 </div>
                                 <div className="text">
-                                    "Hemis" Talaba ID ni kiriting
+                                    {t('enter-hemis-id')}
                                 </div>
 
                                 <Form
@@ -107,7 +107,7 @@ function Natija(props) {
                                         <div className="all-input">
                                             <Input
                                                 type="text"
-                                                placeholder="Talaba ID"
+                                                placeholder={t('student-id')}
                                                 name="ism"
                                             >
                                             </Input>
@@ -120,7 +120,7 @@ function Natija(props) {
                                             htmlType="submit"
                                             className="signUp"
                                         >
-                                            Yuborish
+                                            {t('send')}
                                         </Button>
                                     </Form.Item>
                                 </Form>
