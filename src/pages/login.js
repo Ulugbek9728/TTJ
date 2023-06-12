@@ -112,7 +112,7 @@ function Login(props) {
                                     {t("header.profilButton")}
                                 </div>
                                 <div className="text">
-                                    "Hemis" Talaba ID parolingizni kiriting
+                                    {t('enter-hemis-id')}
                                 </div>
                                 <Form
                                     layout={{
@@ -140,7 +140,7 @@ function Login(props) {
                                         <div className="all-input">
                                             <Input
                                                 type="text"
-                                                placeholder="Talaba ID"
+                                                placeholder={t('student-id')}
                                                 name="ism"
                                             >
 

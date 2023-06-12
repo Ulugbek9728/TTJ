@@ -15,7 +15,6 @@ function Yangiliklar(props) {
     const [page, setPage] = useState(0);
     const [isLast, setIsLast] = useState(true);
     const lang = localStorage.getItem('i18nextLng');
-
     useEffect(() => {
         GetNews();
     }, [page]);
@@ -63,7 +62,7 @@ function Yangiliklar(props) {
                         </div>
 
                     </div>
-                    <button className="btn SeeMore" onClick={reloadNews} disabled={isLast}>see more</button>
+                    <button className="btn SeeMore" onClick={reloadNews} disabled={isLast}>{t('see-more')}</button>
                 </div>
             </div>
 
