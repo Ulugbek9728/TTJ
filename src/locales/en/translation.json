@@ -28,6 +28,7 @@
   "student-id": "Student ID",
   "give-reason-for-ttj": "Specify the reason for staying in the hostel",
   "see-more": "See more",
+  "password": "Password",
   "required": {
     "name": "Please enter a Student ID!",
     "password": "Please enter password!",

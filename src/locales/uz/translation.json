@@ -28,6 +28,7 @@
   "student-id": "Talaba ID",
   "give-reason-for-ttj": "TTJda turish uchun sabab ko'rsating",
   "see-more": "Yana",
+  "password": "Parol",
   "required": {
     "name": "Iltimos Talaba ID kiriting!",
     "password": "Iltimos parol kiriting!",

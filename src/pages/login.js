@@ -161,7 +161,8 @@ function Login(props) {
                                     >
                                         <div className="all-input">
                                             <Input type={passwordBoolin ? "password" : "text"}
-                                                   placeholder="parol" name="Parol"
+                                                   placeholder={t('password')}
+                                                   name="Parol"
                                             />
                                             <img src={pasword} alt="user-icon" className='user-icon'/>
                                             {passwordBoolin ?
