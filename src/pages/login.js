@@ -75,6 +75,7 @@ function Login(props) {
     }
 
     useEffect(() => {
+        window.scrollTo(0,0);
         notify();
         setMessage2('')
     }, [message2]);

@@ -19,7 +19,15 @@ function News(props) {
     const [pageSizes, setPageSize] = useState(20);
 
 
-    const [creatNews, setCreatNews] = useState({});
+    const [creatNews, setCreatNews] = useState({
+        titleUz:'',
+        titleRu:'',
+        titleEn:'',
+        nameUz:'',
+        nameRu:'',
+        nameEn:'',
+
+    });
     const [NewsGroup, setNews] = useState([]);
     const [file, setFile] = useState([{
         fileBox: null
@@ -41,12 +49,18 @@ function News(props) {
                 axios.post(`${ApiName1}/private/admin/news/update/${creatNews.id}`, creatNews,{
                     headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
                     .then((response) => {
-                        console.log(response)
                         if (response.status === 200){
                             setIsModalVisible(false);
-                            setFile(null)
-                            setCreatNews('');
-                            setPage(0)
+                            setFile(null);
+                            setCreatNews({
+                                titleUz:'',
+                                titleRu:'',
+                                titleEn:'',
+                                nameUz:'',
+                                nameRu:'',
+                                nameEn:'',
+                            });
+                            setPage(0);
                             setNews([]);
                             setSucsessText("Yangilik muvofaqiyatli o'zgartirildi")
                         }
@@ -63,9 +77,17 @@ function News(props) {
                             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
                             .then((response) => {
                                 if (response.status === 200){
+                                    document.getElementById('Filee').value = '';
                                     setIsModalVisible(false);
-                                    file.fileBox=null
-                                    setCreatNews('');
+                                    file.fileBox=null;
+                                    setCreatNews({
+                                        titleUz:'',
+                                        titleRu:'',
+                                        titleEn:'',
+                                        nameUz:'',
+                                        nameRu:'',
+                                        nameEn:'',
+                                    });
                                     setNews('');
                                     setSucsessText("Yangilik muvofaqiyatli o'zgartirildi")
                                 }
@@ -85,6 +107,7 @@ function News(props) {
                         headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
                         .then((response) => {
                             if (response.status === 201){
+                                document.getElementById('Filee').value = '';
                                 setIsModalVisible(false);
                                 file.fileBox=null
                                 setCreatNews('');
@@ -152,7 +175,7 @@ function News(props) {
                    onOk={handleOk} onCancel={handleCancel}>
                 <div>
                     <label htmlFor='Title'>Rasm</label>
-                    <Input type="file" onChange={(e) => handleInputFile(e)}/>
+                    <input className='form-control' type="file" id='Filee' onChange={(e) => handleInputFile(e)}/>
 
                     <label htmlFor='Title'>Title uz</label>
                     <Input id='Familya' value={creatNews.titleUz} allowClear onChange={(e)=>{

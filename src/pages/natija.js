@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
 import user from "../img/user.png";
@@ -17,6 +17,9 @@ function Natija(props) {
     const [fileUrl, setFileUrl] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    useEffect(() => {
+        window.scrollTo(0,0);
+    }, []);
 
     function Login(values) {
         setIsLoading(true);

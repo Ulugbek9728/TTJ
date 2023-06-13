@@ -81,7 +81,6 @@ function CaruselFakultet(props) {
                             </SwiperSlide>
                         })}
 
-
                     </Swiper>
 
                 </div>

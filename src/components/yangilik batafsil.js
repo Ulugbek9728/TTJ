@@ -14,8 +14,8 @@ function YangilikBatafsil() {
 
     const [News, setNews] = useState({});
 
-
     useEffect(()=>{
+        window.scrollTo(0,0);
         GetNews()
     },[]);
 

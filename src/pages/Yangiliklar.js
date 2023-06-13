@@ -16,6 +16,7 @@ function Yangiliklar(props) {
     const [isLast, setIsLast] = useState(true);
     const lang = localStorage.getItem('i18nextLng');
     useEffect(() => {
+        window.scrollTo(0,0);
         GetNews();
     }, [page]);
 
@@ -41,10 +42,10 @@ function Yangiliklar(props) {
                     <div className="title">
                         {t("carusel.Yangiliklar")}
                     </div>
-                    <div className="container">
+                    <div className="container yangilikBox">
                         <div className="row">
                             {NewsGroup && NewsGroup?.map((item, index) => {
-                                return <div className="col-6 big" key={index}
+                                return <div className="col-md-6 col-12 big" key={index}
                                             onClick={() => navigate(`/News/${item.id}`)}>
                                     <img src={`${ApiName1}${item.imageUrl}`} alt=""/>
                                     <div className="box">

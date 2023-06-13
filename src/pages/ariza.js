@@ -75,6 +75,7 @@ function Ariza(props) {
     };
 
     useEffect(() => {
+        window.scrollTo(0,0);
         getStudent();
         notify();
         setMessage('');
