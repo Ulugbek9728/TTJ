@@ -311,7 +311,7 @@ function Student(props) {
             />
 
 
-            <div className="modal" id="myModal">
+            <div className="modal fade" id="myModal">
                 <div className="modal-dialog" style={{marginLeft:"15%"}}>
                     <div className="modal-content " style={{width:"50vw"}}>
                         <div className="modal-header">
@@ -388,7 +388,7 @@ function Student(props) {
                 </div>
 
             </div>
-            <div className="modal" id="myModal1">
+            <div className="modal fade" id="myModal1">
                 <div className="modal-dialog" style={{marginLeft:"15%"}}>
                     <div className="modal-content " style={{width:"50vw"}}>
                         <div className="modal-header">
@@ -432,7 +432,7 @@ function Student(props) {
                 </div>
 
             </div>
-            <div className="modal" id="myModal2">
+            <div className="modal fade" id="myModal2">
                 <div className="modal-dialog" style={{marginLeft:"15%"}}>
                     <div className="modal-content " style={{width:"50vw"}}>
                         <div className="modal-header">

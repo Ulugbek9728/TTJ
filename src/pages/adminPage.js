@@ -162,7 +162,6 @@ function AdminPage(props) {
             <Layout className="site-layout" style={{marginLeft: 200,}}>
                 <Header>
                     <span className="HeaderTitle">TTJ Admin paneli</span>
-
                 </Header>
                 <div className="dropdown">
                     <button type="button" className="btn " data-bs-toggle="dropdown"

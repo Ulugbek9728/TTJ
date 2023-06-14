@@ -253,13 +253,13 @@ function TtjStudents(props) {
                         <Option value='JOINED'>Qabul qilingan talabalar </Option>
                     </Select>
                 </div>
-
             </div>
 
             <Button
                 className="btn btn-success p-1"
-                onClick={exportExcel}
-            >Ma'lumotlarini yuklab olish</Button>
+                onClick={exportExcel}>
+                Ma'lumotlarini yuklab olish
+            </Button>
             <br/>
             <br/>
             <Modal className='ticherModal' title={"Talabani qora ro'yxatga qo'shish"}
@@ -360,7 +360,7 @@ function TtjStudents(props) {
                 }}
                 showQuickJumper
             />
-            <div className="modal" id="myModal">
+            <div className="modal fade" id="myModal">
                 <div className="modal-dialog" style={{marginLeft: "15%"}}>
                     <div className="modal-content " style={{width: "50vw"}}>
                         <div className="modal-header">
@@ -446,7 +446,7 @@ function TtjStudents(props) {
                 </div>
 
             </div>
-            <div className="modal" id="myModal2">
+            <div className="modal fade" id="myModal2">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">

@@ -94,20 +94,15 @@ function Natija(props) {
                                         {
                                             name: ['ism'],
                                             value: login
-                                        }
-                                    ]}
+                                        }]}
                                     onFinish={Login}
                                 >
                                     <Form.Item
                                         name="ism"
                                         rules={
-                                            [
-                                                {
-                                                    required: true,
+                                            [{required: true,
                                                     message: t('required.name')
-                                                }
-                                            ]
-                                        }
+                                                }]}
 
                                     >
                                         <div className="all-input">
