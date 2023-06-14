@@ -23,7 +23,7 @@ function Natija(props) {
 
     const lang = localStorage.getItem('i18nextLng');
     useEffect(() => {
-        switch (status) {
+        switch (Student?.dormitoryStudentStatus) {
             case 'ACCEPTED': {
                 setText(t('success-ttj'));
                 setFileUrl(Student?.response_file_url)
@@ -31,7 +31,7 @@ function Natija(props) {
             }
             case 'REMOVED': {
                 setText(t('application-removed'));
-                setFileUrl(Student?.response_file_url)
+                setFileUrl(Student?.removeFileUrl)
                 break;
             }
             case 'IS_ACCEPTED': {
