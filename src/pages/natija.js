@@ -30,29 +30,28 @@ function Natija(props) {
                 setStatus(response.data.status);
                 switch (response.data?.dormitoryStudentStatus) {
                     case 'ACCEPTED': {
-                        setText('Tabriklaymiz quyidagi ruxsatnomani yuklab olishingiz mumkun.');
+                        setText(t('success-ttj'));
                         setFileUrl(response.data?.response_file_url)
                         break;
                     }
                     case 'REMOVED': {
-                        setText('Haydalgansiz');
+                        setText(t('application-removed'));
                         setFileUrl(response.data?.response_file_url)
                         break;
                     }
                     case 'IS_ACCEPTED': {
-
-                        setText('Arizangiz ko\'rib chiqilmoqda');
+                        setText(t('application-pending'));
                         break;
                     }
                     case 'NOT_ACCEPTED': {
-                        setText('Arizangiz qabul qilinmadi!');
+                        setText(t('application-cancel'));
                         break;
                     }
                 }
                 setLogin('')
                 setIsLoading(false);
             }).catch((error) => {
-            toast.error(error.response?.data);
+            toast.error(error.response?.data === 'Bunday talaba mavjud emas!' ? t('student-not-found'):'');
             setIsLoading(false);
         })
     }

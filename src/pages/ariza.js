@@ -139,13 +139,13 @@ function Ariza(props) {
                             }])
 
                             document.getElementById('FILE').value = null;
-                            setSucsessText("Ma'lumotlar muvafaqiyatli yuborildi")
+                            setSucsessText(t('data-send-success'))
                             setIsLoading(false);
                         }
                     }).catch((error) => {
                     setIsLoading(false);
                     if (error.response.status === 400) {
-                        setMessage2(error.response.data)
+                        setMessage2(error.response.data==='Bunday talaba mavjud '?t('application-submitted-already'):'')
                     }
                 })
 

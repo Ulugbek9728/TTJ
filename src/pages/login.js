@@ -182,7 +182,7 @@ function Login(props) {
                                             htmlType="submit"
                                             loading={isButtonLoading}
                                             className="signUp"
-                                        >Kirish</Button>
+                                        >{t('enter')}</Button>
                                     </Form.Item>
                                 </Form>
                             </div>
