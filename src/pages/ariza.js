@@ -7,10 +7,12 @@ import Footer from "../components/footer";
 import axios from "axios";
 import {ApiName} from "../APIname";
 import {PlusOutlined} from '@ant-design/icons';
-import {Button, Form, Input, Space} from 'antd';
+import {Button, Form, Input, Modal, Space} from 'antd';
 import {ApiName1} from "../APIname1";
 import {useNavigate} from "react-router";
 import {toast, ToastContainer} from "react-toastify";
+
+import {CaretDownOutlined} from '@ant-design/icons';
 
 const onFinish = (values: any) => {
     console.log('Received values of form:', values);
@@ -43,6 +45,8 @@ function Ariza(props) {
     const [message2, setMessage2] = useState('');
     const [sucsessText, setSucsessText] = useState('');
     const [sabab, setSabab] = useState([{}]);
+    const [Index, setIndex] = useState('');
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const lang = localStorage.getItem('i18nextLng');
     const addLanguage = () => {
@@ -58,20 +62,32 @@ function Ariza(props) {
                     name: t(`reasons.${item}`)
                 }))
         )
-    }, [lang])
+    }, [lang]);
     const handleInputFile = (e, index) => {
         file[index].fileBox = e.target.files[0]
     };
 
-    const handleInputLanguage = (e, index) => {
+    const handleInputLanguage = (e) => {
+        console.log(e)
+        console.log(Index)
         setFile(file?.map((item, idn) => {
-            if (idn === index) {
+            if (idn === Index) {
                 item.fileName = e;
                 return item;
             } else {
                 return item;
             }
         }));
+    };
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+    const handleOk = () => {
+        setIsModalVisible(false);
+
+    };
+    const handleCancel = () => {
+        setIsModalVisible(false);
     };
 
     useEffect(() => {
@@ -159,7 +175,24 @@ function Ariza(props) {
             <ToastContainer/>
             <Navbar/>
 
+
             <div className='container ArizaPage'>
+                <Modal title={"Sababni Tanlang"} open={isModalVisible}
+                       onOk={handleOk} onCancel={handleCancel}>
+                    <div>
+                        {sabab.map((item,index) => {
+                            return <div key={item.name} className="test"
+                                        onClick={(e) => {
+                                            handleInputLanguage(item.name)
+                                            setIsModalVisible(false)
+                                        }}>
+                                {item.name}
+                                <hr/>
+                            </div>
+                        })}
+
+                    </div>
+                </Modal>
                 <div className="row">
                     <div className="title">
                         {t("carusel.Ariza yuborish")}
@@ -187,32 +220,20 @@ function Ariza(props) {
                         <div className="right-side overflow-auto">
                             <h5>{t('give-reason-for-ttj')}</h5>
                             <span>Faqat pdf faylni yuklang !!!</span>
-                            <div className="container">
+                            <div className="container p-0">
                                 <Form name="dynamic_form_nest_item" onFinish={onFinish}
-                                      style={{maxWidth: 600}} autoComplete="off">
+                                      autoComplete="off">
                                     {file && file.map((item, index) => (
                                         <div key={index} style={{display: 'flex', marginBottom: 8}}
                                              align="baseline">
-                                            <div className="dropdown">
-                                                <button className=" selectBtn dropdown-toggle" type="button"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                    {item.fileName}
-                                                </button>
-                                                <div className="dropdown-menu"
-                                                     aria-labelledby="dropdownMenuButton">
-
-                                                    {sabab.map((item) => {
-                                                        return <div key={item.name} className="test"
-                                                                    onClick={(e) => {
-                                                                        handleInputLanguage(item.name, index)
-                                                                    }}>
-                                                            {item.name}
-                                                        </div>
-                                                    })}
-
-                                                </div>
-                                            </div>
+                                            <button className='selectBtn btn' type="button"
+                                                    onClick={()=>{
+                                                        showModal();
+                                                        setIndex(index)
+                                                    }}>
+                                                {item.fileName}
+                                                <CaretDownOutlined />
+                                            </button>
                                             <input type="file" className='form-control' id='FILE'
                                                    accept="application/pdf"
                                                    onChange={(e) => handleInputFile(e, index)}/>

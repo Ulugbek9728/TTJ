@@ -289,6 +289,7 @@ function TtjStudents(props) {
                     <th>Fakultet</th>
                     <th>Kurs</th>
                     <th>Tel</th>
+                    <th/>
                 </tr>
                 </thead>
                 <tbody>
@@ -304,9 +305,9 @@ function TtjStudents(props) {
                                     data-bs-toggle="modal" data-bs-target="#myModal"
                                     onClick={(e) => {
                                         seeStudent(item.student.id);
-                                        setStudentUnic(item.student)
-                                        setStudentUnicFile(item.removedFileUrl)
-                                        setStudentUnicFile2(item.fileOpenUrl)
+                                        setStudentUnic(item.student);
+                                        setStudentUnicFile(item.removedFileUrl);
+                                        setStudentUnicFile2(item.fileOpenUrl);
                                         console.log(item)
                                     }}>
                                 <img style={{width: "20px", height: "20px"}}

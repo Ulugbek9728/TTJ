@@ -46,7 +46,6 @@ function App() {
                     <Route path={"/Dekanyoli/*"} element={ <DekanPage/>}/>
                     <Route path={"/SeeAll/*"} element={ <TyutorPage/>}/>
                     <Route path={"/"} element={ <HOME/>}/>
-
                 </Routes>
             </>
           :

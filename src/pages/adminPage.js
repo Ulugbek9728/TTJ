@@ -35,7 +35,6 @@ function AdminPage(props) {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [NewPassword, setNewPassword] = useState({});
 
-
     const showModal = () => {
         setIsModalVisible(true);
     };

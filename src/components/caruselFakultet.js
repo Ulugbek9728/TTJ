@@ -22,7 +22,6 @@ function CaruselFakultet(props) {
     },[]);
     function Getkvta() {
         axios.get(`${ApiName1}/public/main`, '',).then((response) => {
-            console.log(response.data);
             setKvota(response.data);
 
         }).catch((error) => {
@@ -67,13 +66,13 @@ function CaruselFakultet(props) {
                                         <div className="orinlar">
                                             <div className="text">{t("carusel.Band")}</div>
                                             {course?.map((item, index)=>{
-                                                return <p>{index+1}-{t("carusel.Kurs")}: <span>{item.left_count}</span></p>
+                                                return <p key={index+200}>{index}-{t("carusel.Kurs")}: <span>{item.left_count}</span></p>
                                             })}
                                         </div>
                                         <div className="orinlar">
                                             <div className="text">{t("carusel.Bo'sh")}</div>
                                             {course?.map((item, index)=>{
-                                                return <p>{index+1}-{t("carusel.Kurs")}: <span>{item.actual_count}</span></p>
+                                                return <p key={index+100}>{index+1}-{t("carusel.Kurs")}: <span>{item.actual_count}</span></p>
                                             })}
                                         </div>
                                     </div>

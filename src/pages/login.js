@@ -29,7 +29,7 @@ function Login(props) {
             password: values?.Parol
         };
         setIsButtonLoading(true);
-        axios.post(`${ApiName1}/public/login`,requestData).then((response) => {
+        axios.post(`${ApiName1}/public/login`, requestData).then((response) => {
             if (response.status === 200) {
                 if (response.data.DEGREE === 'ADMIN') {
                     localStorage.setItem("token", response.data.jwt);
@@ -75,7 +75,7 @@ function Login(props) {
     }
 
     useEffect(() => {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         notify();
         setMessage2('')
     }, [message2]);
@@ -102,11 +102,13 @@ function Login(props) {
                                 Welcome Back!
                             </div>
                             <div className="commit">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit. Asperiores, perspiciatis.
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut cumque dicta, doloribus ea
+                                eaque facere harum mollitia nam nulla pariatur perferendis perspiciatis possimus quaerat
+                                quod ratione reprehenderit rerum sed. Aliquid architecto debitis delectus eius enim eos,
+                                esse ipsa minima natus nobis obcaecati qui quidem quis repellat reprehenderit ullam vel
+                                vitae?
                             </div>
                         </div>
-
                         <div className="right-side">
                             <div className="container">
                                 <div className="create">

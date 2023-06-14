@@ -15,7 +15,6 @@ function    Footer(props) {
 
     function getContact(){
         axios.get(`${ApiName1}/contact`,'').then((res)=>{
-            console.log(res)
             setGetContact(res.data)
         }).catch((error)=>{
             console.log(error)
