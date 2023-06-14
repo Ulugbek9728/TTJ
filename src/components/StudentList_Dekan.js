@@ -6,7 +6,7 @@ import {ApiName1} from "../APIname1";
 import {Input, Pagination, Select} from "antd";
 
 const {Option} = Select;
-const { TextArea } = Input;
+const {TextArea} = Input;
 
 function StudentListDekan(props) {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ function StudentListDekan(props) {
     const [StudentID, setStudentID] = useState('');
     const [TTJID, setTTJID] = useState('');
     const [StudentFile, setStudentFile] = useState([]);
-    const [GetTTJList,  setGetTTJList] = useState([]);
+    const [GetTTJList, setGetTTJList] = useState([]);
     const [Studentunic, setStudentUnic] = useState({});
     const [FakultyName, setFakultyName] = useState('');
     const [Kurs, setKurs] = useState('');
@@ -41,19 +41,19 @@ function StudentListDekan(props) {
     useEffect(() => {
         setFakultyName(localStorage.getItem("faculty"));
         getTTJ();
-        if(Kurs !==''){
-            if(Status!== ''){
+        if (Kurs !== '') {
+            if (Status !== '') {
                 StudentList()
             }
 
         }
-    }, [sucsessText, Kurs,Status,page]);
+    }, [sucsessText, Kurs, Status, page]);
 
 
     function StudentList() {
         axios.post(`${ApiName1}/private/student/list/${FakultyName}/${Kurs}`, '', {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
-            params:{status:Status,page:(page-1),size:pageSizes}
+            params: {status: Status, page: (page - 1), size: pageSizes}
         }).then((response) => {
             setStudent(response.data.content);
             setTotalPage(response.data.totalElements)
@@ -65,41 +65,42 @@ function StudentListDekan(props) {
 
     function changeStatus() {
 
-        axios.put(`${ApiName1}/private/student/cancel/${StudentID}`,{message:Messeg}, {
+        axios.put(`${ApiName1}/private/student/cancel/${StudentID}`, {message: Messeg}, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
-        }).then((res)=>{
+        }).then((res) => {
             console.log(res)
             setSucsessText('Talaba arizasi bekor qilindi')
 
-        }).catch((error)=>{
+        }).catch((error) => {
             console.log(error)
         })
     }
 
     function getTTJ() {
-        axios.get(`${ApiName1}/private/dekan/show/dormitories`,{
+        axios.get(`${ApiName1}/private/dekan/show/dormitories`, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-        }).then((res)=>{
+        }).then((res) => {
             setGetTTJList(res.data)
             console.log(res.data)
-        }).catch((error)=>{
+        }).catch((error) => {
             console.log(error)
         })
     }
 
     function postStudentTTJ() {
         const allData = new FormData();
-        allData.append(`file`,file.fileBox)
+        allData.append(`file`, file.fileBox)
         axios.post(`${ApiName1}/attach/upload`, allData)
             .then((response) => {
                 axios.post(
                     `${ApiName1}/private/admin/dormitory_join_student/${TTJID}/${StudentID}/${response.data[0]?.id}`,
-                    '',{
-                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+                    '', {
+                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+                    })
                     .then((response) => {
                         console.log(response)
-                        if (response.status === 200){
-                            file.fileBox=null
+                        if (response.status === 200) {
+                            file.fileBox = null
                             setSucsessText("Talaba muvofaqiyatli qo'shildi")
                         }
                     }).catch((error) => {
@@ -123,26 +124,25 @@ function StudentListDekan(props) {
 
     function deleteStudent(e) {
         console.log(e)
-        axios.delete(`${ApiName1}/private/student/delete/${e}`,{
+        axios.delete(`${ApiName1}/private/student/delete/${e}`, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-        }).then((res)=>{
+        }).then((res) => {
             console.log(res)
             setSucsessText("Talaba arizasi o'chirildi")
-        }).catch((error)=>{
+        }).catch((error) => {
             console.log(error)
         })
     }
 
-    function CoursSelect(value,key) {
+    function CoursSelect(value, key) {
         setKurs(value)
     }
 
-    function StatusSelect(value,key) {
+    function StatusSelect(value, key) {
         setstatus(value)
-        if (value==='NOT_ACCEPTED'){
+        if (value === 'NOT_ACCEPTED') {
             setStatusBulin(true)
-        }
-        else {
+        } else {
             setStatusBulin(false)
         }
     }
@@ -156,13 +156,13 @@ function StudentListDekan(props) {
     }, [message, sucsessText, message2]);
 
     function notify() {
-        if (message != '') {
+        if (message !== '') {
             message && message.map((item) => (toast.error(item)))
         }
-        if (sucsessText != '') {
+        if (sucsessText !== '') {
             toast.success(sucsessText)
         }
-        if (message2 != '') {
+        if (message2 !== '') {
             toast.error(message2)
         }
     }
@@ -211,13 +211,18 @@ function StudentListDekan(props) {
                         <td className='d-flex'>
                             <button className="btn btn-success mx-1"
                                     data-bs-toggle="modal" data-bs-target="#myModal"
-                                    onClick={(e)=>{seeStudent(item.id); setStudentUnic(item)}}>
+                                    onClick={(e) => {
+                                        seeStudent(item.id);
+                                        setStudentUnic(item)
+                                    }}>
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
                             </button>
                             {StatusBulin ?
                                 <button className="btn btn-danger mx-1"
-                                        onClick={()=>{deleteStudent(item.id)}}>
+                                        onClick={() => {
+                                            deleteStudent(item.id)
+                                        }}>
                                     <img style={{width: "20px", height: "20px"}} className='iconEdit'
                                          src="/img/delete.png"
                                          alt=""/>
@@ -226,13 +231,17 @@ function StudentListDekan(props) {
                                 <div>
                                     <button className="btn btn-warning mx-1"
                                             data-bs-toggle="modal" data-bs-target="#myModal1"
-                                            onClick={(e)=>{setStudentID(item.id)}}>
+                                            onClick={(e) => {
+                                                setStudentID(item.id)
+                                            }}>
                                         <img style={{width: "20px", height: "20px"}} className='iconEdit'
                                              src="/img/editing.png" alt=""/>
                                     </button>
                                     <button className="btn btn-danger mx-1"
                                             data-bs-toggle="modal" data-bs-target="#myModal2"
-                                            onClick={(e)=>{setStudentID(item.id)}}>
+                                            onClick={(e) => {
+                                                setStudentID(item.id)
+                                            }}>
                                         <img style={{width: "15px", height: "15px"}} className='iconEdit'
                                              src="/img/close.png"
                                              alt=""/>
@@ -249,21 +258,25 @@ function StudentListDekan(props) {
                 current={page}
                 total={totalPage}
                 pageSize={pageSizes}
-                onChange={(e)=>{setPage(e)}}
+                onChange={(e) => {
+                    setPage(e)
+                }}
                 showQuickJumper
             />
 
-            <div className="modal" id="myModal">
-                <div className="modal-dialog" style={{marginLeft:"15%"}}>
-                    <div className="modal-content " style={{width:"50vw"}}>
+            <div className="modal fade" id="myModal">
+                <div className="modal-dialog" style={{marginLeft: "15%"}}>
+                    <div className="modal-content " style={{width: "50vw"}}>
                         <div className="modal-header">
                             <h4 className="modal-title">Talaba to'liq ma'lumoti</h4>
                             <button type="button" className="btn-close" data-bs-dismiss="modal"/>
                         </div>
                         <div className="modal-body">
-                            <div className="d-flex  justify-content-between" >
+                            <div className="d-flex  justify-content-between">
 
-                                <img src={Studentunic.imageUrl} width='20%' height='auto' alt=""/>
+                                <img src={Studentunic.imageUrl?.startsWith("https") ?
+                                    Studentunic.imageUrl :
+                                    ApiName1 + Studentunic.imageUrl} width='20%' height='auto' alt=""/>
                                 <div className='w-75'>
                                     <p className='m-0'>F.I.SH</p>
                                     <b className="">{Studentunic.name}</b>
@@ -304,13 +317,14 @@ function StudentListDekan(props) {
                                     <hr/>
                                 </div>
                                 <div className="w-50 p-2">
-                                    <h4 className='text-center' style={{marginTop:'13px'}}>
+                                    <h4 className='text-center' style={{marginTop: '13px'}}>
                                         Yuklangan fayllar
                                     </h4>
                                     <hr/>
-                                    {StudentFile && StudentFile.map((item, index)=>{
+                                    {StudentFile && StudentFile.map((item, index) => {
                                         return <div key={index}>
-                                            <a href={`${ApiName1}${item.attachUrl}`} target='_blank' className='m-0'>{item.name}</a>
+                                            <a href={`${ApiName1}${item.attachUrl}`} target='_blank'
+                                               className='m-0'>{item.name}</a>
                                             <hr/>
                                         </div>
                                     })}
@@ -323,15 +337,16 @@ function StudentListDekan(props) {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-danger"
-                                    data-bs-dismiss="modal">Close</button>
+                                    data-bs-dismiss="modal">Close
+                            </button>
                         </div>
                     </div>
                 </div>
 
             </div>
             <div className="modal" id="myModal1">
-                <div className="modal-dialog" style={{marginLeft:"15%"}}>
-                    <div className="modal-content " style={{width:"50vw"}}>
+                <div className="modal-dialog" style={{marginLeft: "15%"}}>
+                    <div className="modal-content " style={{width: "50vw"}}>
                         <div className="modal-header">
                             <h4>Talabani Universitet yotoqxonasiga joylashtirish</h4>
                             <button type="button" className="btn-close" data-bs-dismiss="modal"/>
@@ -339,7 +354,9 @@ function StudentListDekan(props) {
                         <div className="modal-body">
                             <label htmlFor="TTJ">Yotoqxonani belgilang</label>
                             <select id='TTJ' className='my-2 form-control' style={{width: "100%"}}
-                                    onChange={(e)=>{setTTJID(e.target.value)}}>
+                                    onChange={(e) => {
+                                        setTTJID(e.target.value)
+                                    }}>
                                 <option value="">TTJ ni tanlang</option>
                                 {GetTTJList && GetTTJList.map((item, index) => {
                                     return <option key={index} value={item.id}>{item.name}</option>
@@ -352,15 +369,16 @@ function StudentListDekan(props) {
                         <div className="modal-footer">
                             <button className='btn btn-success' onClick={postStudentTTJ}>yuborish</button>
                             <button type="button" className="btn btn-danger"
-                                    data-bs-dismiss="modal">Close</button>
+                                    data-bs-dismiss="modal">Close
+                            </button>
                         </div>
                     </div>
                 </div>
 
             </div>
             <div className="modal" id="myModal2">
-                <div className="modal-dialog" style={{marginLeft:"15%"}}>
-                    <div className="modal-content " style={{width:"50vw"}}>
+                <div className="modal-dialog" style={{marginLeft: "15%"}}>
+                    <div className="modal-content " style={{width: "50vw"}}>
                         <div className="modal-header">
                             <h4>Talabani Universitet yotoqxonasiga qabulni bekor qilish</h4>
                             <button type="button" className="btn-close" data-bs-dismiss="modal"/>
@@ -368,12 +386,15 @@ function StudentListDekan(props) {
                         <div className="modal-body">
                             <label htmlFor="Message">Bekor qilish sababini yozing</label>
                             <TextArea rows="5" name="text" value={Messeg}
-                                      onChange={(e)=>{setMesseg(e.target.value)}}/>
+                                      onChange={(e) => {
+                                          setMesseg(e.target.value)
+                                      }}/>
                         </div>
                         <div className="modal-footer">
                             <button className='btn btn-success' onClick={changeStatus}>yuborish</button>
                             <button type="button" className="btn btn-danger"
-                                    data-bs-dismiss="modal">Close</button>
+                                    data-bs-dismiss="modal">Close
+                            </button>
                         </div>
                     </div>
                 </div>
