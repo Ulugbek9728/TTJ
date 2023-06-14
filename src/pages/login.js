@@ -163,7 +163,8 @@ function Login(props) {
                                     >
                                         <div className="all-input">
                                             <Input type={passwordBoolin ? "password" : "text"}
-                                                   placeholder="parol" name="Parol"
+                                                   placeholder={t('password')}
+                                                   name="Parol"
                                             />
                                             <img src={pasword} alt="user-icon" className='user-icon'/>
                                             {passwordBoolin ?
@@ -183,7 +184,7 @@ function Login(props) {
                                             htmlType="submit"
                                             loading={isButtonLoading}
                                             className="signUp"
-                                        >Kirish</Button>
+                                        >{t('enter')}</Button>
                                     </Form.Item>
                                 </Form>
                             </div>

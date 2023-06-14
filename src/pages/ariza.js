@@ -67,9 +67,7 @@ function Ariza(props) {
         file[index].fileBox = e.target.files[0]
     };
 
-    const handleInputLanguage = (e) => {
-        console.log(e)
-        console.log(Index)
+    const handleInputLanguage = (e, index) => {
         setFile(file?.map((item, idn) => {
             if (idn === Index) {
                 item.fileName = e;
@@ -155,13 +153,13 @@ function Ariza(props) {
                             }])
 
                             document.getElementById('FILE').value = null;
-                            setSucsessText("Ma'lumotlar muvafaqiyatli yuborildi")
+                            setSucsessText(t('data-send-success'))
                             setIsLoading(false);
                         }
                     }).catch((error) => {
                     setIsLoading(false);
                     if (error.response.status === 400) {
-                        setMessage2(error.response.data)
+                        setMessage2(error.response.data==='Bunday talaba mavjud '?t('application-submitted-already'):'')
                     }
                 })
 
@@ -205,21 +203,21 @@ function Ariza(props) {
                             </div>
 
                             <br/>
-                            <p>LOGIN:<span>{Student.login}</span></p>
-                            <p>FAKULTET: <span>{Student.faculty}</span></p>
-                            <p>YO'NALISH: <span>{Student.specialty}</span></p>
-                            <p>GURUH: <span>{Student.group}</span></p>
-                            <p>KURS: <span>{Student.course}</span></p>
-                            <p>MANZIL:
+                            <p>{t('login')}:<span>{Student.login}</span></p>
+                            <p>{t('faculty')}: <span>{Student.faculty}</span></p>
+                            <p>{t('direction')}: <span>{Student.specialty}</span></p>
+                            <p>{t('group')}: <span>{Student.group}</span></p>
+                            <p>{t('course')}: <span>{Student.course}</span></p>
+                            <p>{t('address')}:
                                 <span>{Student.country} {Student.city} {Student.district}</span>
                             </p>
-                            <p>TEL: <span>{Student.phone}</span></p>
+                            <p>{t('phone')}: <span>{Student.phone}</span></p>
 
                         </div>
 
                         <div className="right-side overflow-auto">
                             <h5>{t('give-reason-for-ttj')}</h5>
-                            <span>Faqat pdf faylni yuklang !!!</span>
+                            <span>{t('only-pdf')}</span>
                             <div className="container p-0">
                                 <Form name="dynamic_form_nest_item" onFinish={onFinish}
                                       autoComplete="off">
