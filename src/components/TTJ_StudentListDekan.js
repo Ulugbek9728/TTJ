@@ -183,7 +183,7 @@ function TtjStudentListDekan(props) {
                 showQuickJumper
             />
 
-            <div className="modal" id="myModal">
+            <div className="modal fade" id="myModal">
                 <div className="modal-dialog" style={{marginLeft:"15%"}}>
                     <div className="modal-content " style={{width:"50vw"}}>
                         <div className="modal-header">
@@ -193,7 +193,9 @@ function TtjStudentListDekan(props) {
                         <div className="modal-body">
                             <div className="d-flex  justify-content-between" >
 
-                                <img src={Studentunic.imageUrl} width='20%' height='auto' alt=""/>
+                                <img src={Studentunic.imageUrl?.startsWith("https") ?
+                                    Studentunic.imageUrl :
+                                    ApiName1 + Studentunic.imageUrl} width='20%' height='auto' alt=""/>
                                 <div className='w-75'>
                                     <p className='m-0'>F.I.SH</p>
                                     <b className="">{Studentunic.name}</b>
