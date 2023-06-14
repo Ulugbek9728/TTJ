@@ -74,7 +74,7 @@ function Natija(props) {
                                     {text}
                                 </span>
                                 <br/>
-                                {fileUrl && <a href={`${ApiName1}${fileUrl}`} target='_blank'>
+                                {fileUrl && (status === 'ACCEPTED' || status === 'REMOVED') && <a href={`${ApiName1}${fileUrl}`} target='_blank'>
                                     file
                                 </a>}
                             </div>
