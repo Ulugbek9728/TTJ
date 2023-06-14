@@ -18,8 +18,32 @@ function Natija(props) {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
     }, []);
+
+    const lang = localStorage.getItem('i18nextLng');
+    useEffect(() => {
+        switch (status) {
+            case 'ACCEPTED': {
+                setText(t('success-ttj'));
+                setFileUrl(Student?.response_file_url)
+                break;
+            }
+            case 'REMOVED': {
+                setText(t('application-removed'));
+                setFileUrl(Student?.response_file_url)
+                break;
+            }
+            case 'IS_ACCEPTED': {
+                setText(t('application-pending'));
+                break;
+            }
+            case 'NOT_ACCEPTED': {
+                setText(t('application-cancel'));
+                break;
+            }
+        }
+    }, [status, lang])
 
     function Login(values) {
         setIsLoading(true);
@@ -28,33 +52,13 @@ function Natija(props) {
             .then((response) => {
                 setStudent(response.data)
                 setStatus(response.data.status);
-                switch (response.data?.dormitoryStudentStatus) {
-                    case 'ACCEPTED': {
-                        setText(t('success-ttj'));
-                        setFileUrl(response.data?.response_file_url)
-                        break;
-                    }
-                    case 'REMOVED': {
-                        setText(t('application-removed'));
-                        setFileUrl(response.data?.response_file_url)
-                        break;
-                    }
-                    case 'IS_ACCEPTED': {
-                        setText(t('application-pending'));
-                        break;
-                    }
-                    case 'NOT_ACCEPTED': {
-                        setText(t('application-cancel'));
-                        break;
-                    }
-                }
-                setLogin('')
                 setIsLoading(false);
             }).catch((error) => {
-            toast.error(error.response?.data === 'Bunday talaba mavjud emas!' ? t('student-not-found'):'');
+            toast.error(error.response?.data === 'Bunday talaba mavjud emas!' ? t('student-not-found') : '');
             setIsLoading(false);
         })
     }
+
     return (
         <>
             <Navbar/>
