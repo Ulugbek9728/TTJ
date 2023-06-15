@@ -369,9 +369,9 @@ function TtjStudents(props) {
                         </div>
                         <div className="modal-body">
                             <div className="d-flex  justify-content-between">
-
                                 <img src={Studentunic.imageUrl?.startsWith("https") ?
-                                    Studentunic.imageUrl :
+                                    Studentunic.imageUrl
+                                    :
                                     ApiName1 + Studentunic.imageUrl} width='20%' height='auto' alt=""/>
                                 <div className='w-75'>
                                     <p className='m-0'>F.I.SH</p>
@@ -451,7 +451,7 @@ function TtjStudents(props) {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 className="modal-title">Tasdiqlash oynasi </h4>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"/>
                         </div>
 
                         <div className="modal-body">
