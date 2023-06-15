@@ -23,7 +23,7 @@ function Natija(props) {
 
     const lang = localStorage.getItem('i18nextLng');
     useEffect(() => {
-        switch (Student?.dormitoryStudentStatus) {
+        switch (Student?.status) {
             case 'ACCEPTED': {
                 setText(t('success-ttj'));
                 setFileUrl(Student?.response_file_url)
