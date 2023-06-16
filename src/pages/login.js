@@ -31,6 +31,7 @@ function Login(props) {
         setIsButtonLoading(true);
         axios.post(`${ApiName1}/public/login`, requestData).then((response) => {
             if (response.status === 200) {
+
                 if (response.data.DEGREE === 'ADMIN') {
                     localStorage.setItem("token", response.data.jwt);
                     localStorage.setItem("degree", response.data.DEGREE);
@@ -75,10 +76,11 @@ function Login(props) {
     }
 
     useEffect(() => {
-        window.scrollTo(0, 0);
+        localStorage.removeItem("token");
         notify();
         setMessage2('')
     }, [message2]);
+
 
     function notify() {
         if (message !== '') {

@@ -5,7 +5,6 @@ import Navbar from "../components/Navbar";
 
 import Footer from "../components/footer";
 import axios from "axios";
-import {ApiName} from "../APIname";
 import {PlusOutlined} from '@ant-design/icons';
 import {Button, Form, Input, Modal, Space} from 'antd';
 import {ApiName1} from "../APIname1";
@@ -89,7 +88,7 @@ function Ariza(props) {
     };
 
     useEffect(() => {
-        window.scrollTo(0,0);
+
         getStudent();
         notify();
         setMessage('');
@@ -110,8 +109,8 @@ function Ariza(props) {
     }
 
     function getStudent() {
-        axios.get(`${ApiName}account/me`, {
-            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+        axios.get(`${ApiName1}/account/me`, {
+                params: {token: localStorage.getItem("token")}
         }).then((response) => {
             setStudent({
                 ...Student,

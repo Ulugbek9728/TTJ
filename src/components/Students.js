@@ -72,7 +72,7 @@ function Student(props) {
             params:{status:Status,page:(page-1),size:pageSizes}
         }).then((response) => {
             setStudent(response.data.content);
-            console.log(response.data.content)
+            console.log(response.data.content);
             setTotalPage(response.data.totalElements)
 
         }).catch((error) => {
@@ -224,10 +224,10 @@ function Student(props) {
                     <label htmlFor="kurs">Kurs</label> <br/>
                     <Select id='kurs' className='my-2 w-100'
                             onChange={CoursSelect}>
-                        <Option value='1-kurs'>1-Kurs</Option>
-                        <Option value='2-kurs'>2-Kurs</Option>
-                        <Option value='3-kurs'>3-Kurs</Option>
-                        <Option value='4-kurs'>4-Kurs</Option>
+                        <Option value='COURSE_1'>1-Kurs</Option>
+                        <Option value='COURSE_2'>2-Kurs</Option>
+                        <Option value='COURSE_3'>3-Kurs</Option>
+                        <Option value='COURSE_4'>4-Kurs</Option>
 
                     </Select>
                     <label htmlFor="status">Status</label>

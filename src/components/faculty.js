@@ -21,7 +21,6 @@ function Faculty(props) {
                     "Authorization": "Bearer " + localStorage.getItem("token")
                 }
             }).then((response) => {
-                console.log(response)
                 setSucsessText("Fakultet ma'lumotlari yangilandi");
                 setedit(false);
                 setFakultet('');
@@ -35,7 +34,6 @@ function Faculty(props) {
                     "Authorization": "Bearer " + localStorage.getItem("token")
                 }
             }).then((response) => {
-                console.log(response)
                 setSucsessText("Fakultet ma'lumotlari qo'shildi")
                 setFakultet('')
             }).catch((error) => {
@@ -46,6 +44,7 @@ function Faculty(props) {
     useEffect(() => {
         GetFakultet();
         notify()
+        setSucsessText('')
     }, [sucsessText]);
 
     function GetFakultet() {
@@ -165,12 +164,12 @@ function Faculty(props) {
                 </tbody>
             </table>
 
-            <div className="modal" id="myModal">
+            <div className="modal fade" id="myModal">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 className="modal-title">Tasdiqlash oynasi </h4>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"/>
                         </div>
 
                         <div className="modal-body">
