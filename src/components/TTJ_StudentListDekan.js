@@ -18,6 +18,7 @@ function TtjStudentListDekan(props) {
     const [TTJID, setTTJID] = useState('');
     const [Students, setStudent] = useState([]);
     const [Studentunic, setStudentUnic] = useState({});
+    const [currentItem, setCurrentItem] = useState({});
     const [StudentFile, setStudentFile] = useState([]);
     const [StudentStatus, setStudenStatus] = useState('JOINED');
     const [StudentJOINED, setStudentJOINED] = useState(true);
@@ -97,17 +98,18 @@ function TtjStudentListDekan(props) {
     }, [message, sucsessText, message2]);
 
     function notify() {
-        if (message != '') {
+        if (message !== '') {
             message && message.map((item) => (toast.error(item)))
         }
-        if (sucsessText != '') {
+        if (sucsessText !== '') {
             toast.success(sucsessText)
         }
-        if (message2 != '') {
+        if (message2 !== '') {
             toast.error(message2)
         }
     }
 
+    console.log(Studentunic)
     return (
         <div>
             <ToastContainer/>
@@ -164,6 +166,7 @@ function TtjStudentListDekan(props) {
                                     onClick={(e)=>{
                                         seeStudent(item.student.id);
                                         setStudentUnic(item.student);
+                                        setCurrentItem(item);
                                         setStudentUnicFile(item.fileOpenUrl)
                                     }}>
                                 <img style={{width: "20px", height: "20px"}}
@@ -251,9 +254,15 @@ function TtjStudentListDekan(props) {
                                 </div>
 
                             </div>
-                            <hr/>
-                            <a href={`${ApiName1}${StudentunicFile}`} target='_blank'
-                               className='m-0'>TTJ dan chetlashtirish sababi</a>
+                            {
+                                currentItem?.studentStatus === 'REMOVED'
+                                ?
+                                <>
+                                    <hr/>
+                                    <a href={`${ApiName1}${currentItem?.removedFileUrl}`} target='_blank'
+                                       className='m-0'>TTJ dan chetlashtirish sababi</a>
+                                </>: null
+                            }
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-danger"
