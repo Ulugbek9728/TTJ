@@ -18,7 +18,6 @@ function TtjDekan(props) {
         axios.get(`${ApiName1}/private/dekan/show/dormitories`, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((res) => {
-            console.log(res.data)
             setGetTTJ(res.data)
         }).catch((error) => {
             console.log(error)
@@ -46,7 +45,7 @@ function TtjDekan(props) {
                                  style={{width: "100px", height: "100px"}} alt=""/>
                         </td>
                         <td>
-                            <b>{item.name}</b><br/>
+                            <span>Yotoqxona nomi: <b>{item.name}</b></span> <br/>
                             <span>Bo'sh joylar soni <b>{item.actualCount}</b></span><br/>
                             <span>Band joylar soni <b>{item?.actualCount-item?.leftCount}</b></span>
                         </td>

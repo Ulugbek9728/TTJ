@@ -281,6 +281,11 @@ function StudentListDekan(props) {
                                     <p className='m-0'>F.I.SH</p>
                                     <b className="">{Studentunic.name}</b>
                                     <hr/>
+                                    <p className='m-0'>Login</p>
+                                    <b className="">
+                                        {Studentunic?.login}
+                                    </b>
+                                    <hr/>
                                     <p className='m-0'>Jinsi</p>
                                     <b className="">
                                         {Studentunic.gender}

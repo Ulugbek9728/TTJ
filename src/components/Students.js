@@ -93,7 +93,7 @@ function Student(props) {
     }
 
     function getTTJ() {
-        if (localStorage.getItem("degree")!='RECTOR'){
+        if (localStorage.getItem("degree")!=='RECTOR'){
             axios.get(`${ApiName1}/private/admin/dormitory/show/faculty_id/${FakultyID}`,{
                 headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
             }).then((res)=>{
@@ -197,13 +197,13 @@ function Student(props) {
     }, [message, sucsessText, message2]);
 
     function notify() {
-        if (message != '') {
+        if (message !== '') {
             message && message.map((item) => (toast.error(item)))
         }
-        if (sucsessText != '') {
+        if (sucsessText !== '') {
             toast.success(sucsessText)
         }
-        if (message2 != '') {
+        if (message2 !== '') {
             toast.error(message2)
         }
     }
@@ -320,12 +320,16 @@ function Student(props) {
                         </div>
                         <div className="modal-body">
                             <div className="d-flex  justify-content-between" >
-
                                 <img src={
                                     !Studentunic.imageUrl?.startsWith('https')?ApiName1+Studentunic.imageUrl:Studentunic.imageUrl } width='20%' height='auto' alt=""/>
                                 <div className='w-75'>
                                     <p className='m-0'>F.I.SH</p>
                                     <b className="">{Studentunic.name}</b>
+                                    <hr/>
+                                    <p className='m-0'>Login</p>
+                                    <b className="">
+                                        {Studentunic.login}
+                                    </b>
                                     <hr/>
                                     <p className='m-0'>Jinsi</p>
                                     <b className="">
