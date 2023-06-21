@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {ApiName1} from "../APIname1";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 import {Button, Form, Input} from "antd";
 import {useTranslation} from "react-i18next";
 
@@ -83,7 +83,6 @@ function Faculty(props) {
 
     return (
         <div>
-            <ToastContainer/>
             <Form
                 onFinish={creatFakulty}
                 fields={[

@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
-import {toast, ToastContainer} from "react-toastify";
-import {Button, Pagination, Select} from "antd";
+import {toast} from "react-toastify";
+import {Pagination, Select} from "antd";
 import {exportToCSV} from "../utils/ExcelCreator";
 
 
@@ -126,7 +125,6 @@ function TtjStudentListDekan(props) {
 
     return (
         <div>
-            <ToastContainer/>
             <div className="w-100 d-flex">
                 <div className="w-25">
                     <label htmlFor="TTJ">Yotoqxona</label>
@@ -216,7 +214,7 @@ function TtjStudentListDekan(props) {
                             <button type="button" className="btn-close" data-bs-dismiss="modal"/>
                         </div>
                         <div className="modal-body">
-                            <div className="d-flex  justify-content-between">
+                            <div className="d-flex  justify-content-between" >
 
                                 <img src={Studentunic.imageUrl?.startsWith("https") ?
                                     Studentunic.imageUrl :

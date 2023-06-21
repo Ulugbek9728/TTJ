@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Modal, Input, Select, Form, Button,} from 'antd';
 import axios from "axios";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 import {ApiName1} from "../APIname1";
 import "../asset/Admin.scss"
 import {useNavigate} from "react-router";
@@ -166,7 +166,6 @@ function Dekan(props) {
 
     return (
         <div>
-            <ToastContainer/>
             <div className="yuklash">
                 <button onClick={showModal} className='btn btn-success '>
                     Dekan qo'shish

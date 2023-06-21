@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Modal, Input, Select,Pagination, Alert, Space, Spin } from 'antd';
 import axios from "axios";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 
 
 import {ApiName1} from "../APIname1";
@@ -210,7 +210,6 @@ function Student(props) {
 
     return (
         <div>
-            <ToastContainer/>
             <div className='d-flex'>
                 <div className="w-25">
                     <label htmlFor="fakultet">Fakultet</label> <br/>
