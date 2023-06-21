@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Modal, Input, Pagination,} from 'antd';
 import axios from "axios";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 
 import {ApiName1} from "../APIname1";
 import "../asset/Admin.scss"
@@ -36,31 +36,24 @@ function News(props) {
     const handleInputFile = (e, index) => {
         file.fileBox = e.target.files[0]
     };
-
     const showModal = () => {
         setIsModalVisible(true);
     };
     const handleOk = () => {
+
         const allData = new FormData();
-        allData.append(`file`,file.fileBox)
+        allData.append(`file`,file?.fileBox);
         if (edit === true){
 
-            if (file.fileBox===undefined || null){
+            if (file?.fileBox===undefined || null){
                 axios.post(`${ApiName1}/private/admin/news/update/${creatNews.id}`, creatNews,{
                     headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
                     .then((response) => {
                         if (response.status === 200){
                             setIsModalVisible(false);
                             setFile(null);
-                            setCreatNews({
-                                titleUz:'',
-                                titleRu:'',
-                                titleEn:'',
-                                nameUz:'',
-                                nameRu:'',
-                                nameEn:'',
-                            });
-                            setPage(0);
+                            setCreatNews('');
+                            setPage(1);
                             setNews([]);
                             setSucsessText("Yangilik muvofaqiyatli o'zgartirildi")
                         }
@@ -80,14 +73,8 @@ function News(props) {
                                     document.getElementById('Filee').value = '';
                                     setIsModalVisible(false);
                                     file.fileBox=null;
-                                    setCreatNews({
-                                        titleUz:'',
-                                        titleRu:'',
-                                        titleEn:'',
-                                        nameUz:'',
-                                        nameRu:'',
-                                        nameEn:'',
-                                    });
+                                    setPage(1);
+                                    setCreatNews('');
                                     setNews('');
                                     setSucsessText("Yangilik muvofaqiyatli o'zgartirildi")
                                 }
@@ -109,7 +96,8 @@ function News(props) {
                             if (response.status === 201){
                                 document.getElementById('Filee').value = '';
                                 setIsModalVisible(false);
-                                file.fileBox=null
+                                file.fileBox=null;
+                                setPage(1);
                                 setCreatNews('');
                                 setNews('');
                                 setSucsessText("Yangilik muvofaqiyatli qo'shildi");
@@ -123,21 +111,21 @@ function News(props) {
                 console.log(error)
             })
         }
-    }
+    };
     const handleCancel = () => {
         setIsModalVisible(false);setCreatNews('');setedit(false);
     };
 
     useEffect(() => {
-        notify();
         GetNews();
-       setSucsessText('')
+        notify();
+        setSucsessText('')
     },[ sucsessText,page]);
 
     function GetNews() {
         axios.post(`${ApiName1}/public/news`, '',{params:{page:(page-1),size:pageSizes}})
             .then((response) => {
-                setNews(response.data.content)
+                setNews(response.data.content);
                 setTotalPage(response.data.totalElements)
             }).catch((error) => {
             console.log(error)
@@ -159,12 +147,14 @@ function News(props) {
     }
 
     function notify() {
-        if (sucsessText !== ''){toast.success(sucsessText)}
+        if (sucsessText !== ''){
+            toast.success(sucsessText)
+
+        }
     }
 
     return (
         <div>
-            <ToastContainer/>
             <div className="yuklash">
                 <button onClick={showModal} className='btn btn-success '>
                     Yangiliklar qo'shish
@@ -244,7 +234,7 @@ function News(props) {
                 showQuickJumper
             />
 
-            <div className="modal" id="myModal">
+            <div className="modal fade" id="myModal">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">

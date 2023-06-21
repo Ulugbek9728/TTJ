@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {ApiName1} from "../APIname1";
-import {toast, ToastContainer} from "react-toastify";
-import {Button, Form, Input, Upload} from "antd";
+import {toast} from "react-toastify";
+import {Button, Form, Input} from "antd";
 
 
 function Ttj(props) {
@@ -151,7 +151,6 @@ function Ttj(props) {
 
     return (
         <div>
-            <ToastContainer/>
             <Form
                 form={form}
                 fields={[

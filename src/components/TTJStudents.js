@@ -3,7 +3,7 @@ import {Alert, Button, Input, Modal, Pagination, Select, Space, Spin} from "antd
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {useNavigate} from "react-router";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 import {exportToCSV} from "../utils/ExcelCreator";
 
 
@@ -217,7 +217,6 @@ function TtjStudents(props) {
     }
     return (
         <div>
-            <ToastContainer/>
             <div className="w-100 d-flex">
                 <div className="w-25">
                     <label htmlFor="fakultet">Fakultet</label> <br/>

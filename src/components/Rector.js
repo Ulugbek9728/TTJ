@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Modal,Input, Select,} from 'antd';
+import {Modal,Input} from 'antd';
 import axios from "axios";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 
 import {ApiName1} from "../APIname1";
 import "../asset/Admin.scss"
@@ -133,7 +133,6 @@ function Rector(props) {
 
     return (
         <div>
-            <ToastContainer/>
             <div className="yuklash">
                 <button onClick={showModal} className='btn btn-success '>
                     Rektor qo'shish

@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 import {Pagination, Select} from "antd";
 
 
@@ -109,10 +108,8 @@ function TtjStudentListDekan(props) {
         }
     }
 
-    console.log(Studentunic)
     return (
         <div>
-            <ToastContainer/>
             <div className="w-100 d-flex">
                 <div className="w-25">
                     <label htmlFor="TTJ">Yotoqxona</label>

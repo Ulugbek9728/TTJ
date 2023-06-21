@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {ApiName1} from "../APIname1";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 import {Input, Modal, Progress} from "antd";
 
 function Media(props) {
@@ -114,7 +114,6 @@ function Media(props) {
 
     return (
         <div>
-            <ToastContainer/>
             <div className="yuklash">
                 <button onClick={showModal} className='btn btn-success '>
                     Media qo'shish

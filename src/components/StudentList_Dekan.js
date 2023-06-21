@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {toast, ToastContainer} from "react-toastify";
-import {useNavigate} from "react-router";
+import {toast} from "react-toastify";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {Input, Pagination, Select} from "antd";
@@ -9,7 +8,6 @@ const {Option} = Select;
 const {TextArea} = Input;
 
 function StudentListDekan(props) {
-    const navigate = useNavigate();
 
     const [sucsessText, setSucsessText] = useState('');
     const [Status, setstatus] = useState('');
@@ -169,7 +167,6 @@ function StudentListDekan(props) {
 
     return (
         <div>
-            <ToastContainer/>
             <div className='d-flex'>
                 <div className="w-25">
                     <label htmlFor="kurs">Kurs</label> <br/>
