@@ -214,7 +214,7 @@ function TtjStudentListDekan(props) {
                             <button type="button" className="btn-close" data-bs-dismiss="modal"/>
                         </div>
                         <div className="modal-body">
-                            <div className="d-flex  justify-content-between" >
+                            <div className="d-flex  justify-content-between">
 
                                 <img src={Studentunic.imageUrl?.startsWith("https") ?
                                     Studentunic.imageUrl :
