@@ -3,10 +3,12 @@ import {useNavigate} from "react-router";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {toast, ToastContainer} from "react-toastify";
-import {Pagination, Select} from "antd";
+import {Button, Pagination, Select} from "antd";
+import {exportToCSV} from "../utils/ExcelCreator";
 
 
 const {Option} = Select;
+
 function TtjStudentListDekan(props) {
 
     const [sucsessText, setSucsessText] = useState('');
@@ -28,13 +30,11 @@ function TtjStudentListDekan(props) {
     const [StudentunicFile, setStudentUnicFile] = useState('');
 
 
-
     useEffect(() => {
-
-            getTTJ();
-            if (Kurs !== '') {
-                StudentList()
-            }
+        getTTJ();
+        if (Kurs !== '') {
+            StudentList()
+        }
     }, [sucsessText, Kurs, TTJID, StudentStatus]);
 
 
@@ -52,10 +52,10 @@ function TtjStudentListDekan(props) {
         axios.post(`${ApiName1}/dekan/dormitory_student`, {
             course: Kurs,
             dormitory_id: TTJID,
-            status:StudentStatus
+            status: StudentStatus
         }, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
-            params:{page:(page-1),size:pageSizes}
+            params: {page: (page - 1), size: pageSizes}
         }).then((response) => {
             setStudent(response.data.content);
             setTotalPage(response.data.totalElements)
@@ -79,15 +79,16 @@ function TtjStudentListDekan(props) {
     function TTJSelect(value, key) {
         setTTJID(value);
     }
+
     function CoursSelect(value, key) {
         setKurs(value)
     }
-    function StatusSelect(value,key) {
+
+    function StatusSelect(value, key) {
         setStudenStatus(value);
-        if (value==='REMOVED'){
+        if (value === 'REMOVED') {
             setStudentJOINED(false)
-        }
-        else setStudentJOINED(true)
+        } else setStudentJOINED(true)
     }
 
     useEffect(() => {
@@ -109,7 +110,20 @@ function TtjStudentListDekan(props) {
         }
     }
 
-    console.log(Studentunic)
+
+    const exportExcel = () => {
+        axios.post(`${ApiName1}/admin/dormitory_student/all`, {
+            course: Kurs?.length > 0 ? Kurs : null,
+            dormitory_id: TTJID,
+            faculty_id: localStorage.getItem('faculty_ID'),
+            status: StudentStatus
+        }, {
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+        }).then((response) => {
+            exportToCSV(response.data, 'students');
+        })
+    }
+
     return (
         <div>
             <ToastContainer/>
@@ -141,7 +155,13 @@ function TtjStudentListDekan(props) {
                     </Select>
                 </div>
             </div>
-
+            <Button
+                className="btn btn-success p-1"
+                onClick={exportExcel}>
+                Ma'lumotlarini yuklab olish
+            </Button>
+            <br/>
+            <br/>
             <table className="table table-bordered ">
                 <thead>
                 <tr>
@@ -163,7 +183,7 @@ function TtjStudentListDekan(props) {
                         <td>
                             <button className="btn btn-success mx-1"
                                     data-bs-toggle="modal" data-bs-target="#myModal"
-                                    onClick={(e)=>{
+                                    onClick={(e) => {
                                         seeStudent(item.student.id);
                                         setStudentUnic(item.student);
                                         setCurrentItem(item);
@@ -182,19 +202,21 @@ function TtjStudentListDekan(props) {
                 current={page}
                 total={totalPage}
                 pageSize={pageSizes}
-                onChange={(e)=>{setPage(e)}}
+                onChange={(e) => {
+                    setPage(e)
+                }}
                 showQuickJumper
             />
 
             <div className="modal fade" id="myModal">
-                <div className="modal-dialog" style={{marginLeft:"15%"}}>
-                    <div className="modal-content " style={{width:"50vw"}}>
+                <div className="modal-dialog" style={{marginLeft: "15%"}}>
+                    <div className="modal-content " style={{width: "50vw"}}>
                         <div className="modal-header">
                             <h4 className="modal-title">Talaba to'liq ma'lumoti</h4>
                             <button type="button" className="btn-close" data-bs-dismiss="modal"/>
                         </div>
                         <div className="modal-body">
-                            <div className="d-flex  justify-content-between" >
+                            <div className="d-flex  justify-content-between">
 
                                 <img src={Studentunic.imageUrl?.startsWith("https") ?
                                     Studentunic.imageUrl :
@@ -239,13 +261,14 @@ function TtjStudentListDekan(props) {
                                     <hr/>
                                 </div>
                                 <div className="w-50 p-2">
-                                    <h4 className='text-center' style={{marginTop:'13px'}}>
+                                    <h4 className='text-center' style={{marginTop: '13px'}}>
                                         Talaba yuklagan fayllari
                                     </h4>
                                     <hr/>
-                                    {StudentFile && StudentFile.map((item, index)=>{
+                                    {StudentFile && StudentFile.map((item, index) => {
                                         return <div key={index}>
-                                            <a href={`${ApiName1}${item.attachUrl}`} target='_blank' className='m-0'>{item.name}</a>
+                                            <a href={`${ApiName1}${item.attachUrl}`} target='_blank'
+                                               className='m-0'>{item.name}</a>
                                             <hr/>
                                         </div>
                                     })}
@@ -256,17 +279,18 @@ function TtjStudentListDekan(props) {
                             </div>
                             {
                                 currentItem?.studentStatus === 'REMOVED'
-                                ?
-                                <>
-                                    <hr/>
-                                    <a href={`${ApiName1}${currentItem?.removedFileUrl}`} target='_blank'
-                                       className='m-0'>TTJ dan chetlashtirish sababi</a>
-                                </>: null
+                                    ?
+                                    <>
+                                        <hr/>
+                                        <a href={`${ApiName1}${currentItem?.removedFileUrl}`} target='_blank'
+                                           className='m-0'>TTJ dan chetlashtirish sababi</a>
+                                    </> : null
                             }
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-danger"
-                                    data-bs-dismiss="modal">Close</button>
+                                    data-bs-dismiss="modal">Close
+                            </button>
                         </div>
                     </div>
                 </div>
