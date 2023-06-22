@@ -41,7 +41,7 @@
   "success-ttj": "Congratulations, you have been accepted to TTJ. You can download the license below.",
   "application-pending": "Your application is being processed",
   "application-cancel": "Your application has not been accepted!",
-  "application-removed": "You are expelled from TTJ",
+  "application-removed": "You are expelled from TTJ. You can find out the reason for the exclusion below",
   "student-not-found": "Such a student does not exist!",
   "data-send-success": "Data sent successfully!",
   "application-submitted-already": "You have submitted an application before!",

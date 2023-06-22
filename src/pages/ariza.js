@@ -169,7 +169,6 @@ function Ariza(props) {
 
     return (
         <>
-            <ToastContainer/>
             <Navbar/>
 
 

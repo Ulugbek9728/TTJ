@@ -41,7 +41,7 @@
   "success-ttj": "Tabriklaymiz siz TTJ ga qabul qilindingiz. Quyidagi ruxsatnomani yuklab olishingiz mumkun.",
   "application-pending": "Arizangiz ko'rib chiqilmoqda",
   "application-cancel": "Arizangiz qabul qilinmadi!",
-  "application-removed": "Siz TTJ dan haydalgansiz",
+  "application-removed": "Siz TTJ dan haydalgansiz. Quida xaydalish sababini ko'rishingiz mumkun",
   "student-not-found": "Bunday talaba mavjud emas!",
   "data-send-success": "Ma'lumotlar muvafaqiyatli yuborildi!",
   "application-submitted-already": "Siz oldin ariza qoldirgansiz!",
