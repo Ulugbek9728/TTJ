@@ -22,6 +22,7 @@ function Natija(props) {
     }, []);
 
     const lang = localStorage.getItem('i18nextLng');
+
     useEffect(() => {
         switch (Student?.status) {
             case 'ACCEPTED': {
