@@ -170,7 +170,6 @@ function Ariza(props) {
 
     return (
         <>
-            <ToastContainer/>
             <Navbar/>
 
             <div className='container ArizaPage'>

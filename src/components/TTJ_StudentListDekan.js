@@ -2,15 +2,18 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {toast} from "react-toastify";
-import {Button, Pagination, Select} from "antd";
+import {Alert, Modal, Pagination, Select, Space, Spin} from "antd";
+import {exportToCSV} from "../utils/ExcelCreator";
+import {Button} from "antd";
 import { exportToCSVStudentDormitory} from "../utils/ExcelCreator";
 import {useTranslation} from "react-i18next";
 
 
 const {Option} = Select;
-
 function TtjStudentListDekan(props) {
     const {t} = useTranslation();
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const [sucsessText, setSucsessText] = useState('');
     const [message2, setMessage2] = useState('');
@@ -29,6 +32,47 @@ function TtjStudentListDekan(props) {
     const [totalPage, setTotalPage] = useState(0);
     const [pageSizes, setPageSize] = useState(20);
     const [StudentunicFile, setStudentUnicFile] = useState('');
+    const [file, setFile] = useState([{
+        fileBox: null
+    }]);
+    const [loading, setLoading] = useState(false);
+    const [StudentID, setStudentID] = useState('');
+
+    const handleInputFile = (e, index) => {
+        file.fileBox = e.target.files[0]
+    };
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+    const handleOk = () => {
+        setLoading(true);
+        const allData = new FormData();
+        allData.append(`file`, file.fileBox);
+        axios.post(`${ApiName1}/attach/upload`, allData)
+            .then((response) => {
+                axios.put(`${ApiName1}/admin/dormitory_student/change_status/${StudentID}/${
+                    StudentJOINED ? 'REMOVED' : 'JOINED'}/${response.data[0].id}`, '', {
+                    headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+
+                }).then((res) => {
+                    setLoading(false);
+                    setIsModalVisible(false);
+                    document.getElementById('File').value = '';
+                    setSucsessText("Talaba qora ro'yxatga tushdi");
+                    setStudentID('')
+                }).catch((error) => {
+                    console.log(error);
+                    setLoading(false);
+                    setMessage2(error.response.data)
+                })
+            }).catch((error) => {
+            console.log(error)
+        })
+
+    };
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
 
     useEffect(() => {
         getTTJ();
@@ -109,16 +153,8 @@ function TtjStudentListDekan(props) {
         }
     }
 
-    // {
-    //     course: Kurs?.length > 0 ? Kurs : null,
-    //         dormitory_id: TTJID,
-    //     faculty_id: localStorage.getItem('faculty_ID'),
-    //     status: StudentStatus
-    // },
-
 
     const exportExcel = () => {
-
         axios.post(`${ApiName1}/admin/dormitory_student/all`, {
             course: Kurs?.length > 0 ? Kurs : null,
             dormitory_id: TTJID,
@@ -167,6 +203,25 @@ function TtjStudentListDekan(props) {
                     </Select>
                 </div>
             </div>
+            <Modal className='ticherModal' title={"Talabani qora ro'yxatga qo'shish"}
+                   open={isModalVisible}
+                   onOk={handleOk} onCancel={handleCancel}>
+                <div>
+                    <label htmlFor='Title'>File (pdf)</label><br/>
+                    <input type="file" id='File' accept='application/pdf' onChange={(e) => handleInputFile(e)}/>
+                </div>
+                {loading ?
+                    <Space direction="vertical" style={{width: '100%',}}>
+                        <Spin tip="Loading...">
+                            <Alert message="Ma'lumot yuklanmoqda" description="Iltimos kutib turing"
+                                   type="info"/>
+                        </Spin>
+                    </Space>
+                    :
+                    ''
+                }
+            </Modal>
+
             <Button
                 className="btn btn-success p-1"
                 onClick={exportExcel}>
@@ -182,6 +237,7 @@ function TtjStudentListDekan(props) {
                     <th>Fakultet</th>
                     <th>Kurs</th>
                     <th>Tel</th>
+                    <th/>
                 </tr>
                 </thead>
                 <tbody>
@@ -192,7 +248,7 @@ function TtjStudentListDekan(props) {
                         <td>{item.student.faculty}</td>
                         <td>{item.student.course}</td>
                         <td>{item.student.phone}</td>
-                        <td>
+                        <td className='d-flex'>
                             <button className="btn btn-success mx-1"
                                     data-bs-toggle="modal" data-bs-target="#myModal"
                                     onClick={(e) => {
@@ -204,7 +260,22 @@ function TtjStudentListDekan(props) {
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
                             </button>
-
+                            {
+                                StudentJOINED ?
+                                    <div className="d-flex">
+                                        <button className="btn btn-danger mx-1"
+                                                onClick={(e) => {
+                                                    showModal();
+                                                    setStudentID(item.id)
+                                                }}>
+                                            <img style={{width: "15px", height: "15px"}} className='iconEdit'
+                                                 src="/img/close.png"
+                                                 alt=""/>
+                                        </button>
+                                    </div>
+                                    :
+                                    ''
+                            }
                         </td>
                     </tr>
                 })}

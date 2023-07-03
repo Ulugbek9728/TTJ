@@ -9,7 +9,7 @@ import "../asset/login.scss"
 import {useNavigate} from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 import {Button, Form, Input} from 'antd';
 
 function Login(props) {
@@ -94,22 +94,27 @@ function Login(props) {
     return (
         <>
             <Navbar/>
-            <ToastContainer/>
 
             <div className="container loginPage">
                 <div className="row">
                     <div className="login-page">
                         <div className="left-side">
                             <div className="title">
-                                Welcome Back!
+                                {t("salom")}
                             </div>
-                            <div className="commit">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut cumque dicta, doloribus ea
-                                eaque facere harum mollitia nam nulla pariatur perferendis perspiciatis possimus quaerat
-                                quod ratione reprehenderit rerum sed. Aliquid architecto debitis delectus eius enim eos,
-                                esse ipsa minima natus nobis obcaecati qui quidem quis repellat reprehenderit ullam vel
-                                vitae?
-                            </div>
+                            <p className="commit">
+                                {t("TTJxushKelibsiz")}
+                            </p>
+                            <p className="commit">
+                                {t("TTJeslatma")}
+                            </p>
+                            <p className="commit">
+                                <ul>
+                                    <li>{t("eslatma1")}</li>
+                                    <li>{t("eslatma2")}</li>
+                                    <li>{t("eslatma3")}</li>
+                                </ul>
+                            </p>
                         </div>
                         <div className="right-side">
                             <div className="container">

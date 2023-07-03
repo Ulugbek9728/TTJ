@@ -53,9 +53,9 @@ function TtjStudents(props) {
         setIsModalVisible(true);
     };
     const handleOk = () => {
-        setLoading(true)
+        setLoading(true);
         const allData = new FormData();
-        allData.append(`file`, file.fileBox)
+        allData.append(`file`, file.fileBox);
         axios.post(`${ApiName1}/attach/upload`, allData)
             .then((response) => {
                 axios.put(`${ApiName1}/admin/dormitory_student/change_status/${StudentID}/${
@@ -63,22 +63,21 @@ function TtjStudents(props) {
                     headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
 
                 }).then((res) => {
-                    console.log(res)
                     setLoading(false);
                     setIsModalVisible(false);
-                    document.getElementById('File').value = ''
-                    setSucsessText("Talaba qora ro'yxatga tushdi")
+                    document.getElementById('File').value = '';
+                    setSucsessText("Talaba qora ro'yxatga tushdi");
                     setStudentID('')
                 }).catch((error) => {
                     console.log(error)
-                    setLoading(false)
+                    setLoading(false);
                     setMessage2(error.response.data)
                 })
             }).catch((error) => {
             console.log(error)
         })
 
-    }
+    };
     const handleCancel = () => {
         setIsModalVisible(false);
     };
@@ -223,7 +222,7 @@ function TtjStudents(props) {
                 , response.data, 'students')
         })
 
-    }
+    };
     return (
         <div>
             <div className="w-100 d-flex">

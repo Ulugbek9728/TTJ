@@ -26,13 +26,14 @@ function Natija(props) {
     useEffect(() => {
         switch (Student?.status) {
             case 'ACCEPTED': {
-                setText(t('success-ttj'));
-                setFileUrl(Student?.response_file_url)
-                break;
-            }
-            case 'REMOVED': {
-                setText(t('application-removed'));
-                setFileUrl(Student?.removeFileUrl)
+                if (Student.dormitoryStudentStatus==='JOINED'){
+                    setText(t('success-ttj'));
+                    setFileUrl(Student?.response_file_url);
+                }
+                else {
+                    setText(t('application-removed'));
+                    setFileUrl(Student?.removeFileUrl);
+                }
                 break;
             }
             case 'IS_ACCEPTED': {
@@ -40,7 +41,7 @@ function Natija(props) {
                 break;
             }
             case 'NOT_ACCEPTED': {
-                setText(t('application-cancel'));
+                setText(Student?.message);
                 break;
             }
         }
@@ -51,9 +52,10 @@ function Natija(props) {
         setLogin(values.ism);
         axios.post(`${ApiName1}/public/student/login`, {login: values.ism})
             .then((response) => {
-                setStudent(response.data)
+                setStudent(response.data);
                 setStatus(response.data.status);
                 setIsLoading(false);
+                console.log(response.data)
             }).catch((error) => {
             toast.error(error.response?.data === 'Bunday talaba mavjud emas!' ? t('student-not-found') : '');
             setIsLoading(false);
