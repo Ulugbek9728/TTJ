@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Modal, Input, Select,Pagination, Alert, Space, Spin } from 'antd';
+import {Input, Select, Pagination, Alert, Space, Spin, Button} from 'antd';
 import axios from "axios";
 import {toast} from "react-toastify";
 
@@ -7,6 +7,8 @@ import {toast} from "react-toastify";
 import {ApiName1} from "../APIname1";
 import "../asset/Admin.scss"
 import {useNavigate} from "react-router";
+import {exportToCSV, exportToCSVAriza} from "../utils/ExcelCreator";
+import {useTranslation} from "react-i18next";
 
 const {Option} = Select;
 const { TextArea } = Input;
@@ -14,6 +16,7 @@ const { TextArea } = Input;
 
 function Student(props) {
     const navigate = useNavigate();
+    const {t} = useTranslation();
 
     const [sucsessText, setSucsessText] = useState('');
     const [Status, setstatus] = useState('');
@@ -208,6 +211,42 @@ function Student(props) {
         }
     }
 
+    const exportExcel = () => {
+        axios.get(`${ApiName1}/private/student`, {
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
+            params: {
+                course: Kurs,
+                faculty_id: FakultyID,
+                status: Status
+            }
+        }).then((response) => {
+            exportToCSVAriza([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    .map((item) => (
+                        {
+                            name: t(`reasons.${item}`),
+                            key: t(`reasons.${item}`, {lng: 'uz'}),
+                        }))
+                , response.data, 'students');
+        })
+    }
+    // const exportExcel = () => {
+    //     axios.post(`${ApiName1}/admin/dormitory_student/all`, {
+    //         course: Kurs?.length > 0 ? Kurs : null,
+    //         dormitory_id: TTJID,
+    //         faculty_id: localStorage.getItem('faculty_ID'),
+    //         status: ''
+    //     }, {
+    //         headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+    //     }).then((response) => {
+    //         exportToCSVAriza([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    //                 .map((item) => (
+    //                     {
+    //                         name: t(`reasons.${item}`),
+    //                         key: t(`reasons.${item}`, {lng: 'uz'}),
+    //                     }))
+    //             ,response.data, 'students');
+    //     })
+    // }
     return (
         <div>
             <div className='d-flex'>
@@ -238,6 +277,13 @@ function Student(props) {
                     </Select>
                 </div>
             </div>
+            <Button
+                className="btn btn-success p-1"
+                onClick={exportExcel}>
+                Ma'lumotlarini yuklab olish
+            </Button>
+            <br/>
+            <br/>
             <table className="table table-bordered ">
                 <thead>
                 <tr>

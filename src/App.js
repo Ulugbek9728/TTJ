@@ -22,10 +22,8 @@ function App() {
     const auth = useSelector(state => state.authUser);
     useEffect(() => {
         dispatch(changeBgCircle());
-
         setTimeout(()=>{
             dispatch(changeTrue());
-
         },2000)
     },[]);
 

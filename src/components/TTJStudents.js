@@ -4,12 +4,15 @@ import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {useNavigate} from "react-router";
 import {toast} from "react-toastify";
-import {exportToCSV} from "../utils/ExcelCreator";
+import { exportToCSVStudentDormitory} from "../utils/ExcelCreator";
+import {useTranslation} from "react-i18next";
 
 
 const {Option} = Select;
 
 function TtjStudents(props) {
+
+    const {t} = useTranslation();
 
     const navigate = useNavigate();
 
@@ -203,15 +206,21 @@ function TtjStudents(props) {
 
     const exportExcel = () => {
 
-        axios.post(`${ApiName1}/admin/dormitory_student/all`,{
-            course: Kurs?.length > 0? Kurs:null,
+        axios.post(`${ApiName1}/admin/dormitory_student/all`, {
+            course: Kurs?.length > 0 ? Kurs : null,
             dormitory_id: TTJID,
             faculty_id: FakultyID,
             status: StudentStatus
         }, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-        }).then((response)=>{
-            exportToCSV(response.data, 'students')
+        }).then((response) => {
+            exportToCSVStudentDormitory([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    .map((item) => (
+                        {
+                            name: t(`reasons.${item}`),
+                            key: t(`reasons.${item}`, {lng: 'uz'}),
+                        }))
+                , response.data, 'students')
         })
 
     }

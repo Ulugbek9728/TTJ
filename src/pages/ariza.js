@@ -58,7 +58,8 @@ function Ariza(props) {
         setSabab([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
             .map((item) => (
                 {
-                    name: t(`reasons.${item}`)
+                    name: t(`reasons.${item}`),
+                    key: t(`reasons.${item}`,{ lng: 'uz' }),
                 }))
         )
     }, [lang]);
@@ -137,7 +138,7 @@ function Ariza(props) {
     function postStudent() {
         const allData = new FormData();
         setIsLoading(true);
-        file.map((item, index) => (<>{allData.append(item.fileName, item.fileBox)}</>));
+        file.map((item, index) => (<>{allData.append(sabab[item.fileName].key, item.fileBox)}</>));
 
         axios.post(`${ApiName1}/attach/upload`, allData)
             .then((response) => {
@@ -172,15 +173,14 @@ function Ariza(props) {
             <ToastContainer/>
             <Navbar/>
 
-
             <div className='container ArizaPage'>
                 <Modal title={"Sababni Tanlang"} open={isModalVisible}
                        onOk={handleOk} onCancel={handleCancel}>
                     <div>
                         {sabab.map((item,index) => {
-                            return <div key={item.name} className="test"
+                            return <div key={item.key} className="test"
                                         onClick={(e) => {
-                                            handleInputLanguage(item.name)
+                                            handleInputLanguage(index)
                                             setIsModalVisible(false)
                                         }}>
                                 {item.name}
@@ -228,7 +228,7 @@ function Ariza(props) {
                                                         showModal();
                                                         setIndex(index)
                                                     }}>
-                                                {item.fileName}
+                                                {sabab[item.fileName]?.name}
                                                 <CaretDownOutlined />
                                             </button>
                                             <input type="file" className='form-control' id='FILE'

@@ -2,12 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {toast} from "react-toastify";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
-import {Input, Pagination, Select} from "antd";
+import {Button, Input, Pagination, Select} from "antd";
+import {exportToCSVAriza} from "../utils/ExcelCreator";
+import {useTranslation} from "react-i18next";
 
 const {Option} = Select;
 const {TextArea} = Input;
 
 function StudentListDekan(props) {
+    const {t} = useTranslation();
 
     const [sucsessText, setSucsessText] = useState('');
     const [Status, setstatus] = useState('');
@@ -165,6 +168,25 @@ function StudentListDekan(props) {
         }
     }
 
+    const exportExcel = () => {
+        axios.get(`${ApiName1}/private/student`, {
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
+            params: {
+                course: Kurs,
+                faculty_id: localStorage.getItem('faculty_ID'),
+                status: Status
+            }
+        }).then((response) => {
+            exportToCSVAriza([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    .map((item) => (
+                        {
+                            name: t(`reasons.${item}`),
+                            key: t(`reasons.${item}`, {lng: 'uz'}),
+                        }))
+                , response.data, 'students');
+        })
+    }
+
     return (
         <div>
             <div className='d-flex'>
@@ -187,6 +209,13 @@ function StudentListDekan(props) {
                     </Select>
                 </div>
             </div>
+            <Button
+                className="btn btn-success p-1"
+                onClick={exportExcel}>
+                Ma'lumotlarini yuklab olish
+            </Button>
+            <br/>
+            <br/>
             <table className="table table-bordered ">
                 <thead>
                 <tr>

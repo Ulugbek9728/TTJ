@@ -2,13 +2,15 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {toast} from "react-toastify";
-import {Pagination, Select} from "antd";
-import {exportToCSV} from "../utils/ExcelCreator";
+import {Button, Pagination, Select} from "antd";
+import { exportToCSVStudentDormitory} from "../utils/ExcelCreator";
+import {useTranslation} from "react-i18next";
 
 
 const {Option} = Select;
 
 function TtjStudentListDekan(props) {
+    const {t} = useTranslation();
 
     const [sucsessText, setSucsessText] = useState('');
     const [message2, setMessage2] = useState('');
@@ -28,14 +30,12 @@ function TtjStudentListDekan(props) {
     const [pageSizes, setPageSize] = useState(20);
     const [StudentunicFile, setStudentUnicFile] = useState('');
 
-
     useEffect(() => {
         getTTJ();
         if (Kurs !== '') {
             StudentList()
         }
     }, [sucsessText, Kurs, TTJID, StudentStatus]);
-
 
     function getTTJ() {
         axios.get(`${ApiName1}/private/dekan/show/dormitories`, {
@@ -109,8 +109,16 @@ function TtjStudentListDekan(props) {
         }
     }
 
+    // {
+    //     course: Kurs?.length > 0 ? Kurs : null,
+    //         dormitory_id: TTJID,
+    //     faculty_id: localStorage.getItem('faculty_ID'),
+    //     status: StudentStatus
+    // },
+
 
     const exportExcel = () => {
+
         axios.post(`${ApiName1}/admin/dormitory_student/all`, {
             course: Kurs?.length > 0 ? Kurs : null,
             dormitory_id: TTJID,
@@ -119,7 +127,13 @@ function TtjStudentListDekan(props) {
         }, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
-            exportToCSV(response.data, 'students');
+            exportToCSVStudentDormitory([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                    .map((item) => (
+                        {
+                            name: t(`reasons.${item}`),
+                            key: t(`reasons.${item}`, {lng: 'uz'}),
+                        }))
+                , response.data, 'students')
         })
     }
 
