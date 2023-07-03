@@ -19,16 +19,16 @@ $mainColor: #418C61;
     .left-side{
       width: 50%;
       background-color: $mainColor;
-      padding: 20px;
+      padding: 10px;
       box-sizing: border-box;
       position: relative;
       .title{
-        font-size: 40px;
-        line-height: 50px;
+        font-size: 35px;
+        line-height: 40px;
         color: white;
         font-weight: bold;
         text-align: center;
-        padding-top: 100px;
+        padding-top: 60px;
       }
       .commit{
         font-size: 16px;
@@ -36,7 +36,7 @@ $mainColor: #418C61;
         color: white;
         text-align: justify;
         font-weight: 100;
-        padding-top: 20px;
+        padding-top: 10px;
       }
       a{
         position: absolute;

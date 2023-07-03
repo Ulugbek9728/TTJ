@@ -3,7 +3,6 @@ import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {toast} from "react-toastify";
 import {Alert, Modal, Pagination, Select, Space, Spin} from "antd";
-import {Pagination, Select} from "antd";
 import {exportToCSV} from "../utils/ExcelCreator";
 
 
@@ -58,7 +57,7 @@ function TtjStudentListDekan(props) {
                     setSucsessText("Talaba qora ro'yxatga tushdi");
                     setStudentID('')
                 }).catch((error) => {
-                    console.log(error)
+                    console.log(error);
                     setLoading(false);
                     setMessage2(error.response.data)
                 })
@@ -214,11 +213,11 @@ function TtjStudentListDekan(props) {
                 }
             </Modal>
 
-            <Button
+            <button
                 className="btn btn-success p-1"
                 onClick={exportExcel}>
                 Ma'lumotlarini yuklab olish
-            </Button>
+            </button>
             <br/>
             <br/>
             <table className="table table-bordered ">
