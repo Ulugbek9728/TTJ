@@ -244,16 +244,7 @@ function StudentListDekan(props) {
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
                             </button>
-                            {StatusBulin ?
-                                <button className="btn btn-danger mx-1"
-                                        onClick={() => {
-                                            deleteStudent(item.id)
-                                        }}>
-                                    <img style={{width: "20px", height: "20px"}} className='iconEdit'
-                                         src="/img/delete.png"
-                                         alt=""/>
-                                </button>
-                                :
+                            {StatusBulin &&
                                 <div>
                                     <button className="btn btn-warning mx-1"
                                             data-bs-toggle="modal" data-bs-target="#myModal1"
