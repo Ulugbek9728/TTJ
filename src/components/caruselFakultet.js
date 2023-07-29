@@ -66,7 +66,7 @@ function CaruselFakultet(props) {
                                         <div className="orinlar">
                                             <div className="text">{t("carusel.Band")}</div>
                                             {course?.map((item, index)=>{
-                                                return <p key={index+200}>{index}-{t("carusel.Kurs")}: <span>{item.left_count}</span></p>
+                                                return <p key={index+200}>{index+1}-{t("carusel.Kurs")}: <span>{item.left_count}</span></p>
                                             })}
                                         </div>
                                         <div className="orinlar">
