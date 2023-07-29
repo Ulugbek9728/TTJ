@@ -69,9 +69,7 @@ function StudentListDekan(props) {
         axios.put(`${ApiName1}/private/student/cancel/${StudentID}`, {message: Messeg}, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
         }).then((res) => {
-            console.log(res)
             setSucsessText('Talaba arizasi bekor qilindi')
-
         }).catch((error) => {
             console.log(error)
         })
@@ -244,7 +242,7 @@ function StudentListDekan(props) {
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
                             </button>
-                            {StatusBulin &&
+                            {!StatusBulin &&
                                 <div>
                                     <button className="btn btn-warning mx-1"
                                             data-bs-toggle="modal" data-bs-target="#myModal1"
@@ -413,7 +411,7 @@ function StudentListDekan(props) {
                                       }}/>
                         </div>
                         <div className="modal-footer">
-                            <button className='btn btn-success' onClick={changeStatus}>yuborish</button>
+                            <button className='btn btn-success' onClick={changeStatus}>Yuborish</button>
                             <button type="button" className="btn btn-danger"
                                     data-bs-dismiss="modal">Close
                             </button>

@@ -44,6 +44,7 @@ function Ariza(props) {
     const [message2, setMessage2] = useState('');
     const [sucsessText, setSucsessText] = useState('');
     const [sabab, setSabab] = useState([{}]);
+    const [errorMessage, setErrorMessage] = useState('');
     const [Index, setIndex] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -54,17 +55,25 @@ function Ariza(props) {
             fileBox: ''
         }])
     };
+
     useEffect(() => {
         setSabab([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
             .map((item) => (
                 {
                     name: t(`reasons.${item}`),
-                    key: t(`reasons.${item}`,{ lng: 'uz' }),
+                    key: t(`reasons.${item}`, {lng: 'uz'}),
                 }))
         )
     }, [lang]);
     const handleInputFile = (e, index) => {
-        file[index].fileBox = e.target.files[0]
+        if (e.target.files[0]?.type === 'application/pdf') {
+            file[index].fileBox = e.target.files[0]
+            setFile(file);
+            setErrorMessage('');
+        } else {
+            setErrorMessage('Faqat PDF file yuklash kerak!!');
+        }
+
     };
 
     const handleInputLanguage = (e, index) => {
@@ -111,7 +120,7 @@ function Ariza(props) {
 
     function getStudent() {
         axios.get(`${ApiName1}/account/me`, {
-                params: {token: localStorage.getItem("token")}
+            params: {token: localStorage.getItem("token")}
         }).then((response) => {
             setStudent({
                 ...Student,
@@ -136,36 +145,43 @@ function Ariza(props) {
     }
 
     function postStudent() {
-        const allData = new FormData();
-        setIsLoading(true);
-        file.map((item, index) => (<>{allData.append(sabab[item.fileName].key, item.fileBox)}</>));
+        console.log(file)
+        if (file[0]?.fileName === '' || file[0]?.fileBox === null) {
+            setErrorMessage(t('required.reason'))
+        } else {
 
-        axios.post(`${ApiName1}/attach/upload`, allData)
-            .then((response) => {
-                Student.attachList = response.data
+            const allData = new FormData();
+            setIsLoading(true);
+            setErrorMessage('')
+            file.map((item, index) => (<>{allData.append(sabab[item.fileName].key, item.fileBox)}</>));
+            axios.post(`${ApiName1}/attach/upload`, allData)
+                .then((response) => {
+                    Student.attachList = response.data
 
-                axios.post(`${ApiName1}/public/student/join/data`, Student)
-                    .then((response) => {
-                        if (response.status === 201) {
-                            setFile([{
-                                fileName: '',
-                                fileBox: null
-                            }])
+                    axios.post(`${ApiName1}/public/student/join/data`, Student)
+                        .then((response) => {
+                            if (response.status === 201) {
+                                setFile([{
+                                    fileName: '',
+                                    fileBox: null
+                                }])
 
-                            document.getElementById('FILE').value = null;
-                            setSucsessText(t('data-send-success'))
-                            setIsLoading(false);
+                                document.getElementById('FILE').value = null;
+                                setSucsessText(t('data-send-success'))
+                                setIsLoading(false);
+                            }
+                        }).catch((error) => {
+                        setIsLoading(false);
+                        if (error.response.status === 400) {
+                            setMessage2(error.response.data === 'Bunday talaba mavjud ' ? t('application-submitted-already') : '')
                         }
-                    }).catch((error) => {
-                    setIsLoading(false);
-                    if (error.response.status === 400) {
-                        setMessage2(error.response.data==='Bunday talaba mavjud '?t('application-submitted-already'):'')
-                    }
-                })
+                    })
 
-            }).catch((error) => {
-            setIsLoading(false);
-        })
+                }).catch((error) => {
+                setIsLoading(false);
+            })
+
+        }
     }
 
     return (
@@ -176,7 +192,7 @@ function Ariza(props) {
                 <Modal title={"Sababni Tanlang"} open={isModalVisible}
                        onOk={handleOk} onCancel={handleCancel}>
                     <div>
-                        {sabab.map((item,index) => {
+                        {sabab.map((item, index) => {
                             return <div key={item.key} className="test"
                                         onClick={(e) => {
                                             handleInputLanguage(index)
@@ -186,7 +202,6 @@ function Ariza(props) {
                                 <hr/>
                             </div>
                         })}
-
                     </div>
                 </Modal>
                 <div className="row">
@@ -223,18 +238,22 @@ function Ariza(props) {
                                         <div key={index} style={{display: 'flex', marginBottom: 8}}
                                              align="baseline">
                                             <button className='selectBtn btn' type="button"
-                                                    onClick={()=>{
+                                                    onClick={() => {
                                                         showModal();
                                                         setIndex(index)
                                                     }}>
                                                 {sabab[item.fileName]?.name}
-                                                <CaretDownOutlined />
+                                                <CaretDownOutlined/>
                                             </button>
-                                            <input type="file" className='form-control' id='FILE'
+                                            <input type="file"
+                                                   className='form-control'
+                                                   id='FILE'
                                                    accept="application/pdf"
                                                    onChange={(e) => handleInputFile(e, index)}/>
                                         </div>
                                     ))}
+
+
                                     <Form.Item>
                                         <Button type="dashed" block icon={<PlusOutlined/>}
                                                 onClick={addLanguage}
@@ -243,20 +262,20 @@ function Ariza(props) {
                                         </Button>
                                     </Form.Item>
 
-
+                                    {errorMessage && <p className="text-bg-danger">{errorMessage}</p>}
                                 </Form>
-
                             </div>
                             <div className="d-flex justify-content-center">
                                 <Button loading={isLoading} className="signUp"
-                                        onClick={postStudent}>
+                                        onClick={
+                                            postStudent
+                                        }>
                                     {t('send')}
                                 </Button>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
             <Footer/>
 
