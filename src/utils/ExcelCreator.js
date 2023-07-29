@@ -22,7 +22,7 @@ export const exportToCSV = (apiData, fileName) => {
 export const exportToCSVStudentDormitory = (headerData, apiData, fileName) => {
     const studentList = apiData.map((item) => {
         let student = {};
-        const reasons = JSON.parse(item.reasons);
+        const reasons = JSON.parse(item?.reasons || '');
         student["faculty"] = get(item, 'faculty');
 
         student["course"] = get(item, 'course') || '';
@@ -77,7 +77,7 @@ export const exportToCSVStudentDormitory = (headerData, apiData, fileName) => {
 export const exportToCSVAriza = (headerData, apiData, fileName) => {
     const studentList = apiData.map((item) => {
         let student = {};
-        const reasons = JSON.parse(item.reasons);
+        const reasons = item?.reasons ? JSON.parse(item?.reasons) : [];
         student["faculty"] = get(item, 'faculty');
 
         student["course"] = get(item, 'course') || '';
