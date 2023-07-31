@@ -55,17 +55,14 @@ function Student(props) {
             setRectorBulin(false)
         }
         else {setRectorBulin(true)}
-
         Fakulty();
         if (FakultyName !== '') {
             if(Kurs !==''){
                 if(Status!== ''){
                     StudentList()
                 }
-
             }
         }
-
         getTTJ()
     }, [sucsessText, Kurs, FakultyID,Status,page]);
 
@@ -403,6 +400,11 @@ function Student(props) {
                                     <p className='m-0'>Kurs</p>
                                     <b className="">
                                         {Studentunic.course}
+                                    </b>
+                                    <hr/>
+                                     <p className='m-0'>Guruh</p>
+                                    <b className="">
+                                        {Studentunic?.group}
                                     </b>
                                     <hr/>
                                     <p className='m-0'>Yo'nalish</p>
