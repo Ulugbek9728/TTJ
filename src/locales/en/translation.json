@@ -59,7 +59,8 @@
     "surname": "Please enter surname!",
     "patronymic": "Please enter patronymic!",
     "login": "Please enter login!",
-    "faculty": "Please select faculty!"
+    "faculty": "Please select faculty!",
+    "reason": "Reason must be selected!"
   },
   "reasons": {
     "1": "Orphaned (lost two or one parent) students",

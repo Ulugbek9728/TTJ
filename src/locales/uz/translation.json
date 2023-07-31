@@ -59,7 +59,8 @@
     "surname": "Iltimos familya kiriting!",
     "patronymic": "Iltimos sharif kiriting!",
     "login": "Iltimos login kiriting!",
-    "faculty": "Iltimos fakultet tanlang!"
+    "faculty": "Iltimos fakultet tanlang!",
+    "reason": "Sabab tanlanishi kerak!"
   },
   "reasons": {
     "1": "Chin yetim yoki yetim talabalar",
