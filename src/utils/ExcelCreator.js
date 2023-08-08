@@ -83,6 +83,7 @@ export const exportToCSVAriza = (headerData, apiData, fileName) => {
         student["course"] = get(item, 'course') || '';
         student["date"] = get(item, 'createdDate') || '';
         student["studentSpecialty"] = get(item, 'specialty') || ''
+        student["group"] = get(item, 'group') || ''
         student["phone"] = get(item, 'phone') || '';
         student["login"] = get(item, 'login') || '';
         student["name"] = get(item, 'name') || '';
@@ -101,7 +102,7 @@ export const exportToCSVAriza = (headerData, apiData, fileName) => {
 
     const worksheet = XLSX.utils.json_to_sheet(studentList);
 
-    const datas = ["Fakultet", "Kurs", "Yaratilgan vaqt", "Yonalish", "Tefon raqam", "Login", "Ismi","Jinsi"];
+    const datas = ["Fakultet", "Kurs", "Yaratilgan vaqt", "Yonalish", "Guruh", "Tefon raqam", "Login", "Ismi","Jinsi"];
 
     headerData.forEach((item) => {
         datas.push(item?.key);
