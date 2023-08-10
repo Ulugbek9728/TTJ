@@ -95,7 +95,7 @@ function TtjStudents(props) {
                 StudentList()
             }
         }
-    }, [sucsessText, Kurs, FakultyID, TTJID, StudentStatus]);
+    }, [sucsessText, Kurs, FakultyID, TTJID, StudentStatus,page,pageSizes]);
 
     function Fakulty() {
         axios.post(`${ApiName1}/adm/faculty/faculty_list`, '', {
@@ -363,6 +363,7 @@ function TtjStudents(props) {
                 total={totalPage}
                 pageSize={pageSizes}
                 onChange={(e) => {
+                    console.log(e)
                     setPage(e)
                 }}
                 showQuickJumper
