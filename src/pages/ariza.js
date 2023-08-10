@@ -47,6 +47,7 @@ function Ariza(props) {
     const [errorMessage, setErrorMessage] = useState('');
     const [Index, setIndex] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [showExpDateModal, setShowExpDateModal] = useState(false);
 
     const lang = localStorage.getItem('i18nextLng');
     const addLanguage = () => {
@@ -184,6 +185,9 @@ function Ariza(props) {
         }
     }
 
+    const expDate = () => {
+        setShowExpDateModal(true);
+    }
     return (
         <>
             <Navbar/>
@@ -266,9 +270,10 @@ function Ariza(props) {
                                 </Form>
                             </div>
                             <div className="d-flex justify-content-center">
-                                <Button loading={isLoading} className="signUp"
+                                <Button loading={isLoading}
+                                        className="signUp"
                                         onClick={
-                                            postStudent
+                                            expDate
                                         }>
                                     {t('send')}
                                 </Button>
@@ -276,6 +281,19 @@ function Ariza(props) {
                         </div>
                     </div>
                 </div>
+                <Modal title={"Ariza topshirish vaqti tugadi!"}
+                       open={showExpDateModal}
+                       onOk={()=>{
+                           setShowExpDateModal(false)
+                       }}
+                       onCancel={()=>{
+                           setShowExpDateModal(false)
+                       }}
+                >
+                    <div className={"text-bg-danger"}>
+                        Ariza topshirish vaqti tugagan!!
+                    </div>
+                </Modal>
             </div>
             <Footer/>
 
