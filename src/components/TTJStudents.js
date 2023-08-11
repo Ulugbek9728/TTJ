@@ -249,8 +249,8 @@ function TtjStudents(props) {
                         <Option value='COURSE_2'>2-Kurs</Option>
                         <Option value='COURSE_3'>3-Kurs</Option>
                         <Option value='COURSE_4'>4-Kurs</Option>
-
-                    </Select> <br/>
+                    </Select>
+                    <br/>
                 </div>
                 <div className="w-25 mx-4">
                     <label htmlFor="status">TTJ dan o'chirilgan yoki qabul qilingan talabalar</label>
@@ -363,7 +363,6 @@ function TtjStudents(props) {
                 total={totalPage}
                 pageSize={pageSizes}
                 onChange={(e) => {
-                    console.log(e)
                     setPage(e)
                 }}
                 showQuickJumper
@@ -472,7 +471,6 @@ function TtjStudents(props) {
                                 <img style={{width: "20px", height: "20px"}} src="/img/delete.png" alt=""/>
                             </button>
                         </div>
-
                     </div>
                 </div>
             </div>
