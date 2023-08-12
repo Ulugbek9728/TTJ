@@ -11,6 +11,7 @@ import {toast} from "react-toastify";
 function Natija(props) {
     const {t} = useTranslation();
     const [status, setStatus] = useState('');
+    const [statusDormitory, setStatusDormitory] = useState('');
     const [login, setLogin] = useState('');
     const [Student, setStudent] = useState({});
     const [text, setText] = useState('');
@@ -41,7 +42,12 @@ function Natija(props) {
                 break;
             }
             case 'NOT_ACCEPTED': {
-                setText(Student?.message);
+                if (Student.dormitoryStudentStatus==='REMOVED'){
+                    setText('Yotoqxonadan haydalish sababi!');
+                    setFileUrl(Student?.removeFileUrl);
+                }else {
+
+                }
                 break;
             }
         }
@@ -50,12 +56,13 @@ function Natija(props) {
     function Login(values) {
         setIsLoading(true);
         setLogin(values.ism);
+        setStatusDormitory('')
         axios.post(`${ApiName1}/public/student/login`, {login: values.ism})
             .then((response) => {
                 setStudent(response.data);
                 setStatus(response.data.status);
+                setStatusDormitory(response.data?.dormitoryStudentStatus);
                 setIsLoading(false);
-                console.log(response.data)
             }).catch((error) => {
             toast.error(error.response?.data === 'Bunday talaba mavjud emas!' ? t('student-not-found') : '');
             setIsLoading(false);
@@ -80,6 +87,9 @@ function Natija(props) {
                                 {fileUrl && (status === 'ACCEPTED' || status === 'REMOVED') && <a href={`${ApiName1}${fileUrl}`} target='_blank'>
                                     file
                                 </a>}
+                                {statusDormitory && statusDormitory === 'REMOVED' &&<a href={`${ApiName1}${fileUrl}`} target='_blank'>
+                                    file
+                                </a> }
                             </div>
                         </div>
 

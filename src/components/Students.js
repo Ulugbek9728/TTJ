@@ -11,7 +11,7 @@ import {exportToCSV, exportToCSVAriza} from "../utils/ExcelCreator";
 import {useTranslation} from "react-i18next";
 
 const {Option} = Select;
-const { TextArea } = Input;
+const {TextArea} = Input;
 
 
 function Student(props) {
@@ -26,7 +26,7 @@ function Student(props) {
     const [StudentID, setStudentID] = useState('');
     const [TTJID, setTTJID] = useState('');
     const [StudentFile, setStudentFile] = useState([]);
-    const [GetTTJList,  setGetTTJList] = useState([]);
+    const [GetTTJList, setGetTTJList] = useState([]);
     const [Studentunic, setStudentUnic] = useState({});
     const [FakultyName, setFakultyName] = useState('');
     const [FakultyID, setFakultyID] = useState('');
@@ -51,25 +51,26 @@ function Student(props) {
     };
 
     useEffect(() => {
-        if (localStorage.getItem("degree")!='RECTOR'){
+        if (localStorage.getItem("degree") != 'RECTOR') {
             setRectorBulin(false)
+        } else {
+            setRectorBulin(true)
         }
-        else {setRectorBulin(true)}
         Fakulty();
         if (FakultyName !== '') {
-            if(Kurs !==''){
-                if(Status!== ''){
+            if (Kurs !== '') {
+                if (Status !== '') {
                     StudentList()
                 }
             }
         }
         getTTJ()
-    }, [sucsessText, Kurs, FakultyID,Status,page]);
+    }, [sucsessText, Kurs, FakultyID, Status, page]);
 
     function StudentList() {
         axios.post(`${ApiName1}/private/student/list/${FakultyName}/${Kurs}`, '', {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
-            params:{status:Status,page:(page-1),size:pageSizes}
+            params: {status: Status, page: (page - 1), size: pageSizes}
         }).then((response) => {
             setStudent(response.data.content);
             console.log(response.data.content);
@@ -81,24 +82,24 @@ function Student(props) {
     }
 
     function changeStatus() {
-        axios.put(`${ApiName1}/private/student/cancel/${StudentID}`,{message:Messeg}, {
-                headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
-            }).then((res)=>{
-                console.log(res)
+        axios.put(`${ApiName1}/private/student/cancel/${StudentID}`, {message: Messeg}, {
+            headers: {"Authorization": "Bearer " + localStorage.getItem("token")},
+        }).then((res) => {
+            console.log(res)
             setMesseg('')
             setSucsessText('Talaba arizasi bekor qilindi')
-        }).catch((error)=>{
+        }).catch((error) => {
             console.log(error)
         })
     }
 
     function getTTJ() {
-        if (localStorage.getItem("degree")!=='RECTOR'){
-            axios.get(`${ApiName1}/private/admin/dormitory/show/faculty_id/${FakultyID}`,{
+        if (localStorage.getItem("degree") !== 'RECTOR') {
+            axios.get(`${ApiName1}/private/admin/dormitory/show/faculty_id/${FakultyID}`, {
                 headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-            }).then((res)=>{
+            }).then((res) => {
                 setGetTTJList(res.data)
-            }).catch((error)=>{
+            }).catch((error) => {
                 console.log(error)
             })
 
@@ -108,17 +109,18 @@ function Student(props) {
     function postStudentTTJ() {
         setLoading(true)
         const allData = new FormData();
-        allData.append(`file`,file.fileBox)
+        allData.append(`file`, file.fileBox)
         axios.post(`${ApiName1}/attach/upload`, allData)
             .then((response) => {
                 axios.post(
                     `${ApiName1}/private/admin/dormitory_join_student/${TTJID}/${StudentID}/${response.data[0]?.id}`,
-                    '',{
-                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+                    '', {
+                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+                    })
                     .then((response) => {
                         setLoading(false)
-                        if (response.status === 200){
-                            file.fileBox=null
+                        if (response.status === 200) {
+                            file.fileBox = null
                             setSucsessText("Talaba muvofaqiyatli qo'shildi");
                             document.getElementById('File').value = ''
                             setTTJID('')
@@ -161,30 +163,30 @@ function Student(props) {
 
     function deleteStudent(e) {
         console.log(e)
-        axios.delete(`${ApiName1}/private/student/delete/${e}`,{
+        axios.delete(`${ApiName1}/private/student/delete/${e}`, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-        }).then((res)=>{
+        }).then((res) => {
             console.log(res)
             setSucsessText("Talaba arizasi o'chirildi")
-        }).catch((error)=>{
+        }).catch((error) => {
             console.log(error)
         })
     }
 
-    function FacultySelect(value,key) {
+    function FacultySelect(value, key) {
         setFakultyName(value);
         setFakultyID(key.key)
     }
-    function CoursSelect(value,key) {
+
+    function CoursSelect(value, key) {
         setKurs(value)
     }
 
-    function StatusSelect(value,key) {
+    function StatusSelect(value, key) {
         setstatus(value)
-        if (value==='NOT_ACCEPTED'){
+        if (value === 'NOT_ACCEPTED') {
             setStatusBulin(true)
-        }
-        else {
+        } else {
             setStatusBulin(false)
         }
     }
@@ -302,7 +304,10 @@ function Student(props) {
                         <td className='d-flex'>
                             <button className="btn btn-success mx-1"
                                     data-bs-toggle="modal" data-bs-target="#myModal"
-                            onClick={(e)=>{seeStudent(item.id); setStudentUnic(item)}}>
+                                    onClick={(e) => {
+                                        seeStudent(item.id);
+                                        setStudentUnic(item)
+                                    }}>
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
                             </button>
@@ -313,13 +318,17 @@ function Student(props) {
                                 <div className='d-flex'>
                                     <button className="btn btn-warning mx-1"
                                             data-bs-toggle="modal" data-bs-target="#myModal1"
-                                            onClick={(e)=>{setStudentID(item.id)}}>
+                                            onClick={(e) => {
+                                                setStudentID(item.id)
+                                            }}>
                                         <img style={{width: "20px", height: "20px"}} className='iconEdit'
                                              src="/img/editing.png" alt=""/>
                                     </button>
                                     {StatusBulin ?
                                         <button className="btn btn-danger mx-1"
-                                                onClick={()=>{deleteStudent(item.id)}}>
+                                                onClick={() => {
+                                                    deleteStudent(item.id)
+                                                }}>
                                             <img style={{width: "20px", height: "20px"}} className='iconEdit'
                                                  src="/img/delete.png"
                                                  alt=""/>
@@ -327,7 +336,9 @@ function Student(props) {
                                         :
                                         <button className="btn btn-danger mx-1"
                                                 data-bs-toggle="modal" data-bs-target="#myModal2"
-                                                onClick={(e)=>{setStudentID(item.id)}}>
+                                                onClick={(e) => {
+                                                    setStudentID(item.id)
+                                                }}>
                                             <img style={{width: "15px", height: "15px"}} className='iconEdit'
                                                  src="/img/close.png"
                                                  alt=""/>
@@ -335,7 +346,6 @@ function Student(props) {
                                     }
                                 </div>
                             }
-
 
 
                         </td>
@@ -348,22 +358,25 @@ function Student(props) {
                 current={page}
                 total={totalPage}
                 pageSize={pageSizes}
-                onChange={(e)=>{setPage(e)}}
+                onChange={(e) => {
+                    setPage(e)
+                }}
                 showQuickJumper
             />
 
 
             <div className="modal fade" id="myModal">
-                <div className="modal-dialog" style={{marginLeft:"15%"}}>
-                    <div className="modal-content " style={{width:"50vw"}}>
+                <div className="modal-dialog" style={{marginLeft: "15%"}}>
+                    <div className="modal-content " style={{width: "50vw"}}>
                         <div className="modal-header">
                             <h4 className="modal-title">Talaba to'liq ma'lumoti</h4>
                             <button type="button" className="btn-close" data-bs-dismiss="modal"/>
                         </div>
                         <div className="modal-body">
-                            <div className="d-flex  justify-content-between" >
+                            <div className="d-flex  justify-content-between">
                                 <img src={
-                                    !Studentunic.imageUrl?.startsWith('https')?ApiName1+Studentunic.imageUrl:Studentunic.imageUrl } width='20%' height='auto' alt=""/>
+                                    !Studentunic.imageUrl?.startsWith('https') ? ApiName1 + Studentunic.imageUrl : Studentunic.imageUrl}
+                                     width='20%' height='auto' alt=""/>
                                 <div className='w-75'>
                                     <p className='m-0'>F.I.SH</p>
                                     <b className="">{Studentunic.name}</b>
@@ -402,7 +415,7 @@ function Student(props) {
                                         {Studentunic.course}
                                     </b>
                                     <hr/>
-                                     <p className='m-0'>Guruh</p>
+                                    <p className='m-0'>Guruh</p>
                                     <b className="">
                                         {Studentunic?.group}
                                     </b>
@@ -414,13 +427,14 @@ function Student(props) {
                                     <hr/>
                                 </div>
                                 <div className="w-50 p-2">
-                                    <h4 className='text-center' style={{marginTop:'13px'}}>
+                                    <h4 className='text-center' style={{marginTop: '13px'}}>
                                         Yuklangan fayllar
                                     </h4>
                                     <hr/>
-                                    {StudentFile && StudentFile.map((item, index)=>{
+                                    {StudentFile && StudentFile.map((item, index) => {
                                         return <div key={index}>
-                                            <a href={`${ApiName1}${item.attachUrl}`} target='_blank' className='m-0'>{item.name}</a>
+                                            <a href={`${ApiName1}${item.attachUrl}`} target='_blank'
+                                               className='m-0'>{item.name}</a>
                                             <hr/>
                                         </div>
                                     })}
@@ -433,15 +447,16 @@ function Student(props) {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-danger"
-                                    data-bs-dismiss="modal">Close</button>
+                                    data-bs-dismiss="modal">Close
+                            </button>
                         </div>
                     </div>
                 </div>
 
             </div>
             <div className="modal fade" id="myModal1">
-                <div className="modal-dialog" style={{marginLeft:"15%"}}>
-                    <div className="modal-content " style={{width:"50vw"}}>
+                <div className="modal-dialog" style={{marginLeft: "15%"}}>
+                    <div className="modal-content " style={{width: "50vw"}}>
                         <div className="modal-header">
                             <h4>Talabani Universitet yotoqxonasiga joylashtirish</h4>
                             <button type="button" className="btn-close" disabled={loading} data-bs-dismiss="modal"/>
@@ -449,7 +464,9 @@ function Student(props) {
                         <div className="modal-body">
                             <label htmlFor="TTJ">Yotoqxonani belgilang</label>
                             <select id='TTJ' className='my-2 form-control' value={TTJID} style={{width: "100%"}}
-                            onChange={(e)=>{setTTJID(e.target.value)}}>
+                                    onChange={(e) => {
+                                        setTTJID(e.target.value)
+                                    }}>
                                 <option value="">TTJ ni tanlang</option>
                                 {GetTTJList && GetTTJList.map((item, index) => {
                                     return <option key={item.id} value={item.id}>{item.name}</option>
@@ -475,17 +492,19 @@ function Student(props) {
                             }
 
                             <button className='btn btn-success' disabled={loading}
-                                    onClick={postStudentTTJ}>yuborish</button>
+                                    onClick={postStudentTTJ}>yuborish
+                            </button>
                             <button type="button" className="btn btn-danger" disabled={loading}
-                                    data-bs-dismiss="modal">Close</button>
+                                    data-bs-dismiss="modal">Close
+                            </button>
                         </div>
                     </div>
                 </div>
 
             </div>
             <div className="modal fade" id="myModal2">
-                <div className="modal-dialog" style={{marginLeft:"15%"}}>
-                    <div className="modal-content " style={{width:"50vw"}}>
+                <div className="modal-dialog" style={{marginLeft: "15%"}}>
+                    <div className="modal-content " style={{width: "50vw"}}>
                         <div className="modal-header">
                             <h4>Talabani Universitet yotoqxonasiga joylashtirish</h4>
                             <button type="button" className="btn-close" data-bs-dismiss="modal"/>
@@ -493,12 +512,15 @@ function Student(props) {
                         <div className="modal-body">
                             <label htmlFor="Message">Bekor qilish sababini yozing</label>
                             <TextArea value={Messeg} rows="5" name="text"
-                                      onChange={(e)=>{setMesseg(e.target.value)}}/>
+                                      onChange={(e) => {
+                                          setMesseg(e.target.value)
+                                      }}/>
                         </div>
                         <div className="modal-footer">
                             <button className='btn btn-success' onClick={changeStatus}>yuborish</button>
                             <button type="button" className="btn btn-danger"
-                                    data-bs-dismiss="modal">Close</button>
+                                    data-bs-dismiss="modal">Close
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -79,7 +79,7 @@ function TtjStudentListDekan(props) {
         if (Kurs !== '') {
             StudentList()
         }
-    }, [sucsessText, Kurs, TTJID, StudentStatus]);
+    }, [sucsessText, Kurs, TTJID, StudentStatus,page]);
 
     function getTTJ() {
         axios.get(`${ApiName1}/private/dekan/show/dormitories`, {
