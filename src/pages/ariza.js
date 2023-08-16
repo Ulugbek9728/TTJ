@@ -146,7 +146,6 @@ function Ariza(props) {
     }
 
     function postStudent() {
-        console.log(file)
         if (file[0]?.fileName === '' || file[0]?.fileBox === null) {
             setErrorMessage(t('required.reason'))
         } else {
@@ -273,7 +272,7 @@ function Ariza(props) {
                                 <Button loading={isLoading}
                                         className="signUp"
                                         onClick={
-                                            expDate
+                                            postStudent
                                         }>
                                     {t('send')}
                                 </Button>
