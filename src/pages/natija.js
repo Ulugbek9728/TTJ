@@ -46,7 +46,7 @@ function Natija(props) {
                     setText('Yotoqxonadan haydalish sababi!');
                     setFileUrl(Student?.removeFileUrl);
                 }else {
-
+                    setText(Student?.message || 'Yotoqxonadan haydalgan!')
                 }
                 break;
             }

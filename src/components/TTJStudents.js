@@ -315,7 +315,6 @@ function TtjStudents(props) {
                                         setStudentUnic(item.student);
                                         setStudentUnicFile(item.removedFileUrl);
                                         setStudentUnicFile2(item.fileOpenUrl);
-                                        console.log(item)
                                     }}>
                                 <img style={{width: "20px", height: "20px"}}
                                      className='iconEdit' src="/img/view.png" alt=""/>
@@ -379,22 +378,22 @@ function TtjStudents(props) {
                                 <img src={Studentunic.imageUrl?.startsWith("https") ?
                                     Studentunic.imageUrl
                                     :
-                                    ApiName1 + Studentunic.imageUrl} width='20%' height='auto' alt=""/>
+                                    ApiName1 + Studentunic?.imageUrl} width='20%' height='auto' alt=""/>
                                 <div className='w-75'>
                                     <p className='m-0'>F.I.SH</p>
-                                    <b className="">{Studentunic.name}</b>
+                                    <b className="">{Studentunic?.name}</b>
                                     <hr/>
                                     <p className='m-0'>Login</p>
-                                    <b className="">{Studentunic.login}</b>
+                                    <b className="">{Studentunic?.login}</b>
                                     <hr/>
                                     <p className='m-0'>Jinsi</p>
                                     <b className="">
-                                        {Studentunic.gender}
+                                        {Studentunic?.gender}
                                     </b>
                                     <hr/>
                                     <p className='m-0'>Yashash manzili</p>
                                     <b className="">
-                                        {Studentunic.country} / {Studentunic.city} / {Studentunic.district}
+                                        {Studentunic?.country} / {Studentunic?.city} / {Studentunic?.district}
                                     </b>
                                     <hr/>
                                 </div>
@@ -418,7 +417,12 @@ function TtjStudents(props) {
                                     <hr/>
                                     <p className='m-0'>Yo'nalish</p>
                                     <b className="">
-                                        {Studentunic.specialty}
+                                        {Studentunic?.specialty}
+                                    </b>
+                                    <hr/>
+                                    <p className='m-0'>Guruhi</p>
+                                    <b className="">
+                                        {Studentunic?.group}
                                     </b>
                                     <hr/>
                                 </div>

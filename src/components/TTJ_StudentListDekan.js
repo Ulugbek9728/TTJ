@@ -342,6 +342,11 @@ function TtjStudentListDekan(props) {
                                         {Studentunic.specialty}
                                     </b>
                                     <hr/>
+                                    <p className='m-0'>Guruhi</p>
+                                    <b className="">
+                                        {Studentunic?.group}
+                                    </b>
+                                    <hr/>
                                 </div>
                                 <div className="w-50 p-2">
                                     <h4 className='text-center' style={{marginTop: '13px'}}>
