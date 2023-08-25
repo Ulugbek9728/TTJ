@@ -272,7 +272,7 @@ function Ariza(props) {
                                 <Button loading={isLoading}
                                         className="signUp"
                                         onClick={
-                                            expDate
+                                            postStudent
                                         }>
                                     {t('send')}
                                 </Button>

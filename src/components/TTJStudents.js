@@ -27,6 +27,7 @@ function TtjStudents(props) {
     const [FakultyID, setFakultyID] = useState('');
     const [GetTTJList, setGetTTJList] = useState([]);
     const [TTJID, setTTJID] = useState('');
+    const [TTJID2, setTTJID2] = useState('');
     const [Students, setStudent] = useState([]);
     const [StudentID, setStudentID] = useState('');
     const [Studentunic, setStudentUnic] = useState({});
@@ -95,7 +96,7 @@ function TtjStudents(props) {
                 StudentList()
             }
         }
-    }, [sucsessText, Kurs, FakultyID, TTJID, StudentStatus,page,pageSizes]);
+    }, [sucsessText, Kurs, FakultyID, TTJID,TTJID2, StudentStatus,page,pageSizes]);
 
     function Fakulty() {
         axios.post(`${ApiName1}/adm/faculty/faculty_list`, '', {
@@ -146,7 +147,6 @@ function TtjStudents(props) {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
             setStudentFile(response.data);
-            console.log(response);
         }).catch((error) => {
             console.log(error.response)
         })
@@ -188,7 +188,7 @@ function TtjStudents(props) {
         setMessage('');
         setMessage2('');
         setSucsessText('');
-        setStudentID('')
+        // setStudentID('')
     }, [message, sucsessText, message2]);
 
     function notify() {
@@ -201,6 +201,40 @@ function TtjStudents(props) {
         if (message2 !== '') {
             toast.error(message2)
         }
+    }
+
+    function postStudentTTJ() {
+        setLoading(true)
+        const allData = new FormData();
+        allData.append(`file`, file.fileBox)
+        axios.post(`${ApiName1}/attach/upload`, allData)
+            .then((response) => {
+                axios.put(`${ApiName1}/admin/transfer/${StudentID}`,
+                    {
+                        dormitoryId:TTJID2,
+                        fileId:response.data[0]?.id
+                    }, {
+                        headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
+                    })
+                    .then((response) => {
+                        setLoading(false)
+                        if (response.status === 200) {
+                            file.fileBox = null
+                            setSucsessText("Talaba muvofaqiyatli o'zgardi");
+                            document.getElementById('File').value = ''
+                            setTTJID2('')
+                        }
+                    }).catch((error) => {
+                    setLoading(false)
+                    console.log(error.response.data)
+                    if(error.response.data.status===400){
+                        setMessage(error.response.data.errors)
+                    }
+                    setMessage2(error.response.data)
+                })
+            }).catch((error) => {
+            console.log(error)
+        })
     }
 
     const exportExcel = () => {
@@ -262,15 +296,12 @@ function TtjStudents(props) {
                 </div>
             </div>
 
-            <Button
-                className="btn btn-success p-1"
-                onClick={exportExcel}>
+            <Button className="btn btn-success p-1" onClick={exportExcel}>
                 Ma'lumotlarini yuklab olish
             </Button>
             <br/>
             <br/>
-            <Modal className='ticherModal' title={"Talabani qora ro'yxatga qo'shish"}
-                   open={isModalVisible}
+            <Modal className='ticherModal' title={"Talabani qora ro'yxatga qo'shish"} open={isModalVisible}
                    onOk={handleOk} onCancel={handleCancel}>
                 <div>
                     <label htmlFor='Title'>File (pdf)</label><br/>
@@ -335,6 +366,17 @@ function TtjStudents(props) {
                                                          src="/img/close.png"
                                                          alt=""/>
                                                 </button>
+                                                <button className="btn btn-warning mx-1"
+                                                        data-bs-toggle="modal" data-bs-target="#myModal1"
+                                                        onClick={(e) => {
+                                                            setStudentID(item.id)
+                                                            setTTJID2('')
+                                                            document.getElementById('File').value = ''
+                                                            file.fileBox = null
+                                                        }}>
+                                                    <img style={{width: "20px", height: "20px"}} className='iconEdit'
+                                                         src="/img/editing.png" alt=""/>
+                                                </button>
                                             </div>
                                             :
                                             ''
@@ -350,17 +392,13 @@ function TtjStudents(props) {
                                     </button>
                                 </div>
                             }
-
-
                         </td>
                     </tr>
                 })}
                 </tbody>
             </table>
             <Pagination
-                current={page}
-                total={totalPage}
-                pageSize={pageSizes}
+                current={page} total={totalPage} pageSize={pageSizes}
                 onChange={(e) => {
                     setPage(e)
                 }}
@@ -450,6 +488,54 @@ function TtjStudents(props) {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-danger"
+                                    data-bs-dismiss="modal">Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div className="modal fade" id="myModal1">
+                <div className="modal-dialog" style={{marginLeft: "15%"}}>
+                    <div className="modal-content " style={{width: "50vw"}}>
+                        <div className="modal-header">
+                            <h4>Talabani Universitet yotoqxonasini o'zgartirish</h4>
+                            <button type="button" className="btn-close" disabled={loading} data-bs-dismiss="modal"/>
+                        </div>
+                        <div className="modal-body">
+                            <label htmlFor="TTJ">Yotoqxonani belgilang</label>
+                            <select id='TTJ' className='my-2 form-control' value={TTJID2} style={{width: "100%"}}
+                                    onChange={(e) => {
+                                        setTTJID2(e.target.value)
+                                    }}>
+                                <option value="">TTJ ni tanlang</option>
+                                {GetTTJList && GetTTJList.map((item, index) => {
+                                    return <option key={item.id} value={item.id}>{item.name}</option>
+                                })}
+                            </select>
+                            <label htmlFor="File">PDF faylni yuklang</label> <br/>
+                            <input type="file" id='File' accept="application/pdf"
+                                   onChange={(e) => handleInputFile(e)}/>
+                        </div>
+                        <div className="modal-footer">
+                            {loading ?
+                                <Space direction="vertical" style={{width: '100%',}}>
+                                    <Spin tip="Loading...">
+                                        <Alert
+                                            message="Ma'lumot yuklanmoqda"
+                                            description="Iltimos kutib turing"
+                                            type="info"
+                                        />
+                                    </Spin>
+                                </Space>
+                                :
+                                ''
+                            }
+
+                            <button className='btn btn-success' disabled={loading}
+                                    onClick={postStudentTTJ}>yuborish
+                            </button>
+                            <button type="button" className="btn btn-danger" disabled={loading}
                                     data-bs-dismiss="modal">Close
                             </button>
                         </div>
