@@ -173,6 +173,10 @@ function TtjStudentListDekan(props) {
         })
     }
 
+    const pageShow =(curent, pageSize)=>{
+        setPageSize(pageSize)
+    }
+
     return (
         <div>
             <div className="w-100 d-flex">
@@ -204,8 +208,7 @@ function TtjStudentListDekan(props) {
                 </div>
             </div>
             <Modal className='ticherModal' title={"Talabani qora ro'yxatga qo'shish"}
-                   open={isModalVisible}
-                   onOk={handleOk} onCancel={handleCancel}>
+                   open={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                 <div>
                     <label htmlFor='Title'>File (pdf)</label><br/>
                     <input type="file" id='File' accept='application/pdf' onChange={(e) => handleInputFile(e)}/>
@@ -222,9 +225,7 @@ function TtjStudentListDekan(props) {
                 }
             </Modal>
 
-            <Button
-                className="btn btn-success p-1"
-                onClick={exportExcel}>
+            <Button className="btn btn-success p-1" onClick={exportExcel}>
                 Ma'lumotlarini yuklab olish
             </Button>
             <br/>
@@ -289,6 +290,8 @@ function TtjStudentListDekan(props) {
                     setPage(e)
                 }}
                 showQuickJumper
+                showSizeChanger
+                onShowSizeChange={pageShow}
             />
 
             <div className="modal fade" id="myModal">
