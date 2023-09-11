@@ -6,7 +6,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
 import axios from "axios";
 import {PlusOutlined} from '@ant-design/icons';
-import {Button, Form, Input, Modal, Space} from 'antd';
+import {Button, Form, Select, Modal, Space} from 'antd';
 import {ApiName1} from "../APIname1";
 import {useNavigate} from "react-router";
 import {toast, ToastContainer} from "react-toastify";
@@ -14,8 +14,8 @@ import {toast, ToastContainer} from "react-toastify";
 import {CaretDownOutlined} from '@ant-design/icons';
 
 const onFinish = (values: any) => {
-    console.log('Received values of form:', values);
 };
+
 
 function Ariza(props) {
     const navigate = useNavigate();
@@ -31,6 +31,7 @@ function Ariza(props) {
         course: "",
         country: "",
         city: "",
+        birthDate:'',
         district: "",
         phone: "",
         attachList: []
@@ -55,6 +56,12 @@ function Ariza(props) {
             fileName: '',
             fileBox: ''
         }])
+    };
+
+    const handleChange = (v) => {
+        setStudent({...Student,
+            course:v
+        })
     };
 
     useEffect(() => {
@@ -123,6 +130,7 @@ function Ariza(props) {
         axios.get(`${ApiName1}/account/me`, {
             params: {token: localStorage.getItem("token")}
         }).then((response) => {
+            console.log(response.data.data)
             setStudent({
                 ...Student,
                 name: response.data.data.full_name,
@@ -131,15 +139,15 @@ function Ariza(props) {
                 specialty: response.data.data.specialty.name,
                 group: response.data.data.group.name,
                 phone: response.data.data.phone,
+                birthDate: response.data.data?.birth_date,
                 gender: response.data.data.gender.name,
                 faculty: response.data.data.faculty.name,
-                course: response.data.data.level.name,
                 country: response.data.data.country.name,
                 city: response.data.data.province.name,
                 district: response.data.data.district.name,
             })
         }).catch((error) => {
-            navigate("/login");
+            // navigate("/login");
             console.log(error);
         })
 
@@ -171,10 +179,13 @@ function Ariza(props) {
                                 setIsLoading(false);
                             }
                         }).catch((error) => {
+                        console.log(error.response.status)
                         setIsLoading(false);
                         if (error.response.status === 400) {
                             setMessage2(error.response.data === 'Bunday talaba mavjud ' ? t('application-submitted-already') : '')
+                            setMessage(error.response.data.errors)
                         }
+
                     })
 
                 }).catch((error) => {
@@ -223,7 +234,31 @@ function Ariza(props) {
                             <p>{t('faculty')}: <span>{Student.faculty}</span></p>
                             <p>{t('direction')}: <span>{Student.specialty}</span></p>
                             <p>{t('group')}: <span>{Student.group}</span></p>
-                            <p>{t('course')}: <span>{Student.course}</span></p>
+
+                            <p>{t('course')}: </p>
+                            <Space wrap className='form-control'>
+                                <Select
+                                    defaultValue="kurs"
+                                    onChange={handleChange}
+                                    options={[
+                                        {
+                                            value: '2-kurs',
+                                            label: '2',
+                                        },
+                                        {
+                                            value: '3-kurs',
+                                            label: '3',
+                                        },
+                                        {
+                                            value: '4-kurs',
+                                            label: '4',
+                                        },
+                                    ]}
+                                />
+
+                            </Space>
+
+
                             <p>{t('address')}:
                                 <span>{Student.country} {Student.city} {Student.district}</span>
                             </p>
@@ -241,17 +276,12 @@ function Ariza(props) {
                                         <div key={index} style={{display: 'flex', marginBottom: 8}}
                                              align="baseline">
                                             <button className='selectBtn btn' type="button"
-                                                    onClick={() => {
-                                                        showModal();
-                                                        setIndex(index)
-                                                    }}>
+                                                    onClick={() => {showModal();setIndex(index)}}>
                                                 {sabab[item.fileName]?.name}
                                                 <CaretDownOutlined/>
                                             </button>
                                             <input type="file"
-                                                   className='form-control'
-                                                   id='FILE'
-                                                   accept="application/pdf"
+                                                   className='form-control' id='FILE' accept="application/pdf"
                                                    onChange={(e) => handleInputFile(e, index)}/>
                                         </div>
                                     ))}
@@ -272,7 +302,8 @@ function Ariza(props) {
                                 <Button loading={isLoading}
                                         className="signUp"
                                         onClick={
-                                            postStudent
+                                            // postStudent
+                                            expDate
                                         }>
                                     {t('send')}
                                 </Button>
@@ -282,10 +313,10 @@ function Ariza(props) {
                 </div>
                 <Modal title={"Ariza topshirish vaqti tugadi!"}
                        open={showExpDateModal}
-                       onOk={()=>{
+                       onOk={() => {
                            setShowExpDateModal(false)
                        }}
-                       onCancel={()=>{
+                       onCancel={() => {
                            setShowExpDateModal(false)
                        }}
                 >
