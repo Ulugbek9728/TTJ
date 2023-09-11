@@ -298,12 +298,12 @@ function Ariza(props) {
                                     {errorMessage && <p className="text-bg-danger">{errorMessage}</p>}
                                 </Form>
                             </div>
-                            <div className="d-flex justify-content-center">
+                            <div className="d-flex justify-content-center" >
                                 <Button loading={isLoading}
                                         className="signUp"
                                         onClick={
-                                            // postStudent
-                                            expDate
+                                            postStudent
+                                            // expDate
                                         }>
                                     {t('send')}
                                 </Button>

@@ -60,7 +60,7 @@
     "patronymic": "Please enter patronymic!",
     "login": "Please enter login!",
     "faculty": "Please select faculty!",
-    "reason": "Reason must be selected!"
+    "reason": "Enter reason and file (PDF)!"
   },
   "reasons": {
     "1": "Orphaned (lost two or one parent) students",
