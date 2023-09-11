@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Button, Input, Modal, Pagination, Select, Space, Spin} from "antd";
+import {Alert, Button, Modal, Pagination, Select, Space, Spin} from "antd";
 import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {useNavigate} from "react-router";
@@ -257,6 +257,10 @@ function TtjStudents(props) {
         })
 
     };
+
+    const pageShow =(curent, pageSize)=>{
+        setPageSize(pageSize)
+    }
     return (
         <div>
             <div className="w-100 d-flex">
@@ -403,6 +407,8 @@ function TtjStudents(props) {
                     setPage(e)
                 }}
                 showQuickJumper
+                showSizeChanger
+                onShowSizeChange={pageShow}
             />
             <div className="modal fade" id="myModal">
                 <div className="modal-dialog" style={{marginLeft: "15%"}}>

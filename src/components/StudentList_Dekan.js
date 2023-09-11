@@ -48,7 +48,7 @@ function StudentListDekan(props) {
             }
 
         }
-    }, [sucsessText, Kurs, Status, page]);
+    }, [sucsessText, Kurs, Status, page,pageSizes]);
 
 
     function StudentList() {
@@ -184,6 +184,9 @@ function StudentListDekan(props) {
                 , response.data, 'students');
         })
     }
+    const pageShow =(curent, pageSize)=>{
+        setPageSize(pageSize)
+    }
 
     return (
         <div>
@@ -277,6 +280,8 @@ function StudentListDekan(props) {
                     setPage(e)
                 }}
                 showQuickJumper
+                showSizeChanger
+                onShowSizeChange={pageShow}
             />
 
             <div className="modal fade" id="myModal">
