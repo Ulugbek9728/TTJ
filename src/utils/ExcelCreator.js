@@ -33,6 +33,7 @@ export const exportToCSVStudentDormitory = (headerData, apiData, fileName) => {
         student["name"] = get(item, 'Student ismi') || '';
         student["gender"] = get(item, 'gender') || '';
         student["dormitory"] = get(item, 'yotoqxona nomi') || '';
+        student["group"] = get(item, 'studentGroup') || '';
         for (let i = 0; i < headerData.length; i++) {
             if (reasons?.filter(item => {
                 return item === headerData[i].key
@@ -47,7 +48,7 @@ export const exportToCSVStudentDormitory = (headerData, apiData, fileName) => {
 
     const worksheet = XLSX.utils.json_to_sheet(studentList);
 
-    const datas = ["Fakultet", "Kurs", "Yaratilgan vaqt", "Yonalish", "Tefon raqam", "Login", "Ismi","Jinsi", "Yotoqxona"];
+    const datas = ["Fakultet", "Kurs", "Yaratilgan vaqt", "Yonalish", "Tefon raqam", "Login", "Ismi","Jinsi", "Yotoqxona","Guruhi"];
 
     headerData.forEach((item) => {
         datas.push(item?.key);
