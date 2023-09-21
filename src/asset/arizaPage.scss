@@ -39,6 +39,13 @@ $mainColor: #418C61;
           display: flex;
         }
       }
+      .ant-space{
+        width: 100%;
+        .ant-select{
+          width: 100%!important;
+        }
+      }
+
       .imgBox{
         display: flex;
         align-items: center;

@@ -81,7 +81,6 @@ function Login(props) {
         setMessage2('')
     }, [message2]);
 
-
     function notify() {
         if (message !== '') {
             message && message.map((item) => (toast.error(item)))

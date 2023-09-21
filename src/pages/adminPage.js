@@ -1,11 +1,6 @@
 import React, {useEffect,useState} from 'react';
 import {
-    UserAddOutlined,
-    PicLeftOutlined,
-    TeamOutlined,
-    PauseCircleOutlined,
-    GoldOutlined
-} from '@ant-design/icons';
+    UserAddOutlined, PicLeftOutlined, TeamOutlined, PauseCircleOutlined, GoldOutlined} from '@ant-design/icons';
 import { Layout, Menu, theme, Modal, Input} from 'antd';
 import {Route, Routes, useNavigate} from "react-router";
 import Rector from "../components/Rector";
@@ -25,7 +20,10 @@ import {toast} from "react-toastify";
 import Contact from "../components/contact";
 
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header
+    , Content
+    , Footer
+    , Sider } = Layout;
 
 function AdminPage(props) {
     const navigate = useNavigate();

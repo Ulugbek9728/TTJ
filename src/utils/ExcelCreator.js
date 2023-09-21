@@ -32,7 +32,9 @@ export const exportToCSVStudentDormitory = (headerData, apiData, fileName) => {
         student["login"] = get(item, 'studentLogin') || '';
         student["name"] = get(item, 'Student ismi') || '';
         student["gender"] = get(item, 'gender') || '';
+        student["studentBirthDate"] = get(item, 'birthDate') || '';
         student["dormitory"] = get(item, 'yotoqxona nomi') || '';
+        student["group"] = get(item, 'studentGroup') || '';
         for (let i = 0; i < headerData.length; i++) {
             if (reasons?.filter(item => {
                 return item === headerData[i].key
@@ -47,7 +49,7 @@ export const exportToCSVStudentDormitory = (headerData, apiData, fileName) => {
 
     const worksheet = XLSX.utils.json_to_sheet(studentList);
 
-    const datas = ["Fakultet", "Kurs", "Yaratilgan vaqt", "Yonalish", "Tefon raqam", "Login", "Ismi","Jinsi", "Yotoqxona"];
+    const datas = ["Fakultet", "Kurs", "Yaratilgan vaqt", "Yonalish", "Tefon raqam", "Login", "Ismi","Jinsi","Tug'ilgan sana","Yotoqxona","Guruhi"];
 
     headerData.forEach((item) => {
         datas.push(item?.key);
@@ -88,6 +90,7 @@ export const exportToCSVAriza = (headerData, apiData, fileName) => {
         student["login"] = get(item, 'login') || '';
         student["name"] = get(item, 'name') || '';
         student["gender"] = get(item, 'gender') || '';
+        student["studentBirthDate"] = get(item, 'birthDate') || '';
         for (let i = 0; i < headerData.length; i++) {
             if (reasons?.filter(item => {
                 return item === headerData[i].key
@@ -102,7 +105,7 @@ export const exportToCSVAriza = (headerData, apiData, fileName) => {
 
     const worksheet = XLSX.utils.json_to_sheet(studentList);
 
-    const datas = ["Fakultet", "Kurs", "Yaratilgan vaqt", "Yonalish", "Guruh", "Tefon raqam", "Login", "Ismi","Jinsi"];
+    const datas = ["Fakultet", "Kurs", "Yaratilgan vaqt", "Yonalish", "Guruh", "Tefon raqam", "Login", "Ismi","Jinsi","Tug'ilgan sana"];
 
     headerData.forEach((item) => {
         datas.push(item?.key);

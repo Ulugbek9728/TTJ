@@ -65,7 +65,7 @@ function Student(props) {
             }
         }
         getTTJ()
-    }, [sucsessText, Kurs, FakultyID, Status, page]);
+    }, [sucsessText, Kurs, FakultyID, Status, page,pageSizes]);
 
     function StudentList() {
         axios.post(`${ApiName1}/private/student/list/${FakultyName}/${Kurs}`, '', {
@@ -219,6 +219,7 @@ function Student(props) {
                 status: Status
             }
         }).then((response) => {
+
             exportToCSVAriza([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
                     .map((item) => (
                         {
@@ -228,24 +229,9 @@ function Student(props) {
                 , response.data, 'students');
         })
     }
-    // const exportExcel = () => {
-    //     axios.post(`${ApiName1}/admin/dormitory_student/all`, {
-    //         course: Kurs?.length > 0 ? Kurs : null,
-    //         dormitory_id: TTJID,
-    //         faculty_id: localStorage.getItem('faculty_ID'),
-    //         status: ''
-    //     }, {
-    //         headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
-    //     }).then((response) => {
-    //         exportToCSVAriza([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    //                 .map((item) => (
-    //                     {
-    //                         name: t(`reasons.${item}`),
-    //                         key: t(`reasons.${item}`, {lng: 'uz'}),
-    //                     }))
-    //             ,response.data, 'students');
-    //     })
-    // }
+    const pageShow =(curent, pageSize)=>{
+        setPageSize(pageSize)
+    }
     return (
         <div>
             <div className='d-flex'>
@@ -276,9 +262,7 @@ function Student(props) {
                     </Select>
                 </div>
             </div>
-            <Button
-                className="btn btn-success p-1"
-                onClick={exportExcel}>
+            <Button className="btn btn-success p-1" onClick={exportExcel}>
                 Ma'lumotlarini yuklab olish
             </Button>
             <br/>
@@ -362,6 +346,8 @@ function Student(props) {
                     setPage(e)
                 }}
                 showQuickJumper
+                showSizeChanger
+                onShowSizeChange={pageShow}
             />
 
 
