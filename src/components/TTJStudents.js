@@ -4,7 +4,7 @@ import axios from "axios";
 import {ApiName1} from "../APIname1";
 import {useNavigate} from "react-router";
 import {toast} from "react-toastify";
-import { exportToCSVStudentDormitory} from "../utils/ExcelCreator";
+import {exportToCSVStudentDormitory} from "../utils/ExcelCreator";
 import {useTranslation} from "react-i18next";
 
 
@@ -22,11 +22,11 @@ function TtjStudents(props) {
     const [message, setMessage] = useState([]);
 
     const [FakultyName, setFakultyName] = useState('');
-    const [Kurs, setKurs] = useState('');
+    const [Kurs, setKurs] = useState(null);
     const [Faculty, setFaculty] = useState([]);
     const [FakultyID, setFakultyID] = useState('');
     const [GetTTJList, setGetTTJList] = useState([]);
-    const [TTJID, setTTJID] = useState('');
+    const [TTJID, setTTJID] = useState(null);
     const [TTJID2, setTTJID2] = useState('');
     const [Students, setStudent] = useState([]);
     const [StudentID, setStudentID] = useState('');
@@ -40,12 +40,102 @@ function TtjStudents(props) {
     const [totalPage, setTotalPage] = useState(0);
     const [pageSizes, setPageSize] = useState(20);
     const [loading, setLoading] = useState(false);
+    const [sabab, setSabab] = useState([
+        {name: 'Iqtidorli talabalar (xalqaro, respublika, hudud va universitet miqyosida %0D%0A        o‘tkazilgan fan olimpiadalari va sport musobaqalari, ko‘rik-tanlovlar g‘oliblari, %0D%0A        ma’naviy-ma’rifiy va sport tadbirlarida faol ishtirok etgan)'},
+        {name: "Chin yetim yoki yetim talabalar"},
+        {name: "Temir daftar”, “Ayollar daftari”, “Yoshlar daftari” %0D%0A            ro‘yxatiga kiritilgan, ijtimoiy himoyaga o‘ta muhtoj oila farzandlari"},
+        {name: "Talabalar turar joyida o‘tgan o‘quv yillarida namunali faoliyat yuritgan talabalar%0A         kengashi raisi va qavat sardorlari"},
+        {name: "Nogironlgi bo‘lgan talabalar"},
+        {name: "Otasi (boquvchisi) nogiron talabalar"},
+        {name: "Oilada ikki va undan ortiq farzandlari kunduzgi %0D%0A            ta’limda shartnoma asosida o‘qiydigan oila farzandlari"},
+        {name: "Chet eldan kelib o‘qiydigan xorijiy talabalar"},
+        {name: "Respublikaning olis hududlaridan kelgan talabalar"},
+        {name: "Yozgi ta’til vaqtida “Bunyodkor yoshlar mehnat otryadi”da faol ishtirok etgan talabalar"},
+        {name: "Universitet Yoshlar ittifoqi kengashi raisining tavsiyanomasiga%0D%0A         asosan universitet yoshlar Kengashi a’zolari"},
+        {name: "Boquvchisini yo‘qotgan (otasi) talabalar"},
+    ]);
+    const [sababChange, setSababChange] = useState(null);
+    const [cityFull, setCityFull] = useState([
+        {
+            "code": "1703",
+            "name": "Andijon viloyati",
+            "_parent": "1703"
+        },
+        {
+            "code": "1706",
+            "name": "Buxoro viloyati",
+            "_parent": "1706"
+        },
+        {
+            "code": "1708",
+            "name": "Jizzax viloyati",
+            "_parent": "1708"
+        },
+        {
+            "code": "1710",
+            "name": "Qashqadaryo viloyati",
+            "_parent": "1710"
+        },
+        {
+            "code": "1712",
+            "name": "Navoiy viloyati",
+            "_parent": "1712"
+        },
+        {
+            "code": "1714",
+            "name": "Namangan viloyati",
+            "_parent": "1714"
+        },
+        {
+            "code": "1718",
+            "name": "Samarqand viloyati",
+            "_parent": "1718"
+        },
+        {
+            "code": "1722",
+            "name": "Surxondaryo viloyati",
+            "_parent": "1722"
+        },
+        {
+            "code": "1724",
+            "name": "Sirdaryo viloyati",
+            "_parent": "1724"
+        },
+        {
+            "code": "1727",
+            "name": "Toshkent viloyati",
+            "_parent": "1727"
+        },
+        {
+            "code": "1730",
+            "name": "Farg‘ona viloyati",
+            "_parent": "1730"
+        },
+        {
+            "code": "1733",
+            "name": "Xorazm viloyati",
+            "_parent": "1733"
+        },
+        {
+            "code": "1735",
+            "name": "Qoraqalpog‘iston Resp.",
+            "_parent": "1735"
+        },
+        {
+            "code": "1726",
+            "name": "Toshkent shahri",
+            "_parent": "1726"
+        }
+    ]);
+    const [city, setCity] = useState(null);
 
 
     const [RectorBulin, setRectorBulin] = useState(true);
     const [file, setFile] = useState([{
         fileBox: null
     }]);
+
+    const lang = localStorage.getItem('i18nextLng');
 
     const handleInputFile = (e, index) => {
         file.fileBox = e.target.files[0]
@@ -90,13 +180,11 @@ function TtjStudents(props) {
             setRectorBulin(true)
         }
         Fakulty();
+        StudentList()
         if (FakultyName !== '') {
             getTTJ();
-            if (Kurs !== '') {
-                StudentList()
-            }
         }
-    }, [sucsessText, Kurs, FakultyID, TTJID,TTJID2, StudentStatus,page,pageSizes]);
+    }, [sucsessText, Kurs, FakultyID, TTJID, TTJID2, StudentStatus, page, pageSizes, sababChange, city]);
 
     function Fakulty() {
         axios.post(`${ApiName1}/adm/faculty/faculty_list`, '', {
@@ -128,6 +216,8 @@ function TtjStudents(props) {
         axios.post(`${ApiName1}/admin/dormitory_student`, {
             course: Kurs,
             dormitory_id: TTJID,
+            reason: sababChange,
+            city: city,
             faculty_id: FakultyID,
             status: StudentStatus
         }, {
@@ -211,8 +301,8 @@ function TtjStudents(props) {
             .then((response) => {
                 axios.put(`${ApiName1}/admin/transfer/${StudentID}`,
                     {
-                        dormitoryId:TTJID2,
-                        fileId:response.data[0]?.id
+                        dormitoryId: TTJID2,
+                        fileId: response.data[0]?.id
                     }, {
                         headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
                     })
@@ -227,7 +317,7 @@ function TtjStudents(props) {
                     }).catch((error) => {
                     setLoading(false)
                     console.log(error.response.data)
-                    if(error.response.data.status===400){
+                    if (error.response.data.status === 400) {
                         setMessage(error.response.data.errors)
                     }
                     setMessage2(error.response.data)
@@ -241,26 +331,29 @@ function TtjStudents(props) {
 
         axios.post(`${ApiName1}/admin/dormitory_student/all`, {
             course: Kurs?.length > 0 ? Kurs : null,
+            reason: sababChange,
+            city: city,
             dormitory_id: TTJID,
             faculty_id: FakultyID,
             status: StudentStatus
         }, {
             headers: {"Authorization": "Bearer " + localStorage.getItem("token")}
         }).then((response) => {
-            exportToCSVStudentDormitory([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-                    .map((item) => (
-                        {
-                            name: t(`reasons.${item}`),
-                            key: t(`reasons.${item}`, {lng: 'uz'}),
-                        }))
+            console.log(response)
+            exportToCSVStudentDormitory([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item) => (
+                    {
+                        name: t(`reasons.${item}`),
+                        key: t(`reasons.${item}`, {lng: 'uz'}),
+                    }))
                 , response.data, 'students')
         })
 
     };
 
-    const pageShow =(curent, pageSize)=>{
+    const pageShow = (curent, pageSize) => {
         setPageSize(pageSize)
     }
+
     return (
         <div>
             <div className="w-100 d-flex">
@@ -297,6 +390,37 @@ function TtjStudents(props) {
                         <Option value='REMOVED'>Ichki tartibni buzgan talabalar</Option>
                         <Option value='JOINED'>Qabul qilingan talabalar </Option>
                     </Select>
+
+                    <label htmlFor="sabab">Sabab turi</label>
+                    <Select
+                        showSearch className="w-100 my-2" id='sabab'
+                        onChange={(e) => {
+                            setSababChange(e)
+                        }}
+                        placeholder="Sabablar"
+                        optionFilterProp="children"
+                        filterOption={(input, option) => (option?.label?.toLowerCase() ?? '').startsWith(input.toLowerCase())}
+                        filterSort={(optionA, optionB) =>
+                            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                        }
+                        options={sabab && sabab.map((item, index) => (
+                            {value: item.name, label: item?.name}))}
+                    />
+                    <label htmlFor="sabab">Viloyat kesimi</label>
+                    <Select
+                        showSearch className="w-100 my-2" id='sabab'
+                        onChange={(e) => {
+                            setCity(e)
+                        }}
+                        placeholder="Viloyat"
+                        optionFilterProp="children"
+                        filterOption={(input, option) => (option?.label?.toLowerCase() ?? '').startsWith(input.toLowerCase())}
+                        filterSort={(optionA, optionB) =>
+                            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                        }
+                        options={cityFull && cityFull.map((item, index) => (
+                            {value: item.name, label: item?.name}))}
+                    />
                 </div>
             </div>
 

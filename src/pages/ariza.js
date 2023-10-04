@@ -127,33 +127,6 @@ function Ariza(props) {
         }
     }
 
-    // function getStudent() {
-    //     axios.get(`${ApiName1}/account/me`,
-    //         {
-    //         params: {token: localStorage.getItem("token")}
-    //     }).then((response) => {
-    //         console.log(response.data.data)
-    //         setStudent({
-    //             ...Student,
-    //             name: response.data.data.full_name,
-    //             login: response.data.data.student_id_number,
-    //             imageUrl: response.data.data.image,
-    //             specialty: response.data.data.specialty.name,
-    //             group: response.data.data.group.name,
-    //             phone: response.data.data.phone,
-    //             birthDate: response.data.data?.birth_date,
-    //             gender: response.data.data.gender.name,
-    //             faculty: response.data.data.faculty.name,
-    //             country: response.data.data.country.name,
-    //             city: response.data.data.province.name,
-    //             district: response.data.data.district.name,
-    //         })
-    //     }).catch((error) => {
-    //         // navigate("/login");
-    //         console.log(error);
-    //     })
-    //
-    // }
     function getStudent() {
         axios.get(`${ApiName}account/me`, {
                 headers: {'Authorization':'Bearer '+ localStorage.getItem("token")}
@@ -285,7 +258,6 @@ function Ariza(props) {
                                 />
 
                             </Space>
-
 
                             <p>{t('address')}:
                                 <span>{Student.country} {Student.city} {Student.district}</span>

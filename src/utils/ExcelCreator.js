@@ -24,7 +24,6 @@ export const exportToCSVStudentDormitory = (headerData, apiData, fileName) => {
         let student = {};
         const reasons = item?.reasons && JSON.parse(item?.reasons) || [];
         student["faculty"] = get(item, 'faculty');
-
         student["course"] = get(item, 'course') || '';
         student["date"] = get(item, 'createdDate') || '';
         student["studentSpecialty"] = get(item, 'studentSpecialty') || ''
