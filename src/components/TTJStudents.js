@@ -663,7 +663,7 @@ function TtjStudents(props) {
                             }
 
                             <button className='btn btn-success' disabled={loading}
-                                    onClick={postStudentTTJ}>yuborish
+                                    onClick={postStudentTTJ}>Yuborish
                             </button>
                             <button type="button" className="btn btn-danger" disabled={loading}
                                     data-bs-dismiss="modal">Close
