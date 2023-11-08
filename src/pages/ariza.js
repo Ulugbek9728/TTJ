@@ -14,8 +14,7 @@ import {toast, ToastContainer} from "react-toastify";
 
 import {CaretDownOutlined} from '@ant-design/icons';
 
-const onFinish = (values: any) => {
-};
+const onFinish = (values: any) => {};
 
 
 function Ariza(props) {
@@ -35,8 +34,7 @@ function Ariza(props) {
         birthDate:'',
         district: "",
         phone: "",
-        attachList: []
-    });
+        attachList: []});
     const [file, setFile] = useState([{
         fileName: '',
         fileBox: null
@@ -242,6 +240,10 @@ function Ariza(props) {
                                     defaultValue="kurs"
                                     onChange={handleChange}
                                     options={[
+                                        {
+                                            value: '1-kurs',
+                                            label: '1',
+                                        },
                                         {
                                             value: '2-kurs',
                                             label: '2',
