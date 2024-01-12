@@ -61,19 +61,22 @@ function Login(props) {
                 setMessage2(e.response.data);
                 setIsButtonLoading(false);
             } else {
-                axios.post(`${ApiName}auth/login`, requestData).then((response) => {
-                    localStorage.setItem("token", response.data.data.token);
-                    navigate("/Submit");
-                    setIsButtonLoading(false);
-                }).catch((error) => {
-                    setIsButtonLoading(false);
-                    setMessage2('Login yoki parol xato');
-                })
+                // axios.post(`${ApiName}auth/login`, requestData).then((response) => {
+                //     localStorage.setItem("token", response.data.data.token);
+                //     navigate("/Submit");
+                //     setIsButtonLoading(false);
+                // }).catch((error) => {
+                //     setIsButtonLoading(false);
+                //     setMessage2('Login yoki parol xato');
+                // })
+                setIsButtonLoading(false);
+                setMessage2("Talabalarni turar joy bilan ta’minlash ishlarini muvofiqlashtiruvchi bo’limiga murojat qiling.");
             }
 
 
         })
     }
+
 
     useEffect(() => {
         localStorage.removeItem("token");

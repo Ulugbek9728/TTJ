@@ -97,12 +97,12 @@ function CaruselFakultet(props) {
                     </div>
                     <div className="menu">
                         <div className="yangiliklar">
-                            <Link to="/Submit">
+                            <Link to="/">
                             {t("carusel.Ariza yuborish")}
                             </Link>
                         </div>
                         <div className="bizHaqimizda">
-                            <Link to="/Result">
+                            <Link to="/">
                             {t("carusel.TTJ")}
                             </Link>
                         </div>

@@ -37,8 +37,8 @@ function App() {
                     <Route path={"/News/"} element={ <Yangiliklar/>}/>
                     <Route path={"/News/:id"} element={ <YangilikBatafsil/>}/>
                     <Route path={"/login"} element={ <Login/>}/>
-                    <Route path={"/Submit"} element={ <Ariza/>}/>
-                    <Route path={"/Result"} element={ <Natija/>}/>
+                    {/*<Route path={"/Submit"} element={ <Ariza/>}/>*/}
+                    {/*<Route path={"/Result"} element={ <Natija/>}/>*/}
 
                     <Route path={"/Adminyoli/*"} element={ <AdminPage/>}/>
                     <Route path={"/Dekanyoli/*"} element={ <DekanPage/>}/>

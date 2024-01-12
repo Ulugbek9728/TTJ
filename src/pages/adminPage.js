@@ -22,7 +22,6 @@ import Contact from "../components/contact";
 
 const { Header
     , Content
-    , Footer
     , Sider } = Layout;
 
 function AdminPage(props) {
